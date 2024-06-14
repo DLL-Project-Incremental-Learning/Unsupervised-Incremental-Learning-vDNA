@@ -240,7 +240,7 @@ python main.py --model deeplabv3plus_mobilenet --enable_vis --vis_port 28333 --g
 ### 2. Train your model on Cityscapes
 
 ```bash
-python main.py --model deeplabv3plus_mobilenet --dataset cityscapes --enable_vis --vis_port 28333 --gpu_id 0  --lr 0.1  --crop_size 768 --batch_size 16 --output_stride 16 --data_root ./datasets/data/cityscapes 
+python -m main --ckpt checkpoints/model_best_epoch96_edit.pth --data_root ./datasets/data/cityscapes
 ```
 
 ## Reference
