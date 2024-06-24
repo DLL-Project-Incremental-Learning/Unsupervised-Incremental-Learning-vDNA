@@ -1,0 +1,20 @@
+python main.py --data_root datasets/data/cityscapes --enable_vis --vis_port 28333 --ckpt checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth --model deeplabv3plus_resnet101 --test_only --crop_val --val_batch_size 4
+
+
+Setting up a new session...
+Device: cuda
+Dataset: cityscapes, Train set: 2975, Val set: 500
+Model: deeplabv3plus_resnet101, Output Stride: 16
+setting up metrics
+Model restored from checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth
+Model restored from checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth
+125it [04:24,  2.11s/it]
+
+Overall Acc: 0.958690
+Mean Acc: 0.837527
+FreqW Acc: 0.923539
+Mean IoU: 0.762101
+
+
+
+python main2.py --data_root datasets/data/cityscapes --ckpt checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth --model deeplabv3plus_resnet101 --test_only --crop_val --val_batch_size 2

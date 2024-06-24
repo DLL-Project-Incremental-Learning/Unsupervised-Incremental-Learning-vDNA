@@ -1,0 +1,52 @@
+Device: cuda
+Dataset: cityscapes, Train set: 2975, Val set: 500
+Model: deeplabv3plus_resnet101, Output Stride: 16
+setting up metrics
+Model restored from checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth
+Traceback (most recent call last):
+  File "main2.py", line 295, in <module>
+    main()
+  File "main2.py", line 253, in main
+    outputs = model(images)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1561, in _call_impl
+    result = forward_call(*args, **kwargs)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\parallel\data_parallel.py", line 183, in forward
+    return self.module(*inputs[0], **module_kwargs[0])
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "D:\DL_Lab24\Project\DeeplabV3_Cityscapes\network\utils.py", line 15, in forward
+    features = self.backbone(x)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "D:\DL_Lab24\Project\DeeplabV3_Cityscapes\network\utils.py", line 80, in forward
+    x = module(x)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\container.py", line 217, in forward
+    input = module(input)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "D:\DL_Lab24\Project\DeeplabV3_Cityscapes\network\backbone\resnet.py", line 105, in forward
+    out = self.conv2(out)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\conv.py", line 460, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\torch\nn\modules\conv.py", line 456, in _conv_forward
+    return F.conv2d(input, weight, bias, self.stride,
+RuntimeError: CUDA error: out of memory
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.

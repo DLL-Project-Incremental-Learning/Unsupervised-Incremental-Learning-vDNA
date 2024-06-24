@@ -1,0 +1,64 @@
+{
+    "os": "Windows-10-10.0.22631-SP0",
+    "python": "3.8.19",
+    "heartbeatAt": "2024-06-24T11:40:32.528326",
+    "startedAt": "2024-06-24T11:40:31.544820",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--data_root",
+        "datasets/data/cityscapes",
+        "--ckpt",
+        "checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth",
+        "--model",
+        "deeplabv3plus_resnet101",
+        "--test_only",
+        "--crop_val",
+        "--val_batch_size",
+        "2"
+    ],
+    "state": "running",
+    "program": "main2.py",
+    "codePathLocal": "main2.py",
+    "codePath": "main2.py",
+    "git": {
+        "remote": "https://github.com/DLL-Project-Incremental-Learning/DeeplabV3_Cityscapes.git",
+        "commit": "3cc4f0327086331c1914a9a458b0257b11ad1b98"
+    },
+    "email": "kbpranav.24@gmail.com",
+    "root": "D:/DL_Lab24/Project/DeeplabV3_Cityscapes",
+    "host": "Pranav",
+    "username": "kbpra",
+    "executable": "C:\\Users\\kbpra\\anaconda3\\envs\\lab\\python.exe",
+    "cpu_count": 8,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2000.0,
+        "min": 0.0,
+        "max": 2000.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2000.0,
+            "min": 0.0,
+            "max": 2000.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 931.4960899353027,
+            "used": 124.31879806518555
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+            "memory_total": 6442450944
+        }
+    ],
+    "memory": {
+        "total": 15.730522155761719
+    }
+}

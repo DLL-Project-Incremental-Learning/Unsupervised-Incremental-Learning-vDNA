@@ -1,0 +1,30 @@
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_setup.py:_flush():76] Current SDK version is 0.17.2
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_setup.py:_flush():76] Configure stats pid to 29604
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_setup.py:_flush():76] Loading settings from C:\Users\kbpra\.config\wandb\settings
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_setup.py:_flush():76] Loading settings from D:\DL_Lab24\Project\DeeplabV3_Cityscapes\wandb\settings
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'main2.py', 'program_abspath': 'D:\\DL_Lab24\\Project\\DeeplabV3_Cityscapes\\main2.py', 'program': 'main2.py'}
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_setup.py:_flush():76] Applying login settings: {}
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_init.py:_log_setup():520] Logging user logs to D:\DL_Lab24\Project\DeeplabV3_Cityscapes\wandb\run-20240624_133450-mtaa1c1d\logs\debug.log
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_init.py:_log_setup():521] Logging internal logs to D:\DL_Lab24\Project\DeeplabV3_Cityscapes\wandb\run-20240624_133450-mtaa1c1d\logs\debug-internal.log
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_init.py:init():560] calling init triggers
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_init.py:init():567] wandb.init called with sweep_config: {}
+config: {'data_root': 'datasets/data/cityscapes', 'dataset': 'cityscapes', 'num_classes': 19, 'model': 'deeplabv3plus_resnet101', 'separable_conv': False, 'output_stride': 16, 'test_only': True, 'save_val_results': False, 'total_itrs': 20, 'lr': 0.01, 'lr_policy': 'poly', 'step_size': 10000, 'crop_val': True, 'batch_size': 16, 'val_batch_size': 2, 'crop_size': 513, 'ckpt': 'checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth', 'continue_training': False, 'loss_type': 'cross_entropy', 'gpu_id': '0', 'weight_decay': 0.0001, 'random_seed': 1, 'print_interval': 10, 'val_interval': 20, 'download': False}
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_init.py:init():610] starting backend
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [wandb_init.py:init():614] setting up manager
+2024-06-24 13:34:50,302 INFO    MainThread:29604 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn, using: spawn
+2024-06-24 13:34:50,320 INFO    MainThread:29604 [wandb_init.py:init():622] backend started and connected
+2024-06-24 13:34:50,322 INFO    MainThread:29604 [wandb_init.py:init():711] updated telemetry
+2024-06-24 13:34:50,341 INFO    MainThread:29604 [wandb_init.py:init():744] communicating run to backend with 90.0 second timeout
+2024-06-24 13:34:50,970 INFO    MainThread:29604 [wandb_run.py:_on_init():2402] communicating current version
+2024-06-24 13:34:51,267 INFO    MainThread:29604 [wandb_run.py:_on_init():2411] got version response 
+2024-06-24 13:34:51,267 INFO    MainThread:29604 [wandb_init.py:init():795] starting run threads in backend
+2024-06-24 13:34:57,182 INFO    MainThread:29604 [wandb_run.py:_console_start():2380] atexit reg
+2024-06-24 13:34:57,182 INFO    MainThread:29604 [wandb_run.py:_redirect():2235] redirect: wrap_raw
+2024-06-24 13:34:57,182 INFO    MainThread:29604 [wandb_run.py:_redirect():2300] Wrapping output streams.
+2024-06-24 13:34:57,182 INFO    MainThread:29604 [wandb_run.py:_redirect():2325] Redirects installed.
+2024-06-24 13:34:57,182 INFO    MainThread:29604 [wandb_init.py:init():838] run started, returning control to user process
+2024-06-24 13:34:57,197 INFO    MainThread:29604 [wandb_run.py:_config_callback():1382] config_cb None None {'data_root': 'datasets/data/cityscapes', 'dataset': 'cityscapes', 'num_classes': 19, 'model': 'deeplabv3plus_resnet101', 'separable_conv': False, 'output_stride': 16, 'test_only': True, 'save_val_results': False, 'total_itrs': 20, 'lr': 0.01, 'lr_policy': 'poly', 'step_size': 10000, 'crop_val': True, 'batch_size': 16, 'val_batch_size': 2, 'crop_size': 513, 'ckpt': 'checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth', 'continue_training': False, 'loss_type': 'cross_entropy', 'gpu_id': '0', 'weight_decay': 0.0001, 'random_seed': 1, 'print_interval': 10, 'val_interval': 20, 'download': False}
+2024-06-24 13:35:03,416 INFO    MainThread:29604 [wandb_watch.py:watch():51] Watching
+2024-06-24 13:35:11,719 WARNING MsgRouterThr:29604 [router.py:message_loop():77] message_loop has been closed

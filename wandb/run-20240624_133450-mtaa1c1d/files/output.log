@@ -1,0 +1,12 @@
+Device: cuda
+Dataset: cityscapes, Train set: 2975, Val set: 500
+Model: deeplabv3plus_resnet101, Output Stride: 16
+setting up metrics
+Model restored from checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth
+Traceback (most recent call last):
+  File "main2.py", line 339, in <module>
+    main()
+  File "main2.py", line 268, in main
+    np.int32) if opts.enable_vis else None  # sample idxs for visualization
+AttributeError: 'Namespace' object has no attribute 'enable_vis'
+Model restored from checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth

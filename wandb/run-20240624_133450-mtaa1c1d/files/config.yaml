@@ -1,0 +1,118 @@
+wandb_version: 1
+
+data_root:
+  desc: null
+  value: datasets/data/cityscapes
+dataset:
+  desc: null
+  value: cityscapes
+num_classes:
+  desc: null
+  value: 19
+model:
+  desc: null
+  value: deeplabv3plus_resnet101
+separable_conv:
+  desc: null
+  value: false
+output_stride:
+  desc: null
+  value: 16
+test_only:
+  desc: null
+  value: true
+save_val_results:
+  desc: null
+  value: false
+total_itrs:
+  desc: null
+  value: 20
+lr:
+  desc: null
+  value: 0.01
+lr_policy:
+  desc: null
+  value: poly
+step_size:
+  desc: null
+  value: 10000
+crop_val:
+  desc: null
+  value: true
+batch_size:
+  desc: null
+  value: 16
+val_batch_size:
+  desc: null
+  value: 2
+crop_size:
+  desc: null
+  value: 513
+ckpt:
+  desc: null
+  value: checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth
+continue_training:
+  desc: null
+  value: false
+loss_type:
+  desc: null
+  value: cross_entropy
+gpu_id:
+  desc: null
+  value: '0'
+weight_decay:
+  desc: null
+  value: 0.0001
+random_seed:
+  desc: null
+  value: 1
+print_interval:
+  desc: null
+  value: 10
+val_interval:
+  desc: null
+  value: 20
+download:
+  desc: null
+  value: false
+_wandb:
+  desc: null
+  value:
+    python_version: 3.8.19
+    cli_version: 0.17.2
+    framework: huggingface
+    huggingface_version: 4.41.0
+    is_jupyter_run: false
+    is_kaggle_kernel: true
+    start_time: 1719228890
+    t:
+      1:
+      - 1
+      - 5
+      - 11
+      - 41
+      - 49
+      - 51
+      - 53
+      - 55
+      2:
+      - 1
+      - 5
+      - 11
+      - 41
+      - 49
+      - 51
+      - 53
+      - 55
+      3:
+      - 1
+      - 16
+      - 23
+      4: 3.8.19
+      5: 0.17.2
+      6: 4.41.0
+      8:
+      - 2
+      - 3
+      - 5
+      13: windows-amd64
