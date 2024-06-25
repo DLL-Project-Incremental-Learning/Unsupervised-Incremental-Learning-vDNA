@@ -1,0 +1,75 @@
+Device: cuda
+Dataset: cityscapes, Train set: 2975, Val set: 500
+Model: deeplabv3plus_resnet101, Output Stride: 16
+setting up metrics
+Model restored from checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth
+Model restored from checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+63it [11:30, 10.96s/it]
+Overall Acc: 0.958690
+Mean Acc: 0.837527
+FreqW Acc: 0.923539
+Mean IoU: 0.762101
