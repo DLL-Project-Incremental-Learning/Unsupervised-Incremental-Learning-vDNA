@@ -10,3 +10,4 @@ checkpoints_bak
 cityscapes
 test_results
 *.pth
+wandb

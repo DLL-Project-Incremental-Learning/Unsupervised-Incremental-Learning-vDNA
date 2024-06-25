@@ -116,10 +116,13 @@ def main():
                 T.Normalize(mean=[0.485, 0.456, 0.406],
                                 std=[0.229, 0.224, 0.225]),
             ])
+    # print(f"opts.crop_val: {opts.crop_val}, opts.crop_size: {opts.crop_size}")
     if opts.save_val_results_to is not None:
         os.makedirs(opts.save_val_results_to, exist_ok=True)
     with torch.no_grad():
         model = model.eval()
+        entropy_values = []
+        confidence_values = []
         for img_path in tqdm(image_files):
             ext = os.path.basename(img_path).split('.')[-1]
             img_name = os.path.basename(img_path)[:-len(ext)-1]
@@ -127,11 +130,35 @@ def main():
             img = transform(img).unsqueeze(0) # To tensor of NCHW
             img = img.to(device)
             
-            pred = model(img).max(1)[1].cpu().numpy()[0] # HW
-            colorized_preds = decode_fn(pred).astype('uint8')
-            colorized_preds = Image.fromarray(colorized_preds)
+            # print(f"img.shape: {img.shape}")
+            output = model(img)
+            # print(f"output.shape: {output.shape}")
+
+            # for i in range(output.shape[1]):
+            #     print(f"output[{i}].shape: {output[0, i]}")
+
+            pred = output.max(1)[1].cpu().numpy()[0] # HW
+            # print(f"pred.shape: {pred.shape}")
+            # print(pred)
+            
+            # Calculate confidence and average entropy for this image
+            prob = torch.softmax(output, dim=1)
+            confidence = prob.max(1)[0].mean().item()
+            entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1)  # HW
+            avg_entropy = entropy.mean().item()
+            entropy_values.append(avg_entropy)      
+            confidence_values.append(confidence)     
+
+            # colorized_preds = decode_fn(pred).astype('uint8')
+            # colorized_preds = Image.fromarray(colorized_preds)
+            colorized_preds = Image.fromarray(pred.astype('uint8'))
             if opts.save_val_results_to:
                 colorized_preds.save(os.path.join(opts.save_val_results_to, img_name+'.png'))
+            
+        overall_avg_entropy = np.mean(entropy_values)
+        overall_avg_confidence = np.mean(confidence_values)
+        print(f"Overall average entropy for all images: {overall_avg_entropy:.4f}")
+        print(f"Overall average confidence for all images: {overall_avg_confidence:.4f}")
 
 if __name__ == '__main__':
     main()
