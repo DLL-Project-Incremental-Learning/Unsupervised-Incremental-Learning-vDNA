@@ -107,29 +107,13 @@ class KITTI360Dataset(Dataset):
         target = Image.open(target_path)
         # print(f"img_path: {img_path}")
         # print(f"label_dir: {os.path.join(self.label_dir, os.path.basename(img_path))}")
-        # if self.transform:
-            # image, target = self.transform(image, target)
-        # target = self.encode_target(target)
-        # return image, target
+
         if self.transform:
-            image = self.transform(image)
-            target = self.transform(target)
-            target = torch.squeeze(target, 0)
-            # target = self.encode_target(target)
+            # image = self.transform(image)
+            # target = self.transform(target)
+            # target = torch.squeeze(target, 0)
+            image, target = self.transform(image, target)
         return image, target
-        
-        # if self.label_dir:
-        #     label_path = os.path.join(self.label_dir, os.path.basename(img_path))
-        #     label = Image.open(label_path)
-        #     if self.transform:
-        #         # label = self.transform(label)
-        #         image, label = self.transform(image, label)
-        #     # label = torch.squeeze(label, 0)
-        #     return image, label
-        # else:
-        #     if self.transform:
-        #         image = self.transform(image)
-        #     return image
 
 
 def get_argparser():
@@ -187,7 +171,8 @@ def get_argparser():
                         help='batch size (default: 16)')
     parser.add_argument("--val_batch_size", type=int, default=4,
                         help='batch size for validation (default: 4)')
-    parser.add_argument("--crop_size", type=int, default=513)
+    # parser.add_argument("--crop_size", type=int, default=513)
+    parser.add_argument("--crop_size", type=int, default=189)
 
     parser.add_argument("--ckpt", default=None, type=str,
                         help="restore from checkpoint")
@@ -215,6 +200,7 @@ def get_dataset(opts):
     """ Dataset And Augmentation
     """
     train_transform = et.ExtCompose([
+        # et.ExtResize( 512 ),
         et.ExtRandomCrop(size=(opts.crop_size, opts.crop_size)),
         et.ExtColorJitter(brightness=0.5, contrast=0.5, saturation=0.5),
         et.ExtRandomHorizontalFlip(),
@@ -224,26 +210,21 @@ def get_dataset(opts):
     ])
 
     val_transform = et.ExtCompose([
+        # et.ExtResize( 512 ),
         et.ExtToTensor(),
         et.ExtNormalize(mean=[0.485, 0.456, 0.406],
                         std=[0.229, 0.224, 0.225]),
     ])
 
-    # train_dst = Cityscapes(root=opts.data_root,
-    #                        split='train', transform=train_transform)
-    # val_dst = Cityscapes(root=opts.data_root,
-    #                      split='val', transform=val_transform)
     train_dst = KITTI360Dataset(
         image_dir=opts.data_train_imgs, 
         label_dir=opts.data_train_labels,
-        # transform=train_transform
-        transform=transform
+        transform=train_transform
         )
     val_dst = KITTI360Dataset(
         image_dir=opts.data_val_imgs,
         label_dir=opts.data_val_labels,
-        # transform=val_transform
-        transform=transform
+        transform=val_transform
         )
     return train_dst, val_dst
 

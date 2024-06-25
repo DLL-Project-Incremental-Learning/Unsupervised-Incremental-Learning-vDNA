@@ -255,12 +255,21 @@ def main():
     # Set up metrics
     metrics = StreamSegMetrics(opts.num_classes)
 
+    # Freeze the backbone parameters:
+    for param in model.backbone.parameters():
+        param.requires_grad = False
+
     # Set up optimizer
-    optimizer = torch.optim.SGD(params=[
-        {'params': model.backbone.parameters(), 'lr': 0.1 * opts.lr},
-        {'params': model.classifier.parameters(), 'lr': opts.lr},
-    ], lr=opts.lr, momentum=0.9, weight_decay=opts.weight_decay)
-    # optimizer = torch.optim.SGD(params=model.parameters(), lr=opts.lr, momentum=0.9, weight_decay=opts.weight_decay)
+    # optimizer = torch.optim.SGD(params=[
+    #     {'params': model.backbone.parameters(), 'lr': 0.1 * opts.lr},
+    #     {'params': model.classifier.parameters(), 'lr': opts.lr},
+    # ], lr=opts.lr, momentum=0.9, weight_decay=opts.weight_decay)
+    optimizer = torch.optim.SGD(
+        params=model.parameters(), 
+        lr=opts.lr, 
+        momentum=0.9, 
+        weight_decay=opts.weight_decay
+        )
     # torch.optim.lr_scheduler.StepLR(optimizer, step_size=opts.lr_decay_step, gamma=opts.lr_decay_factor)
     if opts.lr_policy == 'poly':
         scheduler = utils.PolyLR(optimizer, opts.total_itrs, power=0.9)
