@@ -11,3 +11,9 @@ cityscapes
 test_results
 *.pth
 wandb
+data_2d_semantics/
+data_2d_semantics
+mytest
+dataset_remains
+KITTI_data_2d_semantics.zip
+DLL_Project_Workspace.code-workspace
