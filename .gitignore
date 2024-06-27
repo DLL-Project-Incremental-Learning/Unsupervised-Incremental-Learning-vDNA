@@ -9,8 +9,6 @@ results
 checkpoints_bak
 cityscapes
 test_results
-*.pth
-wandb
 data_2d_semantics/
 data_2d_semantics
 mytest
