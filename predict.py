@@ -101,7 +101,7 @@ def main():
         model.to(device)
 
     #denorm = utils.Denormalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # denormalization for ori images
-
+    print("Line 104")
     if opts.crop_val:
         transform = T.Compose([
                 T.Resize(opts.crop_size),
@@ -120,6 +120,7 @@ def main():
     if opts.save_val_results_to is not None:
         os.makedirs(opts.save_val_results_to, exist_ok=True)
     with torch.no_grad():
+        print("Line 123")
         model = model.eval()
         entropy_values = []
         confidence_values = []
@@ -149,8 +150,8 @@ def main():
             entropy_values.append(avg_entropy)      
             confidence_values.append(confidence)     
 
-            # colorized_preds = decode_fn(pred).astype('uint8')
-            # colorized_preds = Image.fromarray(colorized_preds)
+            colorized_preds = decode_fn(pred).astype('uint8')
+            colorized_preds = Image.fromarray(colorized_preds)
             colorized_preds = Image.fromarray(pred.astype('uint8'))
             if opts.save_val_results_to:
                 colorized_preds.save(os.path.join(opts.save_val_results_to, img_name+'.png'))

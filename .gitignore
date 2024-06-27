@@ -15,3 +15,8 @@ mytest
 dataset_remains
 KITTI_data_2d_semantics.zip
 DLL_Project_Workspace.code-workspace
+KITTI-360
+wandb
+datasets/data/
+
+
