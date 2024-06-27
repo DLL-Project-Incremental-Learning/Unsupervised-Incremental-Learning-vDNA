@@ -7,27 +7,139 @@ import argparse
 import numpy as np
 
 from torch.utils import data
-from datasets import VOCSegmentation, Cityscapes
+from datasets import Cityscapes
 from utils import ext_transforms as et
 from metrics import StreamSegMetrics
 
 import torch
 import torch.nn as nn
-from utils.visualizer import Visualizer
+import wandb
 
 from PIL import Image
 import matplotlib
 import matplotlib.pyplot as plt
 
+from torchvision import transforms
+# from torchvision.models.segmentation import deeplabv3_resnet50
+from torch.utils.data import DataLoader, Dataset
+from glob import glob
+from collections import namedtuple
+
+# Define transforms
+transform = transforms.Compose([
+    # transforms.Resize((512, 1024)),
+    transforms.ToTensor()
+])
+
+# Custom dataset for KITTI360 with weak labels
+class KITTI360Dataset(Dataset):
+
+    CityscapesClass = namedtuple('CityscapesClass', ['name', 'id', 'train_id', 'category', 'category_id',
+                                                     'has_instances', 'ignore_in_eval', 'color'])
+    classes = [
+        CityscapesClass('unlabeled',            0, 255, 'void', 0, False, True, (0, 0, 0)),
+        CityscapesClass('ego vehicle',          1, 255, 'void', 0, False, True, (0, 0, 0)),
+        CityscapesClass('rectification border', 2, 255, 'void', 0, False, True, (0, 0, 0)),
+        CityscapesClass('out of roi',           3, 255, 'void', 0, False, True, (0, 0, 0)),
+        CityscapesClass('static',               4, 255, 'void', 0, False, True, (0, 0, 0)),
+        CityscapesClass('dynamic',              5, 255, 'void', 0, False, True, (111, 74, 0)),
+        CityscapesClass('ground',               6, 255, 'void', 0, False, True, (81, 0, 81)),
+        CityscapesClass('road',                 7, 0, 'flat', 1, False, False, (128, 64, 128)),
+        CityscapesClass('sidewalk',             8, 1, 'flat', 1, False, False, (244, 35, 232)),
+        CityscapesClass('parking',              9, 255, 'flat', 1, False, True, (250, 170, 160)),
+        CityscapesClass('rail track',           10, 255, 'flat', 1, False, True, (230, 150, 140)),
+        CityscapesClass('building',             11, 2, 'construction', 2, False, False, (70, 70, 70)),
+        CityscapesClass('wall',                 12, 3, 'construction', 2, False, False, (102, 102, 156)),
+        CityscapesClass('fence',                13, 4, 'construction', 2, False, False, (190, 153, 153)),
+        CityscapesClass('guard rail',           14, 255, 'construction', 2, False, True, (180, 165, 180)),
+        CityscapesClass('bridge',               15, 255, 'construction', 2, False, True, (150, 100, 100)),
+        CityscapesClass('tunnel',               16, 255, 'construction', 2, False, True, (150, 120, 90)),
+        CityscapesClass('pole',                 17, 5, 'object', 3, False, False, (153, 153, 153)),
+        CityscapesClass('polegroup',            18, 255, 'object', 3, False, True, (153, 153, 153)),
+        CityscapesClass('traffic light',        19, 6, 'object', 3, False, False, (250, 170, 30)),
+        CityscapesClass('traffic sign',         20, 7, 'object', 3, False, False, (220, 220, 0)),
+        CityscapesClass('vegetation',           21, 8, 'nature', 4, False, False, (107, 142, 35)),
+        CityscapesClass('terrain',              22, 9, 'nature', 4, False, False, (152, 251, 152)),
+        CityscapesClass('sky',                  23, 10, 'sky', 5, False, False, (70, 130, 180)),
+        CityscapesClass('person',               24, 11, 'human', 6, True, False, (220, 20, 60)),
+        CityscapesClass('rider',                25, 12, 'human', 6, True, False, (255, 0, 0)),
+        CityscapesClass('car',                  26, 13, 'vehicle', 7, True, False, (0, 0, 142)),
+        CityscapesClass('truck',                27, 14, 'vehicle', 7, True, False, (0, 0, 70)),
+        CityscapesClass('bus',                  28, 15, 'vehicle', 7, True, False, (0, 60, 100)),
+        CityscapesClass('caravan',              29, 255, 'vehicle', 7, True, True, (0, 0, 90)),
+        CityscapesClass('trailer',              30, 255, 'vehicle', 7, True, True, (0, 0, 110)),
+        CityscapesClass('train',                31, 16, 'vehicle', 7, True, False, (0, 80, 100)),
+        CityscapesClass('motorcycle',           32, 17, 'vehicle', 7, True, False, (0, 0, 230)),
+        CityscapesClass('bicycle',              33, 18, 'vehicle', 7, True, False, (119, 11, 32)),
+        CityscapesClass('license plate',        -1, 255, 'vehicle', 7, False, True, (0, 0, 142)),
+    ]
+
+    train_id_to_color = [c.color for c in classes if (c.train_id != -1 and c.train_id != 255)]
+    train_id_to_color.append([0, 0, 0])
+    train_id_to_color = np.array(train_id_to_color)
+    id_to_train_id = np.array([c.train_id for c in classes])
+
+
+
+    def __init__(self, image_dir, label_dir, transform=None):
+        # self.image_paths = image_paths
+        self.image_paths = glob(image_dir + '/*.png')
+        self.label_dir = label_dir
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.image_paths)
+
+    @classmethod
+    def encode_target(cls, target):
+        return cls.id_to_train_id[np.array(target)]
+
+    @classmethod
+    def decode_target(cls, target):
+        target[target == 255] = 19
+        #target = target.astype('uint8') + 1
+        return cls.train_id_to_color[target]
+    
+    def __getitem__(self, idx):
+        img_path = self.image_paths[idx]
+        target_path = os.path.join(self.label_dir, os.path.basename(img_path))
+        image = Image.open(img_path).convert("RGB")
+        target = Image.open(target_path)
+        # print(f"img_path: {img_path}")
+        # print(f"label_dir: {os.path.join(self.label_dir, os.path.basename(img_path))}")
+
+        if self.transform:
+            # image = self.transform(image)
+            # target = self.transform(target)
+            # target = torch.squeeze(target, 0)
+            image, target = self.transform(image, target)
+        return image, target
+
 
 def get_argparser():
     parser = argparse.ArgumentParser()
 
-    # Datset Options
-    parser.add_argument("--data_root", type=str, default='./datasets/data',
-                        help="path to Dataset")
+    # Dataset Options
+    # parser.add_argument("--data_root", type=str, default='./datasets/data/cityscapes',
+    #                     help="path to Dataset")
+    parser.add_argument(
+        "--data_train_imgs",
+        type=str,
+        default='../VisualDNA/dataset/KITTI-360/data_2d_raw/2013_05_28_drive_0007_sync/image_00/data_rect',)
+    parser.add_argument(
+        "--data_train_labels", 
+        type=str, 
+        default='../VisualDNA/dataset/KITTI-360/data_2d_semantics/2013_05_28_drive_0007_sync_labelid')
+    parser.add_argument(
+        "--data_val_imgs",
+        type=str,
+        default='../VisualDNA/dataset/KITTI-360/data_2d_raw/2013_05_28_drive_0003_sync/image_00/data_rect',)
+    parser.add_argument(
+        "--data_val_labels", 
+        type=str, 
+        default='../VisualDNA/dataset/KITTI-360/data_2d_semantics/2013_05_28_drive_0003_sync_labelid')
     parser.add_argument("--dataset", type=str, default='cityscapes',
-                        choices=['voc', 'cityscapes'], help='Name of dataset')
+                        choices=['cityscapes'], help='Name of dataset')
     parser.add_argument("--num_classes", type=int, default=None,
                         help="num classes (default: None)")
 
@@ -59,7 +171,8 @@ def get_argparser():
                         help='batch size (default: 16)')
     parser.add_argument("--val_batch_size", type=int, default=4,
                         help='batch size for validation (default: 4)')
-    parser.add_argument("--crop_size", type=int, default=513)
+    # parser.add_argument("--crop_size", type=int, default=513)
+    parser.add_argument("--crop_size", type=int, default=189)
 
     parser.add_argument("--ckpt", default=None, type=str,
                         help="restore from checkpoint")
@@ -80,76 +193,39 @@ def get_argparser():
     parser.add_argument("--download", action='store_true', default=False,
                         help="download datasets")
 
-    # PASCAL VOC Options
-    parser.add_argument("--year", type=str, default='2012',
-                        choices=['2012_aug', '2012', '2011', '2009', '2008', '2007'], help='year of VOC')
-
-    # Visdom options
-    parser.add_argument("--enable_vis", action='store_true', default=False,
-                        help="use visdom for visualization")
-    parser.add_argument("--vis_port", type=str, default='13570',
-                        help='port for visdom')
-    parser.add_argument("--vis_env", type=str, default='main',
-                        help='env for visdom')
-    parser.add_argument("--vis_num_samples", type=int, default=8,
-                        help='number of samples for visualization (default: 8)')
     return parser
 
 
 def get_dataset(opts):
     """ Dataset And Augmentation
     """
-    if opts.dataset == 'voc':
-        train_transform = et.ExtCompose([
-            # et.ExtResize(size=opts.crop_size),
-            et.ExtRandomScale((0.5, 2.0)),
-            et.ExtRandomCrop(size=(opts.crop_size, opts.crop_size), pad_if_needed=True),
-            et.ExtRandomHorizontalFlip(),
-            et.ExtToTensor(),
-            et.ExtNormalize(mean=[0.485, 0.456, 0.406],
-                            std=[0.229, 0.224, 0.225]),
-        ])
-        if opts.crop_val:
-            val_transform = et.ExtCompose([
-                et.ExtResize(opts.crop_size),
-                et.ExtCenterCrop(opts.crop_size),
-                et.ExtToTensor(),
-                et.ExtNormalize(mean=[0.485, 0.456, 0.406],
-                                std=[0.229, 0.224, 0.225]),
-            ])
-        else:
-            val_transform = et.ExtCompose([
-                et.ExtToTensor(),
-                et.ExtNormalize(mean=[0.485, 0.456, 0.406],
-                                std=[0.229, 0.224, 0.225]),
-            ])
-        train_dst = VOCSegmentation(root=opts.data_root, year=opts.year,
-                                    image_set='train', download=opts.download, transform=train_transform)
-        val_dst = VOCSegmentation(root=opts.data_root, year=opts.year,
-                                  image_set='val', download=False, transform=val_transform)
+    train_transform = et.ExtCompose([
+        # et.ExtResize( 512 ),
+        et.ExtRandomCrop(size=(opts.crop_size, opts.crop_size)),
+        et.ExtColorJitter(brightness=0.5, contrast=0.5, saturation=0.5),
+        et.ExtRandomHorizontalFlip(),
+        et.ExtToTensor(),
+        et.ExtNormalize(mean=[0.485, 0.456, 0.406],
+                        std=[0.229, 0.224, 0.225]),
+    ])
 
-    if opts.dataset == 'cityscapes':
-        train_transform = et.ExtCompose([
-            # et.ExtResize( 512 ),
-            et.ExtRandomCrop(size=(opts.crop_size, opts.crop_size)),
-            et.ExtColorJitter(brightness=0.5, contrast=0.5, saturation=0.5),
-            et.ExtRandomHorizontalFlip(),
-            et.ExtToTensor(),
-            et.ExtNormalize(mean=[0.485, 0.456, 0.406],
-                            std=[0.229, 0.224, 0.225]),
-        ])
+    val_transform = et.ExtCompose([
+        # et.ExtResize( 512 ),
+        et.ExtToTensor(),
+        et.ExtNormalize(mean=[0.485, 0.456, 0.406],
+                        std=[0.229, 0.224, 0.225]),
+    ])
 
-        val_transform = et.ExtCompose([
-            # et.ExtResize( 512 ),
-            et.ExtToTensor(),
-            et.ExtNormalize(mean=[0.485, 0.456, 0.406],
-                            std=[0.229, 0.224, 0.225]),
-        ])
-
-        train_dst = Cityscapes(root=opts.data_root,
-                               split='train', transform=train_transform)
-        val_dst = Cityscapes(root=opts.data_root,
-                             split='val', transform=val_transform)
+    train_dst = KITTI360Dataset(
+        image_dir=opts.data_train_imgs, 
+        label_dir=opts.data_train_labels,
+        transform=train_transform
+        )
+    val_dst = KITTI360Dataset(
+        image_dir=opts.data_val_imgs,
+        label_dir=opts.data_val_labels,
+        transform=val_transform
+        )
     return train_dst, val_dst
 
 
@@ -210,16 +286,12 @@ def validate(opts, model, loader, device, metrics, ret_samples_ids=None):
 
 def main():
     opts = get_argparser().parse_args()
-    if opts.dataset.lower() == 'voc':
-        opts.num_classes = 21
-    elif opts.dataset.lower() == 'cityscapes':
+    if opts.dataset.lower() == 'cityscapes':
         opts.num_classes = 19
 
-    # Setup visualization
-    vis = Visualizer(port=opts.vis_port,
-                     env=opts.vis_env) if opts.enable_vis else None
-    if vis is not None:  # display options
-        vis.vis_table("Options", vars(opts))
+    # Setup wandb
+    wandb.init(project="segmentation_project", config=vars(opts))
+    wandb.config.update(opts)
 
     os.environ['CUDA_VISIBLE_DEVICES'] = opts.gpu_id
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -231,15 +303,21 @@ def main():
     random.seed(opts.random_seed)
 
     # Setup dataloader
-    if opts.dataset == 'voc' and not opts.crop_val:
-        opts.val_batch_size = 1
-
     train_dst, val_dst = get_dataset(opts)
     train_loader = data.DataLoader(
-        train_dst, batch_size=opts.batch_size, shuffle=True, num_workers=2,
-        drop_last=True)  # drop_last=True to ignore single-image batches.
+        train_dst,
+        batch_size=opts.batch_size,
+        shuffle=True, 
+        num_workers=2,
+        drop_last=True
+        )
     val_loader = data.DataLoader(
-        val_dst, batch_size=opts.val_batch_size, shuffle=True, num_workers=2)
+        val_dst,
+        batch_size=opts.val_batch_size, 
+        shuffle=True, 
+        num_workers=2
+        )
+
     print("Dataset: %s, Train set: %d, Val set: %d" %
           (opts.dataset, len(train_dst), len(val_dst)))
 
@@ -247,8 +325,8 @@ def main():
     model = network.modeling.__dict__[opts.model](num_classes=opts.num_classes, output_stride=opts.output_stride)
     print("Model: %s, Output Stride: %d" % (opts.model, opts.output_stride))
 
-    if opts.separable_conv and 'plus' in opts.model:
-        network.convert_to_separable_conv(model.classifier)
+    # if opts.separable_conv and 'plus' in opts.model:
+    #     network.convert_to_separable_conv(model.classifier)
     utils.set_bn_momentum(model.backbone, momentum=0.01)
 
     print("setting up metrics")
@@ -265,23 +343,22 @@ def main():
     #     {'params': model.classifier.parameters(), 'lr': opts.lr},
     # ], lr=opts.lr, momentum=0.9, weight_decay=opts.weight_decay)
     optimizer = torch.optim.SGD(
-        params=model.parameters(), 
-        lr=opts.lr, 
-        momentum=0.9, 
+        params=model.classifier.parameters(),
+        lr=opts.lr,
+        momentum=0.9,
         weight_decay=opts.weight_decay
         )
-    # torch.optim.lr_scheduler.StepLR(optimizer, step_size=opts.lr_decay_step, gamma=opts.lr_decay_factor)
+
     if opts.lr_policy == 'poly':
         scheduler = utils.PolyLR(optimizer, opts.total_itrs, power=0.9)
     elif opts.lr_policy == 'step':
         scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=opts.step_size, gamma=0.1)
 
     # Set up criterion
-    # criterion = utils.get_loss(opts.loss_type)
-    if opts.loss_type == 'focal_loss':
-        criterion = utils.FocalLoss(ignore_index=255, size_average=True)
-    elif opts.loss_type == 'cross_entropy':
+    if opts.loss_type == 'cross_entropy':
         criterion = nn.CrossEntropyLoss(ignore_index=255, reduction='mean')
+    elif opts.loss_type == 'focal_loss':
+        criterion = utils.FocalLoss(ignore_index=255, size_average=True)
 
     def save_ckpt(path):
         """ save current model
@@ -296,12 +373,13 @@ def main():
         print("Model saved as %s" % path)
 
     utils.mkdir('checkpoints')
+
     # Restore
     best_score = 0.0
     cur_itrs = 0
     cur_epochs = 0
+
     if opts.ckpt is not None and os.path.isfile(opts.ckpt):
-        # https://github.com/VainF/DeepLabV3Plus-Pytorch/issues/8#issuecomment-605601402, @PytaichukBohdan
         checkpoint = torch.load(opts.ckpt, map_location=torch.device('cpu'))
         print("Model restored from %s" % opts.ckpt)
         if "model_state" not in checkpoint:
@@ -324,9 +402,10 @@ def main():
         model = nn.DataParallel(model)
         model.to(device)
 
+    wandb.watch(model, log="all")
+
     # ==========   Train Loop   ==========#
-    vis_sample_id = np.random.randint(0, len(val_loader), opts.vis_num_samples,
-                                      np.int32) if opts.enable_vis else None  # sample idxs for visualization
+    vis_sample_id =  None  # sample idxs for visualization
     denorm = utils.Denormalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # denormalization for ori images
 
     if opts.test_only:
@@ -334,8 +413,9 @@ def main():
         val_score, ret_samples = validate(
             opts=opts, model=model, loader=val_loader, device=device, metrics=metrics, ret_samples_ids=vis_sample_id)
         print(metrics.to_str(val_score))
+        wandb.log({"Overall Test Acc": val_score['Overall Acc'], "Mean IoU": val_score['Mean IoU']})
         return
-
+    # return
     interval_loss = 0
     while True:  # cur_itrs < opts.total_itrs:
         # =====  Train  =====
@@ -355,14 +435,16 @@ def main():
 
             np_loss = loss.detach().cpu().numpy()
             interval_loss += np_loss
-            if vis is not None:
-                vis.vis_scalar('Loss', cur_itrs, np_loss)
+            # if vis is not None:
+            #     vis.vis_scalar('Loss', cur_itrs, np_loss)
+            wandb.log({"Loss": np_loss})
 
             if (cur_itrs) % 10 == 0:
                 interval_loss = interval_loss / 10
                 print("Epoch %d, Itrs %d/%d, Loss=%f" %
                       (cur_epochs, cur_itrs, opts.total_itrs, interval_loss))
                 interval_loss = 0.0
+                wandb.log({"Epoch": cur_epochs, "Itrs": cur_itrs, "Loss": np_loss})
 
             if (cur_itrs) % opts.val_interval == 0:
                 save_ckpt('checkpoints/latest_%s_%s_os%d.pth' %
@@ -373,22 +455,13 @@ def main():
                     opts=opts, model=model, loader=val_loader, device=device, metrics=metrics,
                     ret_samples_ids=vis_sample_id)
                 print(metrics.to_str(val_score))
+                wandb.log({"Overall Acc": val_score['Overall Acc'], "Mean IoU": val_score['Mean IoU']})
+
                 if val_score['Mean IoU'] > best_score:  # save best model
                     best_score = val_score['Mean IoU']
                     save_ckpt('checkpoints/best_%s_%s_os%d.pth' %
                               (opts.model, opts.dataset, opts.output_stride))
 
-                if vis is not None:  # visualize validation score and samples
-                    vis.vis_scalar("[Val] Overall Acc", cur_itrs, val_score['Overall Acc'])
-                    vis.vis_scalar("[Val] Mean IoU", cur_itrs, val_score['Mean IoU'])
-                    vis.vis_table("[Val] Class IoU", val_score['Class IoU'])
-
-                    for k, (img, target, lbl) in enumerate(ret_samples):
-                        img = (denorm(img) * 255).astype(np.uint8)
-                        target = train_dst.decode_target(target).transpose(2, 0, 1).astype(np.uint8)
-                        lbl = train_dst.decode_target(lbl).transpose(2, 0, 1).astype(np.uint8)
-                        concat_img = np.concatenate((img, target, lbl), axis=2)  # concat along width
-                        vis.vis_image('Sample %d' % k, concat_img)
                 model.train()
             scheduler.step()
 
