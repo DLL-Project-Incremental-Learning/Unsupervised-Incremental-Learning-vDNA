@@ -81,6 +81,8 @@ def main():
     elif os.path.isfile(opts.input):
         image_files.append(opts.input)
     
+    print("\n\nNumber of images: %d" % len(image_files))
+        
     # Set up model (all models are 'constructed at network.modeling)
     model = network.modeling.__dict__[opts.model](num_classes=opts.num_classes, output_stride=opts.output_stride)
     if opts.separable_conv and 'plus' in opts.model:
@@ -124,6 +126,7 @@ def main():
         model = model.eval()
         entropy_values = []
         confidence_values = []
+        
         for img_path in tqdm(image_files):
             ext = os.path.basename(img_path).split('.')[-1]
             img_name = os.path.basename(img_path)[:-len(ext)-1]
