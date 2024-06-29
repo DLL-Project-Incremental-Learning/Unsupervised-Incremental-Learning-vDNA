@@ -20,7 +20,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from glob import glob
 from dataloaders import DataProcessor, KITTI360Dataset, DatasetLoader
-
+from weaklabelgenerator import labelgenerator
 def get_argparser():
     parser = argparse.ArgumentParser()
 
@@ -84,9 +84,15 @@ def main():
         image_files = [d['image'] for d in train_buckets[opts.bucketidx]] 
 
     print("\n\nNumber of images: %d" % len(image_files))
-        
+    
+    
+    
     # Set up model (all models are 'constructed at network.modeling)
     model = network.modeling.__dict__[opts.model](num_classes=opts.num_classes, output_stride=opts.output_stride)
+    
+    # we need to call the weak label generator here
+    # labelgenerator(image_files, opts.model, opts.ckpt, opts.bucketidx)
+    
     if opts.separable_conv and 'plus' in opts.model:
         network.convert_to_separable_conv(model.classifier)
     utils.set_bn_momentum(model.backbone, momentum=0.01)
