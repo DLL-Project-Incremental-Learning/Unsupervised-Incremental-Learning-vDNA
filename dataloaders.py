@@ -20,11 +20,11 @@ from collections import namedtuple
 import wandb
 
 class DataProcessor:
-    def __init__(self, file_path, train_ratio=0.8, num_buckets=6):
+    def __init__(self, file_path, train_ratio=0.8, num_buckets=6, seed=42):
         self.data = self.load_data(file_path)
         self.train_ratio = train_ratio
         self.num_buckets = num_buckets
-        random.seed(42)
+        random.seed(seed)
 
     @staticmethod
     def load_data(file_path):

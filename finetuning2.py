@@ -35,25 +35,6 @@ transform = transforms.Compose([
 def get_argparser():
     parser = argparse.ArgumentParser()
 
-    # Dataset Options
-    # parser.add_argument("--data_root", type=str, default='./datasets/data/cityscapes',
-    #                     help="path to Dataset")
-    # parser.add_argument(
-    #     "--data_train_imgs",
-    #     type=str,
-    #     default='datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0007_sync/image_00/data_rect',)
-    # parser.add_argument(
-    #     "--data_train_labels", 
-    #     type=str, 
-    #     default='test_results/2013_05_28_drive_0007_sync_labelid')
-    # parser.add_argument(
-    #     "--data_val_imgs",
-    #     type=str,
-    #     default='datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0003_sync/image_00/data_rect',)
-    # parser.add_argument(
-    #     "--data_val_labels", 
-    #     type=str, 
-    #     default='test_results/2013_05_28_drive_0003_sync_labelid')
     parser.add_argument("--dataset", type=str, default='cityscapes',
                         choices=['cityscapes'], help='Name of dataset')
     parser.add_argument("--num_classes", type=int, default=None,
@@ -77,7 +58,7 @@ def get_argparser():
     parser.add_argument("--test_only", action='store_true', default=False)
     parser.add_argument("--save_val_results", action='store_true', default=False,
                         help="save segmentation results to \"./results\"")
-    parser.add_argument("--total_itrs", type=int, default=4,
+    parser.add_argument("--total_itrs", type=int, default=26,
                         help="epoch number (default: 30k)")
     parser.add_argument("--lr", type=float, default=0.01,
                         help="learning rate (default: 0.01)")
@@ -193,8 +174,9 @@ def main():
     train_buckets, val_buckets = processor.asc_buckets()
     train_image_paths = [d['image'] for d in train_buckets[opts.bucketidx]]
     val_image_paths = [d['image'] for d in val_buckets[opts.bucketidx]]
-    print("\n\nNumber of Train images: %d" % len(train_image_paths))
-    print("\n\nNumber of Val images: %d" % len(val_image_paths))
+    print("[INFO] Number of Train images: %d" % len(train_image_paths))
+    print("[INFO] Number of Val images: %d" % len(val_image_paths))
+
 
 
     # DatasetLoader usage
@@ -341,7 +323,7 @@ def main():
             #     vis.vis_scalar('Loss', cur_itrs, np_loss)
             wandb.log({"Loss": np_loss})
 
-            if (cur_itrs) % 2 == 0:
+            if (cur_itrs) % 10 == 0:
                 interval_loss = interval_loss / 10
                 print("Epoch %d, Itrs %d/%d, Loss=%f" %
                       (cur_epochs, cur_itrs, opts.total_itrs, interval_loss))
@@ -350,7 +332,7 @@ def main():
 
             if (cur_itrs) % opts.val_interval == 0:
                 save_ckpt('checkpoints/latest_bucket_%s_%s_%s_os%d.pth' %
-                          (opts.bucketidx ,opts.model, opts.dataset, opts.output_stride))
+                          (opts.bucketidx ,opts.model, "Kitti", opts.output_stride))
                 print("validation...")
                 model.eval()
                 val_score, ret_samples = validate(
@@ -362,7 +344,7 @@ def main():
                 if val_score['Mean IoU'] > best_score:  # save best model
                     best_score = val_score['Mean IoU']
                     save_ckpt('checkpoints/best_bucket_%s_%s_%s_os%d.pth' %
-                              (opts.bucketidx, opts.model, opts.dataset, opts.output_stride))
+                              (opts.bucketidx, opts.model, "Kitti", opts.output_stride))
 
                 model.train()
             scheduler.step()
