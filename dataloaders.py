@@ -24,6 +24,7 @@ class DataProcessor:
         self.data = self.load_data(file_path)
         self.train_ratio = train_ratio
         self.num_buckets = num_buckets
+        random.seed(42)
 
     @staticmethod
     def load_data(file_path):
