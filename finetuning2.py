@@ -194,9 +194,12 @@ def main():
 
     # Error handling for invalid bucket_order
     if bucket_method is None:
+        bucket_method = processor.asc_buckets
         raise ValueError(f"Invalid bucket_order: {opts.buckets_order}, used ascendant order instead")
-
+        
+    
     train_buckets, val_buckets = bucket_method()
+    
 
     # Loop through the buckets starting from the specified bucketidx
     for bucket_idx in range(opts.bucketidx ,opts.buckets_num):
@@ -222,8 +225,8 @@ def main():
         # opts = argparse.Namespace(crop_size=512)
         dataset_loader = DatasetLoader(opts)
         
-        train_label_dir = f'weak_labels/bucket_{bucket_idx}'
-        val_label_dir = f'weak_labels/val_bucket_{bucket_idx}'
+        train_label_dir = f'outputs/weaklabels/KITTI-360/{opts.buckets_order}/bucket_{bucket_idx}'
+        val_label_dir = f'outputs/weaklabels/KITTI-360/{opts.buckets_order}/val_bucket_{bucket_idx}'
 
         for dir_path in [train_label_dir, val_label_dir]:
             if not os.path.exists(dir_path):

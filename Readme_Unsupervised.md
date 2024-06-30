@@ -35,3 +35,6 @@ python predict2.py --bucketidx 0 --dataset cityscapes --ckpt checkpoints/best_de
 python finetuning2.py --ckpt checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth --model deeplabv3plus_resnet101 --batch_size 2 --val_batch_size 2 --bucketidx 0
 
 
+6. Pipeline
+
+python pipeline.py 

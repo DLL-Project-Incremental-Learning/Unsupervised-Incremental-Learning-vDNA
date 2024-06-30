@@ -96,6 +96,8 @@ def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="a
         with open(json_path, 'w') as json_file:
             json.dump(results, json_file, indent=4)
         print(f"Saved image and label paths to {json_path}")
+    
+    return dir_name
 
 
 # def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0):
