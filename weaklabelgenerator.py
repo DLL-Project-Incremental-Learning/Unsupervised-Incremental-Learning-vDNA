@@ -37,8 +37,9 @@ def process_image(img_path, model, transform, device, dir_name, results):
     confidence = prob.max(1)[0].mean().item()
     entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1).mean().item()
 
-    colorized_preds = Cityscapes.decode_target(pred).astype('uint8')
-    colorized_preds = Image.fromarray(colorized_preds)
+    # colorized_preds = Cityscapes.decode_target(pred).astype('uint8')
+    # colorized_preds = Image.fromarray(colorized_preds)
+    colorized_preds = Image.fromarray(pred.astype('uint8'))
 
     label_path = os.path.join(dir_name, img_name + '.png')
     colorized_preds.save(label_path)
@@ -51,10 +52,13 @@ def process_image(img_path, model, transform, device, dir_name, results):
         'confidence': confidence
     })
 
-def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0):
+def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="asc"):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print("Device: %s" % device)
-    dir_name = f"output/weaklabels/KITTI-360/bucket_{bucket_idx}/"
+    if not val:
+        dir_name = f"outputs/weaklabels/KITTI-360/{order}/bucket_{bucket_idx}/"
+    else:
+        dir_name = f"outputs/weaklabels/KITTI-360/{order}/val_bucket_{bucket_idx}/"
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
 
@@ -84,7 +88,10 @@ def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0):
         print(f"Overall average confidence for all images: {overall_avg_confidence:.4f}")
         
         # Save results to a JSON file
-        filename = f"image_label_bucket_{bucket_idx}.json"
+        if not val:
+            filename = f"image_label_bucket_{bucket_idx}.json"
+        else:
+            filename = f"image_label_val_bucket_{bucket_idx}.json"
         json_path = os.path.join(dir_name, filename)
         with open(json_path, 'w') as json_file:
             json.dump(results, json_file, indent=4)
