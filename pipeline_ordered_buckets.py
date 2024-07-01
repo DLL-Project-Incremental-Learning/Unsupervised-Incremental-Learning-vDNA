@@ -144,8 +144,6 @@ def main():
     model = network.modeling.__dict__[model_name](num_classes=19, output_stride=16)
 
 
-
-
     for bucket_idx in range(num_buckets):
         print("\n\n[INFO] Bucket %d" % bucket_idx)
 
@@ -164,7 +162,17 @@ def main():
         val_labelgen = labelgenerator(val_samples, model, ckpt, bucket_idx, val=True, order=opts.buckets_order)
 
         print("\n\n[INFO] Starting finetuning for bucket %d" % bucket_idx)
-        finetuner(opts=opts, model=model, checkpoint=ckpt, bucket_idx=bucket_idx, train_image_paths=samples, val_image_paths=val_samples, train_label_dir=train_labelgen, val_label_dir=val_labelgen, model_name=model_name)
+        finetuner(
+            opts=opts, 
+            model=model, 
+            checkpoint=ckpt, 
+            bucket_idx=bucket_idx, 
+            train_image_paths=samples, 
+            val_image_paths=val_samples, 
+            train_label_dir=train_labelgen, 
+            val_label_dir=val_labelgen, 
+            model_name=model_name
+            )
 
         ckpt = 'checkpoints/latest_bucket_%s_%s_%s_os%d.pth' % (bucket_idx, model_name, "kitti", opts.output_stride)
         

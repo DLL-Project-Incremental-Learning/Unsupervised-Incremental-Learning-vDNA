@@ -441,8 +441,8 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, val_image_
                 wandb.log({"Epoch": cur_epochs, "Itrs": cur_itrs, "Loss": np_loss})
 
             if (cur_itrs) % opts.val_interval == 0:
-                save_ckpt('checkpoints/latest_bucket_%s_%s_%s_os%d.pth' %
-                        (bucket_idx ,model_name, "kitti", opts.output_stride))
+                save_ckpt('checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' %
+                        (bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
                 print("validation...")
                 model.eval()
                 val_score, ret_samples = validate(
@@ -453,8 +453,8 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, val_image_
 
                 if val_score['Mean IoU'] > best_score:  # save best model
                     best_score = val_score['Mean IoU']
-                    save_ckpt('checkpoints/best_bucket_%s_%s_%s_os%d.pth' %
-                            (bucket_idx, model_name, "kitti", opts.output_stride))
+                    save_ckpt('checkpoints/best_bucket_%s_%s_%s_%s_os%d.pth' %
+                            (bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
 
                 model.train()
             scheduler.step()
