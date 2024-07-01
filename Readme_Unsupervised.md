@@ -5,6 +5,18 @@
 
 python main2.py --data_root datasets/data/cityscapes --ckpt checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth --model deeplabv3plus_resnet101 --test_only --crop_val --val_batch_size 2
 
+
+### Latest test only file and commands: Updated on 1st July 2024
+
+1. Test only setup for KITTI-360
+
+python -m test_v1  --checkpoint checkpoints\best_deeplabv3plus_resnet101_cityscapes_os16.pth --json_file kitti-360_val_set_v1.json --dataset kitti_360
+
+2. Test only setup for Cityscapes
+
+python -m test_v1  --checkpoint checkpoints\best_deeplabv3plus_resnet101_cityscapes_os16.pth --json_file cityscapes_val_set.json --dataset cityscapes
+
+
 2. Initial Weak labeling
 
 # 003 data
