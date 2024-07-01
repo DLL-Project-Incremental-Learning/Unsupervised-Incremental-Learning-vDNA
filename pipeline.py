@@ -70,7 +70,7 @@ def get_argparser():
     parser.add_argument("--test_only", action='store_true', default=False)
     parser.add_argument("--save_val_results", action='store_true', default=False,
                         help="save segmentation results to \"./results\"")
-    parser.add_argument("--total_itrs", type=int, default=30e3,
+    parser.add_argument("--total_itrs", type=int, default=20,
                         help="epoch number (default: 30k)")
     parser.add_argument("--lr", type=float, default=0.01,
                         help="learning rate (default: 0.01)")
@@ -84,7 +84,7 @@ def get_argparser():
     parser.add_argument("--val_batch_size", type=int, default=4,
                         help='batch size for validation (default: 4)')
     # parser.add_argument("--crop_size", type=int, default=513)
-    parser.add_argument("--crop_size", type=int, default=513)
+    parser.add_argument("--crop_size", type=int, default=189)
 
     parser.add_argument("--ckpt", default=None, type=str,
                         help="restore from checkpoint")
@@ -131,8 +131,8 @@ def main():
         # print("\n\nNumber of images: %d" % len(image_files[1]))
         # print("Image files: %s" % image_files[:4])
 
-        samples = image_files[:20]
-        val_samples = val_image_files[:10]
+        samples = image_files[:200]
+        val_samples = val_image_files[:100]
         # print("\n\nSamples: %s" % samples)
         # print("Validation Samples: %s" % val_samples)
 
@@ -143,7 +143,7 @@ def main():
         print("\n\n[INFO] Starting finetuning for bucket %d" % bucket_idx)
         finetuner(opts=opts, model=model, checkpoint=ckpt, bucket_idx=bucket_idx, train_image_paths=samples, val_image_paths=val_samples, train_label_dir=train_labelgen, val_label_dir=val_labelgen, model_name=model_name)
 
-        ckpt = 'checkpoints/latest_bucket_%s_%s_%s_os%d.pth' % (bucket_idx, model_name, "kitti", opts.output_stride)
+        ckpt = 'checkpoints/latest_bucket_%s_asc_%s_%s_os%d.pth' % (bucket_idx, model_name, "kitti", opts.output_stride)
         
         print("\n\n[INFO] Loading model from checkpoint %s" % ckpt)
         print(f"Iteration {bucket_idx} completed. Moving to next bucket...")
