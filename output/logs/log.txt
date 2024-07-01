@@ -1,0 +1,13 @@
+KITTI-360 validation set run on base pretrained model:
+File to run: python -m test
+
+Results:
+Model: deeplabv3plus_resnet101, Output Stride: 16
+setting up metrics
+Model restored from checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth
+613it [31:42,  3.10s/it]
+
+Overall Acc: 0.871972
+Mean Acc: 0.689526
+FreqW Acc: 0.782012
+Mean IoU: 0.501176
