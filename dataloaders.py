@@ -24,24 +24,20 @@ class DataProcessor:
         self.data = self.load_data(file_path)
         self.train_ratio = train_ratio
         self.num_buckets = num_buckets
+        self.train_data, self.val_data = self.split_data(self.data)
         random.seed(seed)
 
     @staticmethod
     def load_data(file_path):
         with open(file_path) as f:
             return json.load(f)
+    
+    def split_data(self, data):
 
-    def split_data(self, buckets):
-        train_buckets = []
-        val_buckets = []
+        train_data = [d for d in data if not d['val_set']]
+        val_data = [d for d in data if d['val_set']]
 
-        for bucket in buckets:
-            random.shuffle(bucket)
-            split_index = int(self.train_ratio * len(bucket))
-            train_buckets.append(bucket[:split_index])
-            val_buckets.append(bucket[split_index:])
-        
-        return train_buckets, val_buckets
+        return train_data, val_data
 
     def create_buckets(self, data, sort_key=None, reverse=False):
         if sort_key:
@@ -58,14 +54,15 @@ class DataProcessor:
         return buckets
 
     def asc_buckets(self):
-        return self.split_data(self.create_buckets(self.data, sort_key='emd', reverse=False))
+        return self.create_buckets(self.train_data, sort_key='emd', reverse=False)
 
     def desc_buckets(self):
-        return self.split_data(self.create_buckets(self.data, sort_key='emd', reverse=True))
+        return self.create_buckets(self.train_data, sort_key='emd', reverse=True)
 
     def random_buckets(self):
-        random.shuffle(self.data)
-        return self.split_data(self.create_buckets(self.data))
+        random.shuffle(self.train_data)
+        return self.create_buckets(self.train_data)
+
 
 # Custom dataset for KITTI360 with weak labels
 class KITTI360Dataset(Dataset):
@@ -173,7 +170,7 @@ class DatasetLoader:
 
         return train_transform, val_transform
 
-    def get_datasets(self, train_image_paths, train_label_dir, val_image_paths, val_label_dir):
+    def get_datasets(self, train_image_paths, train_label_dir):
         train_transform, val_transform = self.get_transforms()
 
         train_dst = KITTI360Dataset(
@@ -182,13 +179,13 @@ class DatasetLoader:
             transform=train_transform
         )
 
-        val_dst = KITTI360Dataset(
-            image_paths=val_image_paths,
-            label_dir=val_label_dir,
-            transform=val_transform
-        )
+        # val_dst = KITTI360Dataset(
+        #     image_paths=val_image_paths,
+        #     label_dir=val_label_dir,
+        #     transform=val_transform
+        # )
 
-        return train_dst, val_dst
+        return train_dst #, val_dst
 
 
 # Example usage:

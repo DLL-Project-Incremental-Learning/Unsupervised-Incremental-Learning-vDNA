@@ -160,10 +160,7 @@ def validate(opts, model, loader, device, metrics, ret_samples_ids=None):
     return score, ret_samples
 
 
-def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, val_image_paths, train_label_dir, val_label_dir,model_name , bucket_order = "asc"):
-    # opts = get_argparser().parse_args()
-    # if opts.dataset.lower() == 'cityscapes':
-    #     opts.num_classes = 19
+def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_label_dir, model_name , bucket_order = "asc"):
 
     # Setup wandb
     wandb.init(project="segmentation_project", config=vars(opts))
@@ -179,33 +176,33 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, val_image_
     random.seed(opts.random_seed)
     ### Setup dataloader
 
-    # DataProcessor usage
-    processor = DataProcessor('results.json')
+    # # DataProcessor usage
+    # processor = DataProcessor('results.json')
 
-    # Dictionary to map bucket orders to their respective methods
-    bucket_methods = {
-        'asc': processor.asc_buckets,
-        'desc': processor.desc_buckets,
-        'rand': processor.random_buckets
-    }
+    # # Dictionary to map bucket orders to their respective methods
+    # bucket_methods = {
+    #     'asc': processor.asc_buckets,
+    #     'desc': processor.desc_buckets,
+    #     'rand': processor.random_buckets
+    # }
 
-    # Fetch the appropriate method based on the bucket_order
-    bucket_method = bucket_methods.get(opts.buckets_order)
+    # # Fetch the appropriate method based on the bucket_order
+    # bucket_method = bucket_methods.get(opts.buckets_order)
 
-    # Error handling for invalid bucket_order
-    if bucket_method is None:
-        bucket_method = processor.asc_buckets
-        raise ValueError(f"Invalid bucket_order: {opts.buckets_order}, used ascendant order instead")
+    # # Error handling for invalid bucket_order
+    # if bucket_method is None:
+    #     bucket_method = processor.asc_buckets
+    #     raise ValueError(f"Invalid bucket_order: {opts.buckets_order}, used ascendant order instead")
         
     
-    train_buckets, val_buckets = bucket_method()
+    # train_buckets, val_buckets = bucket_method()
     
 
     # Loop through the buckets starting from the specified bucketidx
     # for bucket_idx in range(opts.bucketidx ,opts.buckets_num):
     # train_image_paths = [d['image'] for d in train_buckets[bucket_idx]]
     # val_image_paths = [d['image'] for d in val_buckets[bucket_idx]]
-    print(f"[INFO] Bucket number: {bucket_idx}")
+    # print(f"[INFO] Bucket number: {bucket_idx}")
     # print("[INFO] Number of Train images: %d" % len(train_image_paths))
     # print("[INFO] Number of Val images: %d" % len(val_image_paths))
     # print("Train files: %s" % train_image_paths[:2])
@@ -226,7 +223,7 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, val_image_
     # train_image_paths = train_image_paths[:len(train_image_paths)//10]
     # val_image_paths = val_image_paths[:len(val_image_paths)//10]
     print("[INFO] Number of Train images: %d" % len(train_image_paths))
-    print("[INFO] Number of Val images: %d" % len(val_image_paths))
+    # print("[INFO] Number of Val images: %d" % len(val_image_paths))
 
     # Generate predictions for the training set if not already done
         # DatasetLoader usage
@@ -374,11 +371,9 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, val_image_
     vis_sample_id =  None  # sample idxs for visualization
     denorm = utils.Denormalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # denormalization for ori images
 
-    train_dst, val_dst = dataset_loader.get_datasets(
+    train_dst = dataset_loader.get_datasets(
         train_image_paths,
         train_label_dir, 
-        val_image_paths, 
-        val_label_dir
         )
     
     print("[INFO] Dataset Loaded......")
@@ -389,23 +384,23 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, val_image_
         num_workers=2,
         drop_last=True
         )
-    val_loader = data.DataLoader(
-        val_dst,
-        batch_size=opts.val_batch_size, 
-        shuffle=True, 
-        num_workers=2
-        )
+    # val_loader = data.DataLoader(
+    #     val_dst,
+    #     batch_size=opts.val_batch_size, 
+    #     shuffle=True, 
+    #     num_workers=2
+    #     )
 
-    print("Dataset: %s, Train set: %d, Val set: %d" %
-        (opts.dataset, len(train_dst), len(val_dst)))
+    print("Dataset: %s, Train set: %d" %
+        (opts.dataset, len(train_dst)))
 
-    if opts.test_only:
-        model.eval()
-        val_score, ret_samples = validate(
-            opts=opts, model=model, loader=val_loader, device=device, metrics=metrics, ret_samples_ids=vis_sample_id)
-        print(metrics.to_str(val_score))
-        wandb.log({"Overall Test Acc": val_score['Overall Acc'], "Mean IoU": val_score['Mean IoU']})
-        return
+    # if opts.test_only:
+    #     model.eval()
+    #     val_score, ret_samples = validate(
+    #         opts=opts, model=model, loader=val_loader, device=device, metrics=metrics, ret_samples_ids=vis_sample_id)
+    #     print(metrics.to_str(val_score))
+    #     wandb.log({"Overall Test Acc": val_score['Overall Acc'], "Mean IoU": val_score['Mean IoU']})
+    #     return
     # return
 
     interval_loss = 0
@@ -440,21 +435,21 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, val_image_
                 interval_loss = 0.0
                 wandb.log({"Epoch": cur_epochs, "Itrs": cur_itrs, "Loss": np_loss})
 
-            if (cur_itrs) % opts.val_interval == 0:
-                save_ckpt('checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' %
-                        (bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
-                print("validation...")
-                model.eval()
-                val_score, ret_samples = validate(
-                    opts=opts, model=model, loader=val_loader, device=device, metrics=metrics,
-                    ret_samples_ids=vis_sample_id)
-                print(metrics.to_str(val_score))
-                wandb.log({"Overall Acc": val_score['Overall Acc'], "Mean IoU": val_score['Mean IoU']})
+            # if (cur_itrs) % opts.val_interval == 0:
+            #     save_ckpt('checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' %
+            #             (bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
+            #     print("validation...")
+            #     model.eval()
+            #     val_score, ret_samples = validate(
+            #         opts=opts, model=model, loader=val_loader, device=device, metrics=metrics,
+            #         ret_samples_ids=vis_sample_id)
+            #     print(metrics.to_str(val_score))
+            #     wandb.log({"Overall Acc": val_score['Overall Acc'], "Mean IoU": val_score['Mean IoU']})
 
-                if val_score['Mean IoU'] > best_score:  # save best model
-                    best_score = val_score['Mean IoU']
-                    save_ckpt('checkpoints/best_bucket_%s_%s_%s_%s_os%d.pth' %
-                            (bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
+            #     if val_score['Mean IoU'] > best_score:  # save best model
+            #         best_score = val_score['Mean IoU']
+            #         save_ckpt('checkpoints/best_bucket_%s_%s_%s_%s_os%d.pth' %
+            #                 (bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
 
                 model.train()
             scheduler.step()

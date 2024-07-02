@@ -70,7 +70,7 @@ def get_argparser():
     parser.add_argument("--test_only", action='store_true', default=False)
     parser.add_argument("--save_val_results", action='store_true', default=False,
                         help="save segmentation results to \"./results\"")
-    parser.add_argument("--total_itrs", type=int, default=10e3,
+    parser.add_argument("--total_itrs", type=int, default=10,
                         help="epoch number (default: 30k)")
     parser.add_argument("--lr", type=float, default=0.01,
                         help="learning rate (default: 0.01)")
@@ -114,7 +114,7 @@ def main():
     opts.dataset = 'cityscapes'
 
     num_buckets = 6
-    processor = DataProcessor('results.json', num_buckets=num_buckets, train_ratio=0.8)
+    processor = DataProcessor('results_v1.json', num_buckets=num_buckets, train_ratio=0.8)
     # train_buckets, val_buckets = processor.asc_buckets()
     # if opts.buckets_order == 'asc':
     #     train_buckets, val_buckets = processor.asc_buckets()
@@ -137,7 +137,8 @@ def main():
     if bucket_method is None:
         raise ValueError(f"Invalid bucket_order: {opts.buckets_order}, used ascendant order instead")
 
-    train_buckets, val_buckets = bucket_method()
+    train_buckets = bucket_method()
+    # val_data = processor.val_data
 
     model_name = 'deeplabv3plus_resnet101'
     ckpt = "checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth"
@@ -147,18 +148,18 @@ def main():
         print("\n\n[INFO] Bucket %d" % bucket_idx)
 
         image_files = [d['image'] for d in train_buckets[bucket_idx]]
-        val_image_files = [d['image'] for d in val_buckets[bucket_idx]]
+        # val_image_files = [d['image'] for d in val_buckets[bucket_idx]]
         # print("\n\nNumber of images: %d" % len(image_files[1]))
         # print("Image files: %s" % image_files[:4])
 
-        samples = image_files[:20]
-        val_samples = val_image_files[:10]
+        samples = image_files[:10]
+        # val_samples = val_image_files[:10]
         # print("\n\nSamples: %s" % samples)
         # print("Validation Samples: %s" % val_samples)
 
         print("\n\n[INFO] Generating weak labels for bucket %d" % bucket_idx)
         train_labelgen = labelgenerator(samples, model, ckpt, bucket_idx, val=False, order=opts.buckets_order)
-        val_labelgen = labelgenerator(val_samples, model, ckpt, bucket_idx, val=True, order=opts.buckets_order)
+        # val_labelgen = labelgenerator(val_samples, model, ckpt, bucket_idx, val=True, order=opts.buckets_order)
 
         print("\n\n[INFO] Starting finetuning for bucket %d" % bucket_idx)
         finetuner(
@@ -167,9 +168,9 @@ def main():
             checkpoint=ckpt, 
             bucket_idx=bucket_idx, 
             train_image_paths=samples, 
-            val_image_paths=val_samples, 
+            # val_image_paths=val_samples, 
             train_label_dir=train_labelgen, 
-            val_label_dir=val_labelgen, 
+            # val_label_dir=val_labelgen, 
             model_name=model_name
             )
 
