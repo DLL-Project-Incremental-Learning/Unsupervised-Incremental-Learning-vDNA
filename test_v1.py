@@ -61,31 +61,31 @@ def validate(opts, model, loader, device, metrics, image_paths, label_paths):
             targets = labels.cpu().numpy()
 
             metrics.update(targets, preds)
-            for j in range(len(images)):
-                image = images[j].detach().cpu().numpy()
-                target = targets[j]
-                pred = preds[j]
-                image = (denorm(image) * 255).transpose(1, 2, 0).astype(np.uint8)
-                target = loader.dataset.decode_target(target).astype(np.uint8)
-                pred = loader.dataset.decode_target(pred).astype(np.uint8)
+            #for j in range(len(images)):
+            #    image = images[j].detach().cpu().numpy()
+            #    target = targets[j]
+            #    pred = preds[j]
+            #    image = (denorm(image) * 255).transpose(1, 2, 0).astype(np.uint8)
+            #    target = loader.dataset.decode_target(target).astype(np.uint8)
+            #    pred = loader.dataset.decode_target(pred).astype(np.uint8)
 
-                image_name = os.path.splitext(os.path.basename(image_paths[i * opts.val_batch_size + j]))[0]
-                label_name = os.path.splitext(os.path.basename(label_paths[i * opts.val_batch_size + j]))[0]
+            #    image_name = os.path.splitext(os.path.basename(image_paths[i * opts.val_batch_size + j]))[0]
+            #    label_name = os.path.splitext(os.path.basename(label_paths[i * opts.val_batch_size + j]))[0]
+            
+            #    Image.fromarray(image).save(f'{results_path}/{image_name}.png')
+            #    Image.fromarray(target).save(f'{results_path}/{label_name}_target.png')
+            #    Image.fromarray(pred).save(f'{results_path}/{image_name}_pred.png')
 
-                Image.fromarray(image).save(f'{results_path}/{image_name}.png')
-                Image.fromarray(target).save(f'{results_path}/{label_name}_target.png')
-                Image.fromarray(pred).save(f'{results_path}/{image_name}_pred.png')
 
-
-                fig = plt.figure()
-                plt.imshow(image)
-                plt.axis('off')
-                plt.imshow(pred, alpha=0.7)
-                ax = plt.gca()
-                ax.xaxis.set_major_locator(matplotlib.ticker.NullLocator())
-                ax.yaxis.set_major_locator(matplotlib.ticker.NullLocator())
-                plt.savefig(f'{results_path}/{image_name}_overlay.png', bbox_inches='tight', pad_inches=0)
-                plt.close()
+            #    fig = plt.figure()
+            #    plt.imshow(image)
+            #    plt.axis('off')
+            #    plt.imshow(pred, alpha=0.7)
+            #    ax = plt.gca()
+            #    ax.xaxis.set_major_locator(matplotlib.ticker.NullLocator())
+            #    ax.yaxis.set_major_locator(matplotlib.ticker.NullLocator())
+            #    plt.savefig(f'{results_path}/{image_name}_overlay.png', bbox_inches='tight', pad_inches=0)
+            #    plt.close()
 
         score = metrics.get_results()
     return score
@@ -148,7 +148,7 @@ def main():
     
     print(f"Number of validation images: {len(val_image_paths)}")
     print(f"Number of validation ground truth images: {len(val_ground_truth_paths)}")
-    val_dst = dataset_loader.get_datasets(val_image_paths[:5], val_ground_truth_paths[:5])
+    val_dst = dataset_loader.get_datasets(val_image_paths, val_ground_truth_paths)
 
     val_loader = data.DataLoader(
         val_dst,
