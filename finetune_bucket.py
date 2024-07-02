@@ -455,6 +455,8 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_labe
             scheduler.step()
 
             if cur_itrs >= opts.total_itrs:
+                save_ckpt('checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' %
+                          (bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
                 break
 
 
