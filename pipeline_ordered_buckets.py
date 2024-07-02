@@ -70,7 +70,7 @@ def get_argparser():
     parser.add_argument("--test_only", action='store_true', default=False)
     parser.add_argument("--save_val_results", action='store_true', default=False,
                         help="save segmentation results to \"./results\"")
-    parser.add_argument("--total_itrs", type=int, default=10,
+    parser.add_argument("--total_itrs", type=int, default=10e3,
                         help="epoch number (default: 30k)")
     parser.add_argument("--lr", type=float, default=0.01,
                         help="learning rate (default: 0.01)")
@@ -100,7 +100,7 @@ def get_argparser():
                         help="random seed (default: 1)")
     parser.add_argument("--print_interval", type=int, default=10,
                         help="print interval of loss (default: 10)")
-    parser.add_argument("--val_interval", type=int, default=10,
+    parser.add_argument("--val_interval", type=int, default=250,
                         help="epoch interval for eval (default: 100)")
     parser.add_argument("--download", action='store_true', default=False,
                         help="download datasets")
@@ -143,7 +143,6 @@ def main():
     ckpt = "checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth"
     model = network.modeling.__dict__[model_name](num_classes=19, output_stride=16)
 
-
     for bucket_idx in range(num_buckets):
         print("\n\n[INFO] Bucket %d" % bucket_idx)
 
@@ -174,7 +173,7 @@ def main():
             model_name=model_name
             )
 
-        ckpt = 'checkpoints/latest_bucket_%s_%s_%s_os%d.pth' % (bucket_idx, model_name, "kitti", opts.output_stride)
+        ckpt = 'checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' % (bucket_idx, opts.buckets_order ,model_name, "kitti", opts.output_stride)
         
         print("\n\n[INFO] Loading model from checkpoint %s" % ckpt)
         print(f"Iteration {bucket_idx} completed. Moving to next bucket...")

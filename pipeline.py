@@ -131,8 +131,8 @@ def main():
         # print("\n\nNumber of images: %d" % len(image_files[1]))
         # print("Image files: %s" % image_files[:4])
 
-        samples = image_files[:200]
-        val_samples = val_image_files[:100]
+        samples = image_files[:20]
+        val_samples = val_image_files[:10]
         # print("\n\nSamples: %s" % samples)
         # print("Validation Samples: %s" % val_samples)
 
