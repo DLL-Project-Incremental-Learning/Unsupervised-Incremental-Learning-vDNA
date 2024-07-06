@@ -34,7 +34,7 @@ transform = transforms.Compose([
     transforms.ToTensor()
 ])
 
-from finetune_bucket import finetuner
+from finetune_bucket_ewc import finetuner
 
 
 def get_argparser():
