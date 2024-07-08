@@ -52,6 +52,8 @@ def get_argparser():
                         help="bucket order (asc, desc or rand) (default: asc)")
     parser.add_argument("--buckets_num", type=int, default=6,
                         help="number of buckets (default: 6)")
+    parser.add_argument("--buckets_dist", type=float, default=-1,
+                        help="bucket distribution (default: -1, no distance)")
     parser.add_argument("--overwrite_old_pred", action='store_true', default=False,
                         help="overwrite old predictions")
 
@@ -113,8 +115,16 @@ def main():
     opts = get_argparser().parse_args()
     opts.dataset = 'cityscapes'
 
-    num_buckets = 6
-    processor = DataProcessor('results_v1.json', num_buckets=num_buckets, train_ratio=0.8)
+    num_buckets = opts.buckets_num
+    if opts.buckets_dist > 0:
+        num_buckets = -1
+
+    processor = DataProcessor(
+        'results_v1.json',
+        num_buckets=num_buckets,
+        dist_buckets=opts.buckets_dist,
+        train_ratio=0.8
+        )
     # train_buckets, val_buckets = processor.asc_buckets()
     # if opts.buckets_order == 'asc':
     #     train_buckets, val_buckets = processor.asc_buckets()
@@ -144,8 +154,14 @@ def main():
     ckpt = "checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth"
     model = network.modeling.__dict__[model_name](num_classes=19, output_stride=16)
 
-    for bucket_idx in range(num_buckets):
-        print("\n\n[INFO] Bucket %d" % bucket_idx)
+    # print(f"len(train_buckets): {len(train_buckets)}")
+    # for bucket_idx in range(len(train_buckets)):
+    #     print(f"len(train_buckets[{bucket_idx}]): {len(train_buckets[bucket_idx])}")
+    #     print(f"init emd: {train_buckets[bucket_idx][0]['emd']}")
+    #     print(f"last emd: {train_buckets[bucket_idx][-1]['emd']}")
+    
+    for bucket_idx in range(len(train_buckets)):
+        print("\n\n[INFO] Bucket %d of %d Buckets" % (bucket_idx, len(train_buckets)))
 
         image_files = [d['image'] for d in train_buckets[bucket_idx]]
         # val_image_files = [d['image'] for d in val_buckets[bucket_idx]]

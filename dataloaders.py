@@ -20,11 +20,12 @@ from collections import namedtuple
 import wandb
 
 class DataProcessor:
-    def __init__(self, file_path, train_ratio=0.8, num_buckets=6, seed=42):
+    def __init__(self, file_path, train_ratio=0.8, num_buckets=6, seed=42, dist_buckets=-1):
         self.data = self.load_data(file_path)
         self.train_ratio = train_ratio
         self.num_buckets = num_buckets
         self.train_data, self.val_data = self.split_data(self.data)
+        self.dist_buckets = dist_buckets
         random.seed(seed)
 
     @staticmethod
@@ -43,8 +44,17 @@ class DataProcessor:
         if sort_key:
             data = sorted(data, key=lambda x: x[sort_key], reverse=reverse)
         
-        bucket_size = len(data) // self.num_buckets
-        buckets = [data[i * bucket_size:(i + 1) * bucket_size] for i in range(self.num_buckets)]
+        if self.dist_buckets < 0:
+            bucket_size = len(data) // self.num_buckets
+            buckets = [data[i * bucket_size:(i + 1) * bucket_size] for i in range(self.num_buckets)]
+        else:
+            buckets = []
+            j = 0
+            for i in range(len(data)):
+                if abs(data[i]['emd'] - data[j]['emd']) > self.dist_buckets:
+                    buckets.append(data[j:i+1])
+                    j = i+1
+            buckets.append(data[j:])
 
         # # Handle any remaining data points
         # remainder = len(data) % self.num_buckets
