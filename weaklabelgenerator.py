@@ -42,8 +42,11 @@ def process_image(img_path, model, transform, device, dir_name, results):
     colorized_preds = Image.fromarray(pred.astype('uint8'))
 
     label_path = os.path.join(dir_name, img_name + '.png')
-    colorized_preds.save(label_path)
 
+    # if entropy < 0.3 and confidence > 0.8:
+    #     colorized_preds.save(label_path)
+    # number of classes in the prediction
+    
     # Add the image path and label path to the results list
     results.append({
         'image_path': img_path,
@@ -52,17 +55,27 @@ def process_image(img_path, model, transform, device, dir_name, results):
         'confidence': confidence
     })
 
-def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="asc"):
+    num_classes = len(np.unique(pred))
+    if entropy >= 0.2 and confidence >= 0.82 and num_classes > 5:
+        colorized_preds.save(label_path)
+        return True
+    else:
+        return False
+
+
+def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, dt_now=0, val=True, order="asc"):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print("Device: %s" % device)
+    print("DT now: ", dt_now)
     if not val:
-        dir_name = f"outputs/weaklabels/KITTI-360/{order}/bucket_{bucket_idx}/"
+        dir_name = f"outputs/{dt_now}/weaklabels/KITTI-360/{order}/bucket_{bucket_idx}/"
     else:
         dir_name = f"outputs/weaklabels/KITTI-360/{order}/val_bucket_{bucket_idx}/"
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
 
     results = []  # To store paths for the JSON file
+    image_paths = []
     
     # Load model
     model = load_model(model, ckpt, device)
@@ -76,7 +89,9 @@ def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="a
         model.eval()
         
         for img_path in tqdm(imagefilepaths):
-            process_image(img_path, model, transform, device, dir_name, results)
+            ret = process_image(img_path, model, transform, device, dir_name, results)
+            if ret:
+                image_paths.append(img_path)
 
         # Compute overall averages
         entropy_values = [item['entropy'] for item in results]
@@ -97,4 +112,4 @@ def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="a
             json.dump(results, json_file, indent=4)
         print(f"Saved image and label paths to {json_path}")
     
-    return dir_name
+    return image_paths, dir_name

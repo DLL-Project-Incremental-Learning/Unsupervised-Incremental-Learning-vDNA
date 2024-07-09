@@ -27,6 +27,7 @@ from collections import namedtuple
 from dataloaders import DataProcessor, KITTI360Dataset, DatasetLoader
 from weaklabelgenerator import labelgenerator
 import network
+from datetime import datetime
 
 # Define transforms
 transform = transforms.Compose([
@@ -70,21 +71,21 @@ def get_argparser():
     parser.add_argument("--test_only", action='store_true', default=False)
     parser.add_argument("--save_val_results", action='store_true', default=False,
                         help="save segmentation results to \"./results\"")
-    parser.add_argument("--total_itrs", type=int, default=10,
+    parser.add_argument("--total_itrs", type=int, default=100,
                         help="epoch number (default: 30k)")
     parser.add_argument("--lr", type=float, default=0.01,
                         help="learning rate (default: 0.01)")
     parser.add_argument("--lr_policy", type=str, default='poly', choices=['poly', 'step'],
                         help="learning rate scheduler policy")
-    parser.add_argument("--step_size", type=int, default=10000)
+    parser.add_argument("--step_size", type=int, default=250)
     parser.add_argument("--crop_val", action='store_true', default=False,
                         help='crop validation (default: False)')
-    parser.add_argument("--batch_size", type=int, default=8,
+    parser.add_argument("--batch_size", type=int, default=16,
                         help='batch size (default: 16)')
     parser.add_argument("--val_batch_size", type=int, default=4,
                         help='batch size for validation (default: 4)')
     # parser.add_argument("--crop_size", type=int, default=513)
-    parser.add_argument("--crop_size", type=int, default=189)
+    parser.add_argument("--crop_size", type=int, default=370)
 
     parser.add_argument("--ckpt", default=None, type=str,
                         help="restore from checkpoint")
@@ -113,7 +114,13 @@ def main():
     opts = get_argparser().parse_args()
     opts.dataset = 'cityscapes'
 
-    num_buckets = 6
+    opts.step_size = opts.total_itrs // 2
+    #datetime
+    dt = datetime.now()
+    dt_now = dt.strftime('%m%d%H%M')
+    
+    print("DT Now pipeline: ", dt_now)
+    num_buckets = opts.buckets_num
     processor = DataProcessor('results_v1.json', num_buckets=num_buckets, train_ratio=0.8)
     # train_buckets, val_buckets = processor.asc_buckets()
     # if opts.buckets_order == 'asc':
@@ -144,6 +151,7 @@ def main():
     ckpt = "checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth"
     model = network.modeling.__dict__[model_name](num_classes=19, output_stride=16)
 
+    
     for bucket_idx in range(num_buckets):
         print("\n\n[INFO] Bucket %d" % bucket_idx)
 
@@ -152,14 +160,18 @@ def main():
         # print("\n\nNumber of images: %d" % len(image_files[1]))
         # print("Image files: %s" % image_files[:4])
 
-        samples = image_files[:10]
-        # val_samples = val_image_files[:10]
+        # sample 100 images randomly from the bucket
+        samples = random.sample(image_files, 500)
         # print("\n\nSamples: %s" % samples)
-        # print("Validation Samples: %s" % val_samples)
-
+        # print("\n\nSamples: %s" % samples)
+        ckpt_label = ckpt # "checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth"
         print("\n\n[INFO] Generating weak labels for bucket %d" % bucket_idx)
-        train_labelgen = labelgenerator(samples, model, ckpt, bucket_idx, val=False, order=opts.buckets_order)
-        # val_labelgen = labelgenerator(val_samples, model, ckpt, bucket_idx, val=True, order=opts.buckets_order)
+        train_samples, train_labelgen = labelgenerator(samples, model, ckpt_label, bucket_idx, dt_now=dt_now, val=False, order=opts.buckets_order)
+
+        
+        if len(train_samples)<=opts.batch_size:
+            print("No samples found for bucket %d" % bucket_idx)
+            continue
 
         print("\n\n[INFO] Starting finetuning for bucket %d" % bucket_idx)
         finetuner(
@@ -167,19 +179,18 @@ def main():
             model=model, 
             checkpoint=ckpt, 
             bucket_idx=bucket_idx, 
-            train_image_paths=samples, 
-            # val_image_paths=val_samples, 
+            train_image_paths=train_samples, 
             train_label_dir=train_labelgen, 
-            # val_label_dir=val_labelgen, 
-            model_name=model_name
+            model_name=model_name,
+            dt_now=dt_now
             )
 
-        ckpt = 'checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' % (bucket_idx, opts.buckets_order ,model_name, "kitti", opts.output_stride)
-        
+        ckpt = 'checkpoints/%s/latest_bucket_%s_%s_%s_%s_os%d.pth' % (dt_now, bucket_idx, opts.buckets_order ,model_name, "kitti", opts.output_stride)
+        # ckpt = "checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth"
         print("\n\n[INFO] Loading model from checkpoint %s" % ckpt)
         print(f"Iteration {bucket_idx} completed. Moving to next bucket...")
         print("\n------------------------------------------------------------------------------------------------------------------------\n")
-
-
+        
+    
 if __name__ == "__main__":
     main()

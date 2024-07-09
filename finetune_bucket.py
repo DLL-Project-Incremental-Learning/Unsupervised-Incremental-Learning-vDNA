@@ -159,8 +159,32 @@ def validate(opts, model, loader, device, metrics, ret_samples_ids=None):
         torch.cuda.empty_cache()
     return score, ret_samples
 
+def gradual_unfreezing(model, current_itrs, total_itrs):
+    # Define the unfreezing schedule
+    if isinstance(model, torch.nn.DataParallel):
+        # Access the original model to get the backbone
+        backbone_model = model.module.backbone
+    else:
+        # Directly access the backbone if not wrapped in DataParallel
+        backbone_model = model.backbone
 
-def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_label_dir, model_name , bucket_order = "asc"):
+    unfreeze_schedule = {
+        'layer4': int(total_itrs * 0.2),  # Unfreeze at 20% of total iterations
+        'layer3': int(total_itrs * 0.4),  # Unfreeze at 40% of total iterations
+        'layer2': int(total_itrs * 0.6),  # Unfreeze at 60% of total iterations
+        'layer1': int(total_itrs * 0.8)   # Unfreeze at 80% of total iterations
+    }
+
+    # Unfreeze layers based on the current iteration
+    for layer_name, unfreeze_at in unfreeze_schedule.items():
+        if current_itrs >= unfreeze_at:
+            layer = getattr(backbone_model, layer_name)
+            for param in layer.parameters():
+                param.requires_grad = True
+            print(f"[INFO] Unfreezing {layer_name} at iteration {current_itrs}")
+
+
+def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_label_dir, model_name , dt_now, bucket_order = "asc"):
 
     # Setup wandb
     wandb.init(project="segmentation_project", config=vars(opts))
@@ -175,95 +199,14 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_labe
     np.random.seed(opts.random_seed)
     random.seed(opts.random_seed)
     ### Setup dataloader
-
-    # # DataProcessor usage
-    # processor = DataProcessor('results.json')
-
-    # # Dictionary to map bucket orders to their respective methods
-    # bucket_methods = {
-    #     'asc': processor.asc_buckets,
-    #     'desc': processor.desc_buckets,
-    #     'rand': processor.random_buckets
-    # }
-
-    # # Fetch the appropriate method based on the bucket_order
-    # bucket_method = bucket_methods.get(opts.buckets_order)
-
-    # # Error handling for invalid bucket_order
-    # if bucket_method is None:
-    #     bucket_method = processor.asc_buckets
-    #     raise ValueError(f"Invalid bucket_order: {opts.buckets_order}, used ascendant order instead")
-        
-    
-    # train_buckets, val_buckets = bucket_method()
-    
-
-    # Loop through the buckets starting from the specified bucketidx
-    # for bucket_idx in range(opts.bucketidx ,opts.buckets_num):
-    # train_image_paths = [d['image'] for d in train_buckets[bucket_idx]]
-    # val_image_paths = [d['image'] for d in val_buckets[bucket_idx]]
-    # print(f"[INFO] Bucket number: {bucket_idx}")
-    # print("[INFO] Number of Train images: %d" % len(train_image_paths))
-    # print("[INFO] Number of Val images: %d" % len(val_image_paths))
-    # print("Train files: %s" % train_image_paths[:2])
-    # print("Val files: %s" % val_image_paths[:2])
-
-    # train_image_paths = [d['image'] for d in train_buckets[opts.bucketidx]]
-    # val_image_paths = [d['image'] for d in val_buckets[opts.bucketidx]]
-
-    # train_json_file = f'outputs/weaklables/KITTI-360/{bucket_order}/bucket_{bucket_idx}/image_label_bucket_{bucket_idx}.json'
-    # train_json_file = f'outputs/weaklables/KITTI-360/{bucket_order}/val_bucket_{bucket_idx}/image_label_bucket_{bucket_idx}.json'
-
-
-
-    # train_image_paths = [d['image'] for d in train_buckets[bucket_idx]]
-    # val_image_paths = [d['image'] for d in val_buckets[bucket_idx]]
-
-
-    # train_image_paths = train_image_paths[:len(train_image_paths)//10]
-    # val_image_paths = val_image_paths[:len(val_image_paths)//10]
     print("[INFO] Number of Train images: %d" % len(train_image_paths))
-    # print("[INFO] Number of Val images: %d" % len(val_image_paths))
-
-    # Generate predictions for the training set if not already done
-        # DatasetLoader usage
-    # opts = argparse.Namespace(crop_size=512)
+    
     dataset_loader = DatasetLoader(opts)
     
-    # train_label_dir = f'outputs/weaklabels/KITTI-360/{opts.buckets_order}/bucket_{bucket_idx}'
-    # val_label_dir = f'outputs/weaklabels/KITTI-360/{opts.buckets_order}/val_bucket_{bucket_idx}'
-
-    # for dir_path in [train_label_dir, val_label_dir]:
-    #     if not os.path.exists(dir_path):
-    #         os.makedirs(dir_path, exist_ok=True)
-    
-    # train_label_paths = []
-    # val_label_paths = []
-    # if not opts.overwrite_old_pred:
-
-    #     def check_images_exist(image_paths, weak_label_dir):
-    #         missing_imges = []
-    #         for img_path in image_paths:
-    #             img_name = img_path.split('/')[-1]
-    #             lbl_path = f'{weak_label_dir}/{img_name}'
-    #             if not os.path.exists(lbl_path):
-    #                 missing_imges.append(img_path)
-    #         return missing_imges
-        
-    #     train_label_paths = check_images_exist(train_image_paths, train_label_dir)
-    #     val_label_paths = check_images_exist(val_image_paths, val_label_dir)
-    # else:
-    #     train_label_paths = train_image_paths
-    #     val_label_paths = val_image_paths
-
-
-    # Set up model (all models are 'constructed at network.modeling)
-    # model = network.modeling.__dict__[opts.model](num_classes=opts.num_classes, output_stride=opts.output_stride)
-    # print("Model: %s, Output Stride: %d" % (opts.model, opts.output_stride))
-
-    # if opts.separable_conv and 'plus' in opts.model:
-    #     network.convert_to_separable_conv(model.classifier)
     utils.set_bn_momentum(model.backbone, momentum=0.01)
+
+    
+
 
     print("setting up metrics")
     # Set up metrics
@@ -272,12 +215,44 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_labe
     # Freeze the backbone parameters:
     for param in model.backbone.parameters():
         param.requires_grad = False
+    
+    for name, param in model.named_parameters():
+        if param.requires_grad:
+            print(f'Un-Frozen parameter: {name}')
+    
+    # unfreeze classifier and layer 4 parameters
+    # for param in model.classifier.parameters():
+    #     param.requires_grad = True
+
+    # for param in model.backbone.layer4.parameters():
+    #     param.requires_grad = True
+    
+    # for param in model.parameters():
+    #     param.requires_grad = False
+
+    # # unfreeze bias in  only classifier and not backbone
+    # for name, param in model.named_parameters():
+    #     if 'classifier' in name and 'bias' in name:    
+    #         param.requires_grad = True
+    #         print(f'Unfrozen parameter: {name}')
+
+    # # Unfreeze batch normalization layers and biases
+    # for name, param in model.named_parameters():
+    #     if 'bn' in name or 'bias' in name:
+    #         param.requires_grad = True
+
+    # # Verify the unfrozen parameters
+    # for name, param in model.named_parameters():
+    #     if param.requires_grad:
+    #         print(f'Unfrozen parameter: {name}')
+
 
     # Set up optimizer
     # optimizer = torch.optim.SGD(params=[
     #     {'params': model.backbone.parameters(), 'lr': 0.1 * opts.lr},
     #     {'params': model.classifier.parameters(), 'lr': opts.lr},
     # ], lr=opts.lr, momentum=0.9, weight_decay=opts.weight_decay)
+
     optimizer = torch.optim.SGD(
         params=model.classifier.parameters(),
         lr=opts.lr,
@@ -308,7 +283,7 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_labe
         }, path)
         print("Model saved as %s" % path)
 
-    utils.mkdir('checkpoints')
+    utils.mkdir(f'checkpoints/{dt_now}')
 
     # Restore
     best_score = 0.0
@@ -406,6 +381,10 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_labe
     interval_loss = 0
     # while True:  # cur_itrs < opts.total_itrs:
     while cur_itrs < opts.total_itrs:
+
+        # Gradual unfreezing
+        # gradual_unfreezing(model, cur_itrs, opts.total_itrs)
+
         # =====  Train  =====
         model.train()
         print("Epoch %d, Itrs %d/%d" % (cur_epochs, cur_itrs, opts.total_itrs))
@@ -455,8 +434,8 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_labe
             scheduler.step()
 
             if cur_itrs >= opts.total_itrs:
-                save_ckpt('checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' %
-                          (bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
+                save_ckpt('checkpoints/%s/latest_bucket_%s_%s_%s_%s_os%d.pth' %
+                          (dt_now,bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
                 break
 
 
