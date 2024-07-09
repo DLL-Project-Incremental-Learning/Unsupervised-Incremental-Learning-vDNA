@@ -5,6 +5,7 @@ import os
 import random
 import argparse
 import numpy as np
+import json
 
 from torch.utils import data
 from datasets import Cityscapes
@@ -70,7 +71,7 @@ def get_argparser():
     parser.add_argument("--test_only", action='store_true', default=False)
     parser.add_argument("--save_val_results", action='store_true', default=False,
                         help="save segmentation results to \"./results\"")
-    parser.add_argument("--total_itrs", type=int, default=10,
+    parser.add_argument("--total_itrs", type=int, default=30,
                         help="epoch number (default: 30k)")
     parser.add_argument("--lr", type=float, default=0.01,
                         help="learning rate (default: 0.01)")
@@ -79,12 +80,12 @@ def get_argparser():
     parser.add_argument("--step_size", type=int, default=10000)
     parser.add_argument("--crop_val", action='store_true', default=False,
                         help='crop validation (default: False)')
-    parser.add_argument("--batch_size", type=int, default=8,
+    parser.add_argument("--batch_size", type=int, default=16,
                         help='batch size (default: 16)')
     parser.add_argument("--val_batch_size", type=int, default=4,
                         help='batch size for validation (default: 4)')
     # parser.add_argument("--crop_size", type=int, default=513)
-    parser.add_argument("--crop_size", type=int, default=189)
+    parser.add_argument("--crop_size", type=int, default=370)
 
     parser.add_argument("--ckpt", default=None, type=str,
                         help="restore from checkpoint")
@@ -107,6 +108,21 @@ def get_argparser():
 
     return parser
 
+def get_n_image_paths(json_file, n):
+    # Read the JSON file
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+    
+    # Extract all image paths
+    image_paths = [item['image'] for item in data]
+    
+    # If N is greater than the number of available paths, return all paths
+    if n >= len(image_paths):
+        return image_paths
+    
+    # Otherwise, return N random paths
+    return random.sample(image_paths, n)
+
 
 def main():
         
@@ -114,17 +130,7 @@ def main():
     opts.dataset = 'cityscapes'
 
     num_buckets = 6
-    processor = DataProcessor('results_v1.json', num_buckets=num_buckets, train_ratio=0.8)
-    # train_buckets, val_buckets = processor.asc_buckets()
-    # if opts.buckets_order == 'asc':
-    #     train_buckets, val_buckets = processor.asc_buckets()
-    # elif opts.buckets_order == 'desc':
-    #     train_buckets, val_buckets = processor.desc_buckets()
-    # elif opts.buckets_order == 'rand':
-    #     train_buckets, val_buckets = processor.rand_buckets()
-    # else:
-    #     raise ValueError("Invalid bucket order")
-
+    processor = DataProcessor('results_emd_val.json', num_buckets=num_buckets, train_ratio=0.8)
     # Dictionary to map bucket orders to their respective methods
     bucket_methods = {
         'asc': processor.asc_buckets,
@@ -142,6 +148,7 @@ def main():
 
     model_name = 'deeplabv3plus_resnet101'
     ckpt = "checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth"
+    teacher_model = network.modeling.__dict__[model_name](num_classes=19, output_stride=16)
     model = network.modeling.__dict__[model_name](num_classes=19, output_stride=16)
 
     for bucket_idx in range(num_buckets):
@@ -152,26 +159,40 @@ def main():
         # print("\n\nNumber of images: %d" % len(image_files[1]))
         # print("Image files: %s" % image_files[:4])
 
-        samples = image_files[:10]
+        json_file = 'cityscapes_dataset.json'
+        n = 40  # Number of image paths you want
+        #image_paths = get_n_image_paths(json_file, n)
+
+
+
+        samples = image_files[:100]
         # val_samples = val_image_files[:10]
         # print("\n\nSamples: %s" % samples)
         # print("Validation Samples: %s" % val_samples)
 
+        #combined_samples = samples + image_paths
+
+
+        
+
         print("\n\n[INFO] Generating weak labels for bucket %d" % bucket_idx)
-        train_labelgen = labelgenerator(samples, model, ckpt, bucket_idx, val=False, order=opts.buckets_order)
+        filtered_samples, train_labelgen = labelgenerator(samples, model, ckpt, bucket_idx, val=False, order=opts.buckets_order)
         # val_labelgen = labelgenerator(val_samples, model, ckpt, bucket_idx, val=True, order=opts.buckets_order)
 
         print("\n\n[INFO] Starting finetuning for bucket %d" % bucket_idx)
-        finetuner(
-            opts=opts, 
-            model=model, 
-            checkpoint=ckpt, 
-            bucket_idx=bucket_idx, 
-            train_image_paths=samples, 
-            # val_image_paths=val_samples, 
-            train_label_dir=train_labelgen, 
-            # val_label_dir=val_labelgen, 
-            model_name=model_name
+        
+        if bucket_idx >= 0:
+            finetuner(
+                opts=opts,
+                model=model,
+                teacher_model=teacher_model,
+                checkpoint=ckpt,
+                bucket_idx=bucket_idx,
+                train_image_paths=filtered_samples,
+                # val_image_paths=val_samples,
+                train_label_dir=train_labelgen,
+                # val_label_dir=val_labelgen,
+                model_name=model_name
             )
 
         ckpt = 'checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' % (bucket_idx, opts.buckets_order ,model_name, "kitti", opts.output_stride)
