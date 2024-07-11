@@ -46,16 +46,17 @@ def process_image(img_path, model, transform, device, dir_name, results):
     # colorized_preds.save(label_path)
 
     # Add the image path and label path to the results list
-    if entropy > 0.20 and confidence > 0.8:
-        results.append({
-            'image_path': img_path,
-            'label_path': label_path,
-            'entropy': entropy,
-            'confidence': confidence})
-        colorized_preds.save(label_path)
-        return True
-    else:
-        return False
+    # if entropy > 0.20 and confidence > 0.8:
+    results.append({
+        'image_path': img_path,
+        'label_path': label_path,
+        'entropy': entropy,
+        'confidence': confidence})
+    colorized_preds.save(label_path)
+    
+    return True
+    # else:
+    #     return False
 
 base_source_dir = "datasets/data/KITTI-360/data_2d_semantics/train/"
 
