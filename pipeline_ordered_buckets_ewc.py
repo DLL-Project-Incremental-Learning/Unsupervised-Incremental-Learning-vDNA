@@ -35,7 +35,7 @@ transform = transforms.Compose([
 ])
 
 from finetune_bucket_ewc import finetuner
-
+import json
 
 def get_argparser():
     parser = argparse.ArgumentParser()
@@ -113,7 +113,7 @@ def main():
     opts = get_argparser().parse_args()
     opts.dataset = 'cityscapes'
 
-    num_buckets = 6
+    num_buckets = opts.buckets_num
     processor = DataProcessor('results_v1.json', num_buckets=num_buckets, train_ratio=0.8)
     # train_buckets, val_buckets = processor.asc_buckets()
     # if opts.buckets_order == 'asc':
@@ -153,7 +153,8 @@ def main():
         # print("Image files: %s" % image_files[:4])
         # print(image_files[:10])
         # quit()
-        samples = image_files[:10]
+        samples = image_files[:50]
+        # samples =[d["image"] for d in train_buckets[0][bucket_idx*40:(bucket_idx+1)*40]]
         # val_samples = val_image_files[:10]
         # print("\n\nSamples: %s" % samples)
         # print("Validation Samples: %s" % val_samples)
@@ -161,19 +162,26 @@ def main():
         print("\n\n[INFO] Generating weak labels for bucket %d" % bucket_idx)
         train_labelgen = labelgenerator(samples, model, ckpt, bucket_idx, val=False, order=opts.buckets_order)
         # val_labelgen = labelgenerator(val_samples, model, ckpt, bucket_idx, val=True, order=opts.buckets_order)
+        
+        json_file = f"./outputs/weaklabels/KITTI-360/{opts.buckets_order}/bucket_{bucket_idx}/image_label_bucket_{bucket_idx}.json"
+        with open(json_file, 'r') as f:
+            image_paths = json.load(f)
 
-        print("\n\n[INFO] Starting finetuning for bucket %d" % bucket_idx)
+        # Use the image paths to load the images
+        samples = [path["image_path"] for path in image_paths]
+
+        # Perform any necessary preprocessing on the images
+
+        # Pass the preprocessed images to the finetuner function
         finetuner(
             opts=opts, 
             model=model, 
             checkpoint=ckpt, 
             bucket_idx=bucket_idx, 
             train_image_paths=samples, 
-            # val_image_paths=val_samples, 
             train_label_dir=train_labelgen, 
-            # val_label_dir=val_labelgen, 
             model_name=model_name
-            )
+        )
 
         ckpt = 'checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' % (bucket_idx, opts.buckets_order ,model_name, "kitti", opts.output_stride)
         
@@ -181,6 +189,8 @@ def main():
         print(f"Iteration {bucket_idx} completed. Moving to next bucket...")
         print("\n------------------------------------------------------------------------------------------------------------------------\n")
 
+        if bucket_idx > 2:
+            return
 
 if __name__ == "__main__":
     main()

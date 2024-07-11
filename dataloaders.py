@@ -104,6 +104,18 @@ class KITTI360Dataset(Dataset):
         CityscapesClass('train',                31, 16, 'vehicle', 7, True, False, (0, 80, 100)),
         CityscapesClass('motorcycle',           32, 17, 'vehicle', 7, True, False, (0, 0, 230)),
         CityscapesClass('bicycle',              33, 18, 'vehicle', 7, True, False, (119, 11, 32)),
+        
+        CityscapesClass('garage',               34, 2, 'construction', 2, True, True, (64, 128, 128)),
+        CityscapesClass('gate',                 35, 4, 'construction', 2, False, True, (190, 153, 153)),
+        CityscapesClass('stop',                 36, 255, 'construction', 2, True, True, (150, 120, 90)),
+        CityscapesClass('smallpole',            37, 5, 'object', 3, True, True, (153,153,153)),
+        CityscapesClass('lamp',                 38, 255, 'object', 3, True, True, (0, 64, 64)),
+        CityscapesClass('trash bin',            39, 255, 'object', 3, True, True, (0, 128, 192)),
+        CityscapesClass('vending machine',      40, 255, 'object', 3, True, True, (128, 64,  0)),
+        CityscapesClass('box',                  41, 255, 'object', 3, True, True, (64, 64, 128)),
+        CityscapesClass('unknown construction', 42, 255, 'void', 0, False, True, (102, 0, 0)),
+        CityscapesClass('unknown vehicle',      43, 255, 'void', 0, False, True, (51, 0, 51)),
+        CityscapesClass('unknown object',       44, 255, 'void', 0, False, True, (32, 32, 32)),
         CityscapesClass('license plate',        -1, 255, 'vehicle', 7, False, True, (0, 0, 142)),
     ]
 

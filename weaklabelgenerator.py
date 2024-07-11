@@ -19,7 +19,7 @@ def load_model(model, ckpt, device):
         raise FileNotFoundError(f"Checkpoint file {ckpt} not found.")
     return model
 
-def process_image(img_path, model, transform, device, dir_name, results):
+def process_image(img_path, model, transform, device, dir_name, results, confidence_threshold=0.7, ignore_class=255):
     ext = os.path.basename(img_path).split('.')[-1]
     img_name = os.path.basename(img_path)[:-len(ext)-1]
     try:
@@ -30,27 +30,36 @@ def process_image(img_path, model, transform, device, dir_name, results):
 
     img = transform(img).unsqueeze(0).to(device)  # To tensor of NCHW
     output = model(img)  # Forward pass
-    pred = output.max(1)[1].cpu().numpy()[0]  # HW
+    # pred = output.max(1)[1].cpu().numpy()[0]  # HW
 
-    # Calculate confidence and average entropy for this image
+    # # Calculate confidence and average entropy for this image
+    # prob = torch.softmax(output, dim=1)
+    # confidence = prob.max(1)[0].mean().item()
+
     prob = torch.softmax(output, dim=1)
-    confidence = prob.max(1)[0].mean().item()
+    pred = prob.max(1)[1].cpu().numpy()[0]  # HW
+    pixel_confidence = prob.max(1)[0].cpu().numpy()[0]  # HW
+
+    # Mask pixels with confidence below threshold and set them to ignore_class
+    pred[pixel_confidence < confidence_threshold] = ignore_class
+
+    # Calculate average confidence and entropy for this image
+    confidence = pixel_confidence.mean().item()
     entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1).mean().item()
 
-    # colorized_preds = Cityscapes.decode_target(pred).astype('uint8')
-    # colorized_preds = Image.fromarray(colorized_preds)
-    colorized_preds = Image.fromarray(pred.astype('uint8'))
+    if confidence > 0.75 and entropy > 0.15:
+        gray_preds = Image.fromarray(pred.astype('uint8'))
 
-    label_path = os.path.join(dir_name, img_name + '.png')
-    colorized_preds.save(label_path)
+        label_path = os.path.join(dir_name, img_name + '.png')
+        gray_preds.save(label_path)
 
-    # Add the image path and label path to the results list
-    results.append({
-        'image_path': img_path,
-        'label_path': label_path,
-        'entropy': entropy,
-        'confidence': confidence
-    })
+        # Add the image path and label path to the results list
+        results.append({
+            'image_path': img_path,
+            'label_path': label_path,
+            'entropy': entropy,
+            'confidence': confidence
+        })
 
 def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="asc"):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

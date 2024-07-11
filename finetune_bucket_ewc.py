@@ -125,34 +125,34 @@ def validate(opts, model, loader, device, metrics, ret_samples_ids=None):
             targets = labels.cpu().numpy()
 
             metrics.update(targets, preds)
-            if ret_samples_ids is not None and i in ret_samples_ids:  # get vis samples
-                ret_samples.append(
-                    (images[0].detach().cpu().numpy(), targets[0], preds[0]))
+            # if ret_samples_ids is not None and i in ret_samples_ids:  # get vis samples
+            #     ret_samples.append(
+            #         (images[0].detach().cpu().numpy(), targets[0], preds[0]))
 
-            if opts.save_val_results:
-                for i in range(len(images)):
-                    image = images[i].detach().cpu().numpy()
-                    target = targets[i]
-                    pred = preds[i]
+            # if opts.save_val_results:
+            #     for i in range(len(images)):
+            #         image = images[i].detach().cpu().numpy()
+            #         target = targets[i]
+            #         pred = preds[i]
 
-                    image = (denorm(image) * 255).transpose(1, 2, 0).astype(np.uint8)
-                    target = loader.dataset.decode_target(target).astype(np.uint8)
-                    pred = loader.dataset.decode_target(pred).astype(np.uint8)
+            #         image = (denorm(image) * 255).transpose(1, 2, 0).astype(np.uint8)
+            #         target = loader.dataset.decode_target(target).astype(np.uint8)
+            #         pred = loader.dataset.decode_target(pred).astype(np.uint8)
 
-                    Image.fromarray(image).save('results/%d_image.png' % img_id)
-                    Image.fromarray(target).save('results/%d_target.png' % img_id)
-                    Image.fromarray(pred).save('results/%d_pred.png' % img_id)
+            #         Image.fromarray(image).save('results/%d_image.png' % img_id)
+            #         Image.fromarray(target).save('results/%d_target.png' % img_id)
+            #         Image.fromarray(pred).save('results/%d_pred.png' % img_id)
 
-                    fig = plt.figure()
-                    plt.imshow(image)
-                    plt.axis('off')
-                    plt.imshow(pred, alpha=0.7)
-                    ax = plt.gca()
-                    ax.xaxis.set_major_locator(matplotlib.ticker.NullLocator())
-                    ax.yaxis.set_major_locator(matplotlib.ticker.NullLocator())
-                    plt.savefig('results/%d_overlay.png' % img_id, bbox_inches='tight', pad_inches=0)
-                    plt.close()
-                    img_id += 1
+            #         fig = plt.figure()
+            #         plt.imshow(image)
+            #         plt.axis('off')
+            #         plt.imshow(pred, alpha=0.7)
+            #         ax = plt.gca()
+            #         ax.xaxis.set_major_locator(matplotlib.ticker.NullLocator())
+            #         ax.yaxis.set_major_locator(matplotlib.ticker.NullLocator())
+            #         plt.savefig('results/%d_overlay.png' % img_id, bbox_inches='tight', pad_inches=0)
+            #         plt.close()
+            #         img_id += 1
 
         score = metrics.get_results()
         # Clean up GPU memory
@@ -277,27 +277,45 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_labe
     for param in model.parameters():
         param.requires_grad = False
 
-    # Unfreeze batch normalization layers and biases
-    for name, param in model.named_parameters():
-        if 'bn' in name or 'bias' in name:
-            param.requires_grad = True
+    # Unfreeze segmentation head, layers 4, and batch normalization layers and biases
+    # for name, param in model.named_parameters():
+    #     param.requires_grad = False
+    #     if 'classifier' in name and 'bias' in name:
+    #         param.requires_grad = True
+        # if 'classifier' in name or 'layer4' in name or 'bn' in name or 'bias' in name:
+        # if 'classifier' in name or 'bn' in name or 'bias' in name:
+        # if 'bn' in name or 'bias' in name:
+        # if "classifier" in name or 'layer4' in name:
+        #     param.requires_grad = True
 
-    # Verify the unfrozen parameters
+    # Unfreeze the segmentation head
+    for param in model.classifier.parameters():
+        param.requires_grad = True
+
+    # # Verify the unfrozen parameters
     # for name, param in model.named_parameters():
     #     if param.requires_grad:
     #         print(f'Unfrozen parameter: {name}')
-
+    # quit()
 
     # Set up optimizer
     optimizer = torch.optim.SGD(
-        params=[
-                {'params': model.backbone.parameters(), 'lr': 0.1 * opts.lr},
-                {'params': model.classifier.parameters(), 'lr': opts.lr},
-            ],
-            lr=opts.lr,
-            momentum=0.9, 
-            weight_decay=opts.weight_decay
-            )
+    params=[
+            {'params': model.backbone.parameters(), 'lr': 0.1 * opts.lr},
+            {'params': model.classifier.parameters(), 'lr': opts.lr},
+        ],
+        lr=opts.lr,
+        momentum=0.9, 
+        weight_decay=opts.weight_decay
+        )
+    # optimizer = torch.optim.Adam(
+    #     params=[
+    #             {'params': model.backbone.parameters(), 'lr': 0.1 * opts.lr},
+    #             {'params': model.classifier.parameters(), 'lr': opts.lr},
+    #         ],
+    #         lr=opts.lr,
+    #         weight_decay=opts.weight_decay
+    #         )
     # optimizer = torch.optim.SGD(
     #     params=model.classifier.parameters(),
     #     lr=opts.lr,
@@ -368,7 +386,7 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_labe
         fisher_information = {name: torch.zeros_like(param) for name, param in model.named_parameters()}
         model.eval()
         for images, labels in dataloader:
-            images = images.to(device)
+            images = images.to(device, dtype=torch.float32)
             labels = labels.to(device, dtype=torch.long)
             optimizer.zero_grad()
             outputs = model(images)
@@ -445,10 +463,11 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_labe
     #     return
     # return
 
-    fisher_information = compute_fisher_information(model, train_loader, criterion)
-    old_parameters = {name: param.clone() for name, param in model.named_parameters()}
+    # fisher_information = compute_fisher_information(model, train_loader, criterion)
+    # old_parameters = {name: param.clone() for name, param in model.named_parameters()}
 
     interval_loss = 0
+    threshold = 0.8
     # while True:  # cur_itrs < opts.total_itrs:
     while cur_itrs < opts.total_itrs:
         # =====  Train  =====
@@ -463,18 +482,43 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_labe
 
             optimizer.zero_grad()
             outputs = model(images)
-            loss = criterion(outputs, labels)
+
+            # Filter less confident classes
+            # prob = torch.softmax(outputs, dim=1)
+            # confidence, predictions = prob.max(1)
+
+            # Flatten the confidence and weak_labels for masking
+            # flat_confidence = confidence.view(-1)
+            # flat_weak_labels = labels.view(-1)
+            
+            # Create the mask
+            # mask = flat_confidence > threshold
+            
+            # Filter outputs and labels with the mask
+            # filtered_outputs = outputs.permute(0, 2, 3, 1).reshape(-1, outputs.shape[1])[mask]
+            # filtered_labels = flat_weak_labels[mask]
+            
+            # Calculate loss
+            # if filtered_outputs.size(0) > 0:  # Check if there are any valid pixels
+            # loss = criterion(filtered_outputs, filtered_labels)
             # loss.backward()
-            # optimizer.step()
+            # optimizer.step()            
 
-            # Add EWC loss
-            ewc_penalty = ewc_loss(model, fisher_information, old_parameters)
-            total_loss = loss + ewc_penalty
-
-            total_loss.backward()
+            # mask = confidence > threshold
+            # loss = criterion(outputs[mask], labels[mask])
+            loss = criterion(outputs, labels)
+            loss.backward()
             optimizer.step()
 
+            # Add EWC loss
+            # ewc_penalty = ewc_loss(model, fisher_information, old_parameters)
+            # total_loss = loss + ewc_penalty
+
+            # total_loss.backward()
+            # optimizer.step()
+
             np_loss = loss.detach().cpu().numpy()
+            # np_loss = total_loss.detach().cpu().numpy()
             interval_loss += np_loss
             # if vis is not None:
             #     vis.vis_scalar('Loss', cur_itrs, np_loss)
