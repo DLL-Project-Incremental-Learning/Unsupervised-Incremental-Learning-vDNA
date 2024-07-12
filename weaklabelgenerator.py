@@ -30,36 +30,39 @@ def process_image(img_path, model, transform, device, dir_name, results, confide
 
     img = transform(img).unsqueeze(0).to(device)  # To tensor of NCHW
     output = model(img)  # Forward pass
-    # pred = output.max(1)[1].cpu().numpy()[0]  # HW
+    pred = output.max(1)[1].cpu().numpy()[0]  # HW
 
-    # # Calculate confidence and average entropy for this image
-    # prob = torch.softmax(output, dim=1)
-    # confidence = prob.max(1)[0].mean().item()
-
+    # Calculate confidence and average entropy for this image
     prob = torch.softmax(output, dim=1)
-    pred = prob.max(1)[1].cpu().numpy()[0]  # HW
-    pixel_confidence = prob.max(1)[0].cpu().numpy()[0]  # HW
-
-    # Mask pixels with confidence below threshold and set them to ignore_class
-    pred[pixel_confidence < confidence_threshold] = ignore_class
-
-    # Calculate average confidence and entropy for this image
-    confidence = pixel_confidence.mean().item()
+    confidence = prob.max(1)[0].mean().item()
     entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1).mean().item()
 
-    if confidence > 0.75 and entropy > 0.15:
-        gray_preds = Image.fromarray(pred.astype('uint8'))
+    # Set threshold values
+    confidence_threshold = 0.7
+    entropy_threshold = 0.5
 
-        label_path = os.path.join(dir_name, img_name + '.png')
-        gray_preds.save(label_path)
+    # Compute pixel confidence and entropy
+    pixel_confidence = prob.max(1)[0].cpu().numpy()[0]  # HW
+    pixel_entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1)
+    pixel_entropy = pixel_entropy.cpu().numpy()[0]  # HW
+    
+    # Apply thresholding
+    # pred[pixel_confidence < confidence_threshold] = 255
+    pred[pixel_entropy > entropy_threshold] = 255
 
-        # Add the image path and label path to the results list
-        results.append({
-            'image_path': img_path,
-            'label_path': label_path,
-            'entropy': entropy,
-            'confidence': confidence
-        })
+    # if confidence > 0.75 and entropy > 0.15:
+    gray_preds = Image.fromarray(pred.astype('uint8'))
+
+    label_path = os.path.join(dir_name, img_name + '.png')
+    gray_preds.save(label_path)
+
+    # Add the image path and label path to the results list
+    results.append({
+        'image_path': img_path,
+        'label_path': label_path,
+        'entropy': entropy,
+        'confidence': confidence
+    })
 
 def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="asc"):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
