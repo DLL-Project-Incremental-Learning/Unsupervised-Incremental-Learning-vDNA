@@ -48,7 +48,7 @@ def get_argparser():
     
     # parser.add_argument("--bucketidx", type=int, required=True,
     #                     help="bucket index to use")
-    parser.add_argument("--buckets_order", type=str, default='asc',
+    parser.add_argument("--buckets_order", type=str, default='rand',
                         choices=['asc', 'desc', 'rand'],
                         help="bucket order (asc, desc or rand) (default: asc)")
     parser.add_argument("--buckets_num", type=int, default=6,
@@ -105,6 +105,9 @@ def get_argparser():
                         help="epoch interval for eval (default: 100)")
     parser.add_argument("--download", action='store_true', default=False,
                         help="download datasets")
+    parser.add_argument("--datetime", type=str, default=None)
+
+    parser.add_argument("--json_input", default='kitti_360_00_filtered.json', type=str, required=True)
 
     return parser
 
@@ -129,8 +132,8 @@ def main():
     opts = get_argparser().parse_args()
     opts.dataset = 'cityscapes'
 
-    num_buckets = 6
-    processor = DataProcessor('results_emd_val.json', num_buckets=num_buckets, train_ratio=0.8)
+    num_buckets = 1
+    processor = DataProcessor(opts.json_input, num_buckets=num_buckets, train_ratio=0.8)
     # Dictionary to map bucket orders to their respective methods
     bucket_methods = {
         'asc': processor.asc_buckets,
@@ -159,13 +162,13 @@ def main():
         # print("\n\nNumber of images: %d" % len(image_files[1]))
         # print("Image files: %s" % image_files[:4])
 
-        json_file = 'cityscapes_dataset.json'
-        n = 40  # Number of image paths you want
+        # json_file = 'cityscapes_dataset.json'
+        # n = 40  # Number of image paths you want
         #image_paths = get_n_image_paths(json_file, n)
 
 
 
-        samples = image_files[:100]
+        samples = image_files[:20]
         # val_samples = val_image_files[:10]
         # print("\n\nSamples: %s" % samples)
         # print("Validation Samples: %s" % val_samples)
@@ -176,7 +179,7 @@ def main():
         
 
         print("\n\n[INFO] Generating weak labels for bucket %d" % bucket_idx)
-        filtered_samples, train_labelgen = labelgenerator(samples, model, ckpt, bucket_idx, val=False, order=opts.buckets_order)
+        filtered_samples, train_labelgen = labelgenerator(samples, model, ckpt, bucket_idx, datetime=opts.datetime,  val=False, order=opts.buckets_order)
         # val_labelgen = labelgenerator(val_samples, model, ckpt, bucket_idx, val=True, order=opts.buckets_order)
 
         print("\n\n[INFO] Starting finetuning for bucket %d" % bucket_idx)
@@ -192,10 +195,11 @@ def main():
                 # val_image_paths=val_samples,
                 train_label_dir=train_labelgen,
                 # val_label_dir=val_labelgen,
-                model_name=model_name
+                model_name=model_name,
+                datetime=opts.datetime
             )
 
-        ckpt = 'checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' % (bucket_idx, opts.buckets_order ,model_name, "kitti", opts.output_stride)
+        ckpt = 'checkpoints/%s/latest_bucket_%s_%s_%s_%s_os%d.pth' % (opts.datetime, bucket_idx, opts.buckets_order ,model_name, "kitti", opts.output_stride)
         
         print("\n\n[INFO] Loading model from checkpoint %s" % ckpt)
         print(f"Iteration {bucket_idx} completed. Moving to next bucket...")

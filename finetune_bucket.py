@@ -124,11 +124,11 @@ def gradual_unfreezing(model, current_itrs, total_itrs):
             print(f"[INFO] Unfreezing {layer_name} at iteration {current_itrs}")
 
 
-def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_paths, train_label_dir, model_name , bucket_order = "asc"):
+def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_paths, train_label_dir, model_name , bucket_order = "rand", datetime = None):
 
-    # Setup wandb
-    wandb.init(project="segmentation_project", config=vars(opts))
-    wandb.config.update(opts)
+    # Setup # wandb
+    # wandb.init(project="segmentation_project", config=vars(opts))
+    # wandb.config.update(opts)
 
     os.environ['CUDA_VISIBLE_DEVICES'] = opts.gpu_id
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -258,7 +258,7 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
         }, path)
         print("Model saved as %s" % path)
 
-    utils.mkdir('checkpoints')
+    utils.mkdir(f'checkpoints/{datetime}')
 
     # Restore
     best_score = 0.0
@@ -290,7 +290,7 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
         model = nn.DataParallel(model)
         model.to(device)
 
-    wandb.watch(model, log="all")
+    # wandb.watch(model, log="all")
 
     teacher_model.load_state_dict(torch.load(model_ckpt, map_location=torch.device('cpu'))['model_state'])
     teacher_model = nn.DataParallel(teacher_model)
@@ -380,17 +380,17 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
             
             np_loss = loss.detach().cpu().numpy()
             interval_loss += np_loss
-            wandb.log({"Loss": np_loss})
+            # wandb.log({"Loss": np_loss})
 
             if (cur_itrs) % 10 == 0:
                 interval_loss = interval_loss / 10
                 print("Epoch %d, Itrs %d/%d, Loss=%f" %
                     (cur_epochs, cur_itrs, opts.total_itrs, interval_loss))
                 interval_loss = 0.0
-                wandb.log({"Epoch": cur_epochs, "Itrs": cur_itrs, "Loss": np_loss})
+                # wandb.log({"Epoch": cur_epochs, "Itrs": cur_itrs, "Loss": np_loss})
             scheduler.step()
 
             if cur_itrs >= opts.total_itrs:
-                save_ckpt('checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' %
-                          (bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
+                save_ckpt('checkpoints/%s/latest_bucket_%s_%s_%s_%s_os%d.pth' %
+                          (datetime, bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
                 break

@@ -1,0 +1,51 @@
+2024-07-12T13:32:58.121089+0200 ERROR An error has been caught in function 'main', process 'MainProcess' (5900), thread 'MainThread' (17160):
+Traceback (most recent call last):
+
+  File ".\hpo.py", line 93, in <module>
+    main()
+    └ <function main at 0x00000252FB7B05E0>
+
+> File ".\hpo.py", line 86, in main
+    configuration, value, runtime, budget = dehb.run(total_cost=100)
+                                            │    └ <function DEHB.run at 0x00000252B044B670>
+                                            └ <dehb.optimizers.dehb.DEHB object at 0x00000252B040DFD0>
+
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\dehb\optimizers\dehb.py", line 1155, in run
+    self._submit_job(job_info, **kwargs)
+    │    │           │           └ {}
+    │    │           └ {'config': array([0.01774137, 0.14809038, 0.3547552 , 0.12797708, 0.75082632,
+    │    │                    0.94002241, 0.97267345, 0.18455264]), 'c...
+    │    └ <function DEHB._submit_job at 0x00000252B044ADC0>
+    └ <dehb.optimizers.dehb.DEHB object at 0x00000252B040DFD0>
+
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\dehb\optimizers\dehb.py", line 737, in _submit_job
+    self.futures.append(self._f_objective(job_info))
+    │    │       │      │    │            └ {'config': array([0.01774137, 0.14809038, 0.3547552 , 0.12797708, 0.75082632,
+    │    │       │      │    │                     0.94002241, 0.97267345, 0.18455264]), 'c...
+    │    │       │      │    └ <function DEHB._f_objective at 0x00000252B044A040>
+    │    │       │      └ <dehb.optimizers.dehb.DEHB object at 0x00000252B040DFD0>
+    │    │       └ <method 'append' of 'list' objects>
+    │    └ []
+    └ <dehb.optimizers.dehb.DEHB object at 0x00000252B040DFD0>
+
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\dehb\optimizers\dehb.py", line 292, in _f_objective
+    res = self.de[fidelity].f_objective(config, fidelity, **kwargs)
+          │    │  │                     │       │           └ {}
+          │    │  │                     │       └ 0.1111111111111111
+          │    │  │                     └ array([0.01774137, 0.14809038, 0.3547552 , 0.12797708, 0.75082632,
+          │    │  │                              0.94002241, 0.97267345, 0.18455264])
+          │    │  └ 0.1111111111111111
+          │    └ {0.1111111111111111: <dehb.optimizers.de.AsyncDE object at 0x00000252B045B790>, 0.3333333333333333: <dehb.optimizers.de.Async...
+          └ <dehb.optimizers.dehb.DEHB object at 0x00000252B040DFD0>
+
+  File "C:\Users\kbpra\anaconda3\envs\lab\lib\site-packages\dehb\optimizers\de.py", line 337, in f_objective
+    res = self.f(config, fidelity=fidelity, **kwargs)
+          │    │ │                │           └ {}
+          │    │ │                └ 0.1111111111111111
+          │    │ └ array([0.01774137, 0.14809038, 0.3547552 , 0.12797708, 0.75082632,
+          │    │          0.94002241, 0.97267345, 0.18455264])
+          │    └ <function objective_function at 0x00000252FB70A0D0>
+          └ <dehb.optimizers.de.AsyncDE object at 0x00000252B045B790>
+
+TypeError: objective_function() got an unexpected keyword argument 'fidelity'
+2024-07-12T13:34:38.120807+0200 WARNING Runtime budget exhausted. Saving optimization checkpoint now.

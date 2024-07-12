@@ -53,20 +53,20 @@ def process_image(img_path, model, transform, device, dir_name, results):
         'entropy': entropy,
         'confidence': confidence})
     colorized_preds.save(label_path)
-    
+
     return True
     # else:
     #     return False
 
 base_source_dir = "datasets/data/KITTI-360/data_2d_semantics/train/"
 
-def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="asc"):
+def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0,datetime = None, val=True, order="asc"):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print("Device: %s" % device)
     if not val:
-        dir_name = f"outputs/weaklabels/KITTI-360/{order}/bucket_{bucket_idx}/"
+        dir_name = f"outputs/{datetime}/weaklabels/KITTI-360/{order}/bucket_{bucket_idx}/"
     else:
-        dir_name = f"outputs/weaklabels/KITTI-360/{order}/val_bucket_{bucket_idx}/"
+        dir_name = f"outputs/{datetime}/weaklabels/KITTI-360/{order}/val_bucket_{bucket_idx}/"
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
 
