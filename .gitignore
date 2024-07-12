@@ -21,4 +21,5 @@ datasets/data/
 datasets\data\KITTI-360\2013_05_28_drive_0008_sync\image_00\data_rect\0000004987.png
 dataset/data/
 weak_labels
-
+logs/
+history.parquet.gzip
