@@ -145,7 +145,8 @@ def main():
         if item.get('image_exists') and item.get('ground_truth_exists'):
             val_image_paths.append(item.get('image'))
             val_ground_truth_paths.append(item.get('ground_truth'))    
-    
+    val_image_paths = val_image_paths[:200]
+    val_ground_truth_paths = val_ground_truth_paths[:200]
     print(f"Number of validation images: {len(val_image_paths)}")
     print(f"Number of validation ground truth images: {len(val_ground_truth_paths)}")
     val_dst = dataset_loader.get_datasets(val_image_paths, val_ground_truth_paths)

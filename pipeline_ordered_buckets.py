@@ -130,7 +130,7 @@ def main():
     opts.dataset = 'cityscapes'
 
     num_buckets = 6
-    processor = DataProcessor('results_emd_val.json', num_buckets=num_buckets, train_ratio=0.8)
+    processor = DataProcessor('results_v2.json', num_buckets=num_buckets, train_ratio=0.8)
     # Dictionary to map bucket orders to their respective methods
     bucket_methods = {
         'asc': processor.asc_buckets,
@@ -148,6 +148,7 @@ def main():
 
     model_name = 'deeplabv3plus_resnet101'
     ckpt = "checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth"
+    teacher_ckpt = ckpt
     teacher_model = network.modeling.__dict__[model_name](num_classes=19, output_stride=16)
     model = network.modeling.__dict__[model_name](num_classes=19, output_stride=16)
 
@@ -186,6 +187,7 @@ def main():
                 opts=opts,
                 model=model,
                 teacher_model=teacher_model,
+                teacher_ckpt=teacher_ckpt,
                 checkpoint=ckpt,
                 bucket_idx=bucket_idx,
                 train_image_paths=filtered_samples,

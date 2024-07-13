@@ -34,14 +34,39 @@ transform = transforms.Compose([
     transforms.ToTensor()
 ])
 
-def knowledge_distillation_loss(outputs, teacher_outputs, temperature=1.0):
-    """
-    Compute the knowledge distillation loss.
-    """
-    soft_targets = F.softmax(teacher_outputs / temperature, dim=1)
-    soft_prob = F.log_softmax(outputs / temperature, dim=1)
-    distillation_loss = F.kl_div(soft_prob, soft_targets, reduction='batchmean') * (temperature ** 2)
-    return distillation_loss
+# def knowledge_distillation_loss(outputs, teacher_outputs, temperature=1.0):
+#     """
+#     Compute the knowledge distillation loss.
+#     """
+#     soft_targets = F.softmax(teacher_outputs / temperature, dim=1)
+#     soft_prob = F.log_softmax(outputs / temperature, dim=1)
+#     distillation_loss = F.kl_div(soft_prob, soft_targets, reduction='batchmean') * (temperature ** 2)
+#     return distillation_loss
+
+# Define the KnowledgeDistillationLoss class
+class KnowledgeDistillationLoss(nn.Module):
+    def __init__(self, reduction='mean', alpha=1.):
+        super().__init__()
+        self.reduction = reduction
+        self.alpha = alpha
+
+    def forward(self, inputs, targets, mask=None):
+        inputs = inputs.narrow(1, 0, targets.shape[1])
+        outputs = torch.log_softmax(inputs, dim=1)
+        labels = torch.softmax(targets * self.alpha, dim=1)
+        loss = (outputs * labels).mean(dim=1)
+
+        if mask is not None:
+            loss = loss * mask.float()
+
+        if self.reduction == 'mean':
+            outputs = -torch.mean(loss)
+        elif self.reduction == 'sum':
+            outputs = -torch.sum(loss)
+        else:
+            outputs = -loss
+
+        return outputs
 
 def validate(opts, model, loader, device, metrics, ret_samples_ids=None):
     """Do validation and return specified samples"""
@@ -124,7 +149,7 @@ def gradual_unfreezing(model, current_itrs, total_itrs):
             print(f"[INFO] Unfreezing {layer_name} at iteration {current_itrs}")
 
 
-def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_paths, train_label_dir, model_name , bucket_order = "asc"):
+def finetuner(opts, model, teacher_model, teacher_ckpt ,checkpoint, bucket_idx, train_image_paths, train_label_dir, model_name , bucket_order = "asc"):
 
     # Setup wandb
     wandb.init(project="segmentation_project", config=vars(opts))
@@ -188,7 +213,7 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
             else:
                 print(f"Frozen: {name}")
     
-    print_trainable_parameters(model)
+    # print_trainable_parameters(model)
 
     #optimizer = torch.optim.SGD(
     #   params=model.classifier.parameters(),
@@ -242,7 +267,7 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
 
     # Set up criterion
     if opts.loss_type == 'cross_entropy':
-        criterion = nn.CrossEntropyLoss(ignore_index=255, reduction='mean')
+        criterion = nn.CrossEntropyLoss(ignore_index=255, reduction='none')
     elif opts.loss_type == 'focal_loss':
         criterion = utils.FocalLoss(ignore_index=255, size_average=True)
 
@@ -292,36 +317,37 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
 
     wandb.watch(model, log="all")
 
-    teacher_model.load_state_dict(torch.load(model_ckpt, map_location=torch.device('cpu'))['model_state'])
+    teacher_model_ckpt = teacher_ckpt
+    teacher_model.load_state_dict(torch.load(teacher_model_ckpt, map_location=torch.device('cpu'))['model_state'])
     teacher_model = nn.DataParallel(teacher_model)
     teacher_model.to(device)
     teacher_model.eval()
 
     # Compute Fisher Information Matrix and save original parameters
-    def compute_fisher_information(model, dataloader, criterion):
-        fisher_information = {name: torch.zeros_like(param) for name, param in model.named_parameters()}
-        model.eval()
-        for images, labels in dataloader:
-            images = images.to(device)
-            labels = labels.to(device, dtype=torch.long)
-            optimizer.zero_grad()
-            outputs = model(images)
-            loss = criterion(outputs, labels)
-            loss.backward()
-            for name, param in model.named_parameters():
-                if param.grad is not None:
-                    fisher_information[name] += param.grad.data ** 2 / len(dataloader)
-        for name, param in fisher_information.items():
-            fisher_information[name] = param / len(dataloader)
-        return fisher_information
+    # def compute_fisher_information(model, dataloader, criterion):
+    #     fisher_information = {name: torch.zeros_like(param) for name, param in model.named_parameters()}
+    #     model.eval()
+    #     for images, labels in dataloader:
+    #         images = images.to(device)
+    #         labels = labels.to(device, dtype=torch.long)
+    #         optimizer.zero_grad()
+    #         outputs = model(images)
+    #         loss = criterion(outputs, labels)
+    #         loss.backward()
+    #         for name, param in model.named_parameters():
+    #             if param.grad is not None:
+    #                 fisher_information[name] += param.grad.data ** 2 / len(dataloader)
+    #     for name, param in fisher_information.items():
+    #         fisher_information[name] = param / len(dataloader)
+    #     return fisher_information
 
-    def ewc_loss(model, fisher_information, old_parameters, lambda_=0.4):
-        print("Computing EWC loss")
-        loss = 0
-        for name, param in model.named_parameters():
-            if name in fisher_information:
-                loss += (fisher_information[name] * (param - old_parameters[name]) ** 2).sum()
-        return lambda_ * loss
+    # def ewc_loss(model, fisher_information, old_parameters, lambda_=0.4):
+    #     print("Computing EWC loss")
+    #     loss = 0
+    #     for name, param in model.named_parameters():
+    #         if name in fisher_information:
+    #             loss += (fisher_information[name] * (param - old_parameters[name]) ** 2).sum()
+    #     return lambda_ * loss
 
     train_dst = dataset_loader.get_datasets(
         train_image_paths,
@@ -343,6 +369,7 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
     #fisher_information = compute_fisher_information(model, train_loader, criterion)
     #old_parameters = {name: param.clone() for name, param in model.named_parameters()}
 
+    kd_loss_fn = KnowledgeDistillationLoss(reduction='mean', alpha=1.0)
     interval_loss = 0
     # while True:  # cur_itrs < opts.total_itrs:
     while cur_itrs < opts.total_itrs:
@@ -362,10 +389,15 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
             outputs = model(images)
 
             #Get teacher predictions
-            #with torch.no_grad():
-            #    teacher_outputs = teacher_model(images)
+            with torch.no_grad():
+                teacher_outputs = teacher_model(images)
 
-            loss = criterion(outputs, labels)
+            distillation_loss = kd_loss_fn(outputs, teacher_outputs)
+            segmentation_loss = criterion(outputs, labels).mean() # scalar
+
+            # loss = criterion(outputs, labels)
+
+            loss = 10* distillation_loss + segmentation_loss
 
 
             loss.backward()
