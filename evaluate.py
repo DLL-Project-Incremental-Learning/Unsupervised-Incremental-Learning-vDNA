@@ -63,17 +63,17 @@ def objective_function():
     print("Final mIoU: ", mIoU) 
 
     # delete outputs/{dt} folder
-    subprocess.run(["rm", "-rf", f"outputs/{dt}"])
-    print("Deleted outputs/{dt} folder")
+    # subprocess.run(["rm", "-rf", f"outputs/{dt}"])
+    # print("Deleted outputs/{dt} folder")
     # delete checkpoints/{dt}/ .pth files in the folder
-    subprocess.run(["rm", "-rf", f"checkpoints/{dt}/*.pth"])
-    print(f"Deleted checkpoints/{dt}/ .pth files in the folder")
+    # subprocess.run(["rm", "-rf", f"checkpoints/{dt}/*.pth"])
+    # print(f"Deleted checkpoints/{dt}/ .pth files in the folder")
     print("================================================================================\n\n")
     # return {"fitness": -mIoU, "cost": fidelity}
 
 
-def main():
-    objective_function()
+# def main():
+#     objective_function()
 
 if __name__ == "__main__":
-    main()
+    objective_function()

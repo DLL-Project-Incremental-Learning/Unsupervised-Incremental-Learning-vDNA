@@ -132,7 +132,9 @@ def main():
     opts = get_argparser().parse_args()
     opts.dataset = 'cityscapes'
     dt = datetime.now().strftime("%Y%m%d-%H%M%S")
-    opts.datetime = dt
+    if opts.datetime is None:
+        opts.datetime = dt
+        
     num_buckets = 1
     processor = DataProcessor(opts.json_input, num_buckets=num_buckets, train_ratio=0.8)
     # Dictionary to map bucket orders to their respective methods
