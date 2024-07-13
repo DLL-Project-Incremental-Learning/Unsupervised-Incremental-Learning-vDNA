@@ -154,7 +154,7 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
             if hasattr(module, 'named_children'):
                 for sub_name, sub_module in module.named_children():
                     print(f"  Sub-layer: {sub_name}")
-    print_model_structure(model)
+    # print_model_structure(model)
 
     # Freeze the backbone parameters:
     for param in model.backbone.parameters():
@@ -188,7 +188,7 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
             else:
                 print(f"Frozen: {name}")
     
-    print_trainable_parameters(model)
+    # print_trainable_parameters(model)
 
     #optimizer = torch.optim.SGD(
     #   params=model.classifier.parameters(),

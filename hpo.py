@@ -12,10 +12,11 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 def setup_configuration_space():
     cs = ConfigurationSpace()
     lr = UniformFloatHyperparameter("lr", lower=1e-6, upper=1e-1, log=True)
-    total_itrs = UniformIntegerHyperparameter("total_itrs", lower=1, upper=20)
+    total_itrs = UniformFloatHyperparameter("total_itrs", lower=10, upper=800, log=True)
     batch_size = UniformFloatHyperparameter("batch_size", lower=2, upper=16, log = True)
     weight_decay = UniformFloatHyperparameter("weight_decay", lower=1e-6, upper=1e-1, log=True)
-    cs.add_hyperparameters([lr, total_itrs, batch_size, weight_decay])
+    crop_size = UniformIntegerHyperparameter("crop_size", lower=180, upper=370)
+    cs.add_hyperparameters([lr, total_itrs, batch_size, weight_decay, crop_size])
     return cs
 
 def objective_function(config: Configuration, fidelity: float, **kwargs):
@@ -25,10 +26,10 @@ def objective_function(config: Configuration, fidelity: float, **kwargs):
         "python", "pipeline_ordered_buckets.py",
         "--buckets_order", "rand",
         "--buckets_num", str(1),
-        "--total_itrs", str(config["total_itrs"]),
+        "--total_itrs", str(int(config["total_itrs"])),
         "--lr", str(config["lr"]),
         "--batch_size", str(int(config["batch_size"])),
-        "--crop_size", str(370),
+        "--crop_size", str(int(config["crop_size"])),
         "--json_input", "kitti_360_00_filtered.json",
         "--weight_decay", str(config["weight_decay"]),
         "--datetime", dt
@@ -48,7 +49,7 @@ def objective_function(config: Configuration, fidelity: float, **kwargs):
         "--checkpoint_dir", f'checkpoints/{dt}/',
         "--json_file1", "cityscapes_val_set.json",
         "--json_file2", "kitti-360_val_set_v3.json",
-        "--num_test", "20"
+        "--num_test", "200"
     ]
 
     logging.info(f"Running test command: {' '.join(test_command)}")
@@ -72,7 +73,15 @@ def objective_function(config: Configuration, fidelity: float, **kwargs):
         return {"fitness": float("-inf"), "cost": fidelity}
 
     logging.info(f"Obtained mIoU: {mIoU}")
-    return {"fitness": mIoU, "cost": fidelity}
+
+    # delete outputs/{dt} folder
+    subprocess.run(["rm", "-rf", f"outputs/{dt}"])
+    print("Deleted outputs/{dt} folder")
+    # delete checkpoints/{dt}/ .pth files in the folder
+    subprocess.run(["rm", "-rf", f"checkpoints/{dt}/*.pth"])
+    print(f"Deleted checkpoints/{dt}/ .pth files in the folder")
+    print("================================================================================\n\n")
+    return {"fitness": -mIoU, "cost": fidelity}
 
 def run_dehb_optimizer(cs):
     dim = len(cs.get_hyperparameters())
@@ -81,7 +90,7 @@ def run_dehb_optimizer(cs):
         cs=cs,
         dimensions=dim,
         min_fidelity=1,
-        max_fidelity=5,
+        max_fidelity=100,
         eta=3,
         n_workers=1,
         output_path="./logs",

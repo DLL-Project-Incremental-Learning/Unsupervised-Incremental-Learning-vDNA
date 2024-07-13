@@ -28,7 +28,7 @@ from collections import namedtuple
 from dataloaders import DataProcessor, KITTI360Dataset, DatasetLoader
 from weaklabelgenerator import labelgenerator
 import network
-
+from datetime import datetime
 # Define transforms
 transform = transforms.Compose([
     # transforms.Resize((512, 1024)),
@@ -131,7 +131,8 @@ def main():
         
     opts = get_argparser().parse_args()
     opts.dataset = 'cityscapes'
-
+    dt = datetime.now().strftime("%Y%m%d-%H%M%S")
+    opts.datetime = dt
     num_buckets = 1
     processor = DataProcessor(opts.json_input, num_buckets=num_buckets, train_ratio=0.8)
     # Dictionary to map bucket orders to their respective methods
@@ -168,7 +169,7 @@ def main():
 
 
 
-        samples = image_files[:20]
+        samples = image_files
         # val_samples = val_image_files[:10]
         # print("\n\nSamples: %s" % samples)
         # print("Validation Samples: %s" % val_samples)
@@ -201,9 +202,9 @@ def main():
 
         ckpt = 'checkpoints/%s/latest_bucket_%s_%s_%s_%s_os%d.pth' % (opts.datetime, bucket_idx, opts.buckets_order ,model_name, "kitti", opts.output_stride)
         
-        print("\n\n[INFO] Loading model from checkpoint %s" % ckpt)
-        print(f"Iteration {bucket_idx} completed. Moving to next bucket...")
-        print("\n------------------------------------------------------------------------------------------------------------------------\n")
+        print("\n\n[INFO] Starting the mIoU evaluation now...")
+        # print(f"Iteration {bucket_idx} completed. Moving to next bucket...")
+        # print("\n------------------------------------------------------------------------------------------------------------------------\n")
 
 
 if __name__ == "__main__":
