@@ -190,13 +190,13 @@ def finetuner(opts, model, teacher_model, teacher_ckpt ,checkpoint, bucket_idx, 
             param.requires_grad = True
 
     # freeze the segmentation head
-    # for param in model.classifier.parameters():
-    #     param.requires_grad = True
+    for param in model.classifier.parameters():
+        param.requires_grad = True
 
     # Unfreeze only the bias terms in the classifier
-    for name, param in model.classifier.named_parameters():
-       if 'bias' in name:
-           param.requires_grad = True
+    # for name, param in model.classifier.named_parameters():
+    #    if 'bias' in name:
+    #        param.requires_grad = True
 
     # Optional: Print the trainable parameters to verify
     def count_parameters(model):

@@ -174,7 +174,7 @@ def main():
         else:
             print(f"Checkpoint file not found: {checkpoint_path}")
         
-        # process_dataset(opts.json_file1, 'cityscapes', opts, model, device, metrics, results)
+        process_dataset(opts.json_file1, 'cityscapes', opts, model, device, metrics, results)
         process_dataset(opts.json_file2, 'kitti_360', opts, model, device, metrics, results)
 
     pdf_file = os.path.join(opts.checkpoint_dir, 'validation_results_bn.pdf')
