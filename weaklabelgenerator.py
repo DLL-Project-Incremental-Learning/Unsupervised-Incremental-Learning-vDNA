@@ -38,6 +38,19 @@ def process_image(img_path, model, transform, device, dir_name, results):
     confidence = prob.max(1)[0].mean().item()
     entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1).mean().item()
 
+    # Set threshold values
+    confidence_threshold = 0.7
+    entropy_threshold = 0.5
+
+    # Compute pixel confidence and entropy
+    pixel_confidence = prob.max(1)[0].cpu().numpy()[0]  # HW
+    pixel_entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1)
+    pixel_entropy = pixel_entropy.cpu().numpy()[0]  # HW
+    
+    # Apply thresholding
+    # pred[pixel_confidence < confidence_threshold] = 255
+    # pred[pixel_entropy > entropy_threshold] = 255
+
     # colorized_preds = Cityscapes.decode_target(pred).astype('uint8')
     # colorized_preds = Image.fromarray(colorized_preds)
     colorized_preds = Image.fromarray(pred.astype('uint8'))
