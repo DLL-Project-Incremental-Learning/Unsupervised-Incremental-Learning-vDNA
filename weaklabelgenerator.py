@@ -7,6 +7,7 @@ from torchvision import transforms as T
 from datasets import Cityscapes
 import numpy as np
 import json
+import shutil
 
 def load_model(model, ckpt, device):
     if ckpt is not None and os.path.isfile(ckpt):
@@ -37,20 +38,40 @@ def process_image(img_path, model, transform, device, dir_name, results):
     confidence = prob.max(1)[0].mean().item()
     entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1).mean().item()
 
+    # Set threshold values
+    confidence_threshold = 0.7
+    entropy_threshold = 0.5
+
+    # Compute pixel confidence and entropy
+    pixel_confidence = prob.max(1)[0].cpu().numpy()[0]  # HW
+    pixel_entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1)
+    pixel_entropy = pixel_entropy.cpu().numpy()[0]  # HW
+    
+    # Apply thresholding
+    # pred[pixel_confidence < confidence_threshold] = 255
+    # pred[pixel_entropy > entropy_threshold] = 255
+
     # colorized_preds = Cityscapes.decode_target(pred).astype('uint8')
     # colorized_preds = Image.fromarray(colorized_preds)
     colorized_preds = Image.fromarray(pred.astype('uint8'))
 
     label_path = os.path.join(dir_name, img_name + '.png')
-    colorized_preds.save(label_path)
+    # colorized_preds.save(label_path)
 
     # Add the image path and label path to the results list
+    # if entropy > 0.20 and confidence > 0.8:
     results.append({
         'image_path': img_path,
         'label_path': label_path,
         'entropy': entropy,
-        'confidence': confidence
-    })
+        'confidence': confidence})
+    colorized_preds.save(label_path)
+    
+    return True
+    # else:
+    #     return False
+
+base_source_dir = "datasets/data/KITTI-360/data_2d_semantics/train/"
 
 def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="asc"):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -74,9 +95,28 @@ def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="a
 
     with torch.no_grad():
         model.eval()
-        
+        filtered_image_paths = []
         for img_path in tqdm(imagefilepaths):
-            process_image(img_path, model, transform, device, dir_name, results)
+            ret = process_image(img_path, model, transform, device, dir_name, results)
+            if ret:
+                filtered_image_paths.append(img_path)
+
+           # Extract the relevant parts from the image path
+            #parts = img_path.split('/')
+            #drive_folder = parts[-4]  # e.g., '2013_05_28_drive_0010_sync'
+            #img_name = parts[-1]  # e.g., '0000000235.png'
+
+            # Construct the ground truth label path
+            #ground_truth_label = os.path.join(base_source_dir, drive_folder, 'image_00', 'semantic', img_name)
+            # Construct the destination path
+            #label_path = os.path.join(dir_name, img_name)
+            #print(f"copying label at {label_path}...")
+
+                # Copy the ground truth label to the destination directory
+            #if os.path.exists(ground_truth_label):
+            #    shutil.copy(ground_truth_label, label_path)
+            #else:
+            #    print(f"Ground truth label not found for {img_path}")
 
         # Compute overall averages
         entropy_values = [item['entropy'] for item in results]
@@ -97,4 +137,4 @@ def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="a
             json.dump(results, json_file, indent=4)
         print(f"Saved image and label paths to {json_path}")
     
-    return dir_name
+    return filtered_image_paths, dir_name

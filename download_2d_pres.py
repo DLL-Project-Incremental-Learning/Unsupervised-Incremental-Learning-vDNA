@@ -13,19 +13,19 @@ import urllib.request
 
 train_list = [
     "2013_05_28_drive_0000_sync",
-    "2013_05_28_drive_0002_sync",
-    "2013_05_28_drive_0003_sync",
-    "2013_05_28_drive_0004_sync",
-    "2013_05_28_drive_0005_sync",
-    "2013_05_28_drive_0006_sync",
-    "2013_05_28_drive_0007_sync",
-    "2013_05_28_drive_0009_sync",
-    "2013_05_28_drive_0010_sync"
+    # "2013_05_28_drive_0002_sync",
+    # "2013_05_28_drive_0003_sync",
+    # "2013_05_28_drive_0004_sync",
+    # "2013_05_28_drive_0005_sync",
+    # "2013_05_28_drive_0006_sync",
+    # "2013_05_28_drive_0007_sync",
+    # "2013_05_28_drive_0009_sync",
+    # "2013_05_28_drive_0010_sync"
 ]
 
 cam_list = ["00"]
 
-root_dir = "datasets/data/KITTI-360"
+root_dir = "dataset_kitti360"
 data_2d_dir = "data_2d_raw"
 
 os.makedirs(os.path.join(root_dir, data_2d_dir), exist_ok=True)
@@ -37,7 +37,9 @@ total_images = 0
 
 # Perspective images
 for sequence in train_list:
+    print(f"Downloading images for {sequence}")
     for camera in cam_list:
+        print(f"Downloading images for {sequence}/image_{camera}/data_rect")
         zip_file = f"{sequence}_image_{camera}.zip"
         url = f"https://s3.eu-central-1.amazonaws.com/avg-projects/KITTI-360/data_2d_raw/{zip_file}"
         local_zip_path = os.path.join(data_2d_dir, zip_file)
@@ -52,17 +54,17 @@ for sequence in train_list:
         # Remove the zip file
         os.remove(local_zip_path)
         
-        # Remove all images except every 5th image
-        image_dir = os.path.join(data_2d_dir, sequence, f"image_{camera}", "data_rect")
-        if os.path.exists(image_dir):
-            images = sorted(os.listdir(image_dir))
-            for i, image in enumerate(images):
-                if i % 5 != 0:
-                    os.remove(os.path.join(image_dir, image))
-            # Count remaining images in the directory
-            remaining_images = len(os.listdir(image_dir))
-            total_images += remaining_images
-            print(f"{sequence}/image_{camera}/data_rect: {remaining_images} images")
+        # # Remove all images except every 5th image
+        # image_dir = os.path.join(data_2d_dir, sequence, f"image_{camera}", "data_rect")
+        # if os.path.exists(image_dir):
+        #     images = sorted(os.listdir(image_dir))
+        #     for i, image in enumerate(images):
+        #         if i % 5 != 0:
+        #             os.remove(os.path.join(image_dir, image))
+        #     # Count remaining images in the directory
+        #     remaining_images = len(os.listdir(image_dir))
+        #     total_images += remaining_images
+        #     print(f"{sequence}/image_{camera}/data_rect: {remaining_images} images")
 
 # Print the cumulative sum
 print(f"Total number of images across all folders: {total_images}")
