@@ -190,8 +190,8 @@ def finetuner(opts, model, teacher_model, teacher_ckpt ,checkpoint, bucket_idx, 
             param.requires_grad = True
 
     # freeze the segmentation head
-    # for param in model.classifier.parameters():
-    #     param.requires_grad = True
+    for param in model.classifier.parameters():
+        param.requires_grad = True
 
     # Unfreeze only the bias terms in the classifier
     #for name, param in model.classifier.named_parameters():
@@ -218,7 +218,7 @@ def finetuner(opts, model, teacher_model, teacher_ckpt ,checkpoint, bucket_idx, 
     optimizer = torch.optim.SGD(
         params=[
             {'params': model.backbone.layer1.parameters(), 'lr': 0.1 * opts.lr},
-            # {'params': model.classifier.parameters()}
+            {'params': model.classifier.parameters()}
             ],
             lr=opts.lr,
             momentum=0.9,
@@ -368,7 +368,7 @@ def finetuner(opts, model, teacher_model, teacher_ckpt ,checkpoint, bucket_idx, 
 
             # loss = criterion(outputs, labels)
 
-            loss = 10* distillation_loss + segmentation_loss
+            loss = 1* distillation_loss + segmentation_loss
 
 
             loss.backward()

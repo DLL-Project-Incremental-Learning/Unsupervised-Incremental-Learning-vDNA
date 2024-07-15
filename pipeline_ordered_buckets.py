@@ -128,8 +128,9 @@ def main():
         
     opts = get_argparser().parse_args()
     opts.dataset = 'cityscapes'
+    # os.rmdir('outputs/')
 
-    num_buckets = 6
+    num_buckets = 1
     processor = DataProcessor('rank_1_val.json', num_buckets=num_buckets, train_ratio=0.8)
     # train_buckets, val_buckets = processor.asc_buckets()
     # if opts.buckets_order == 'asc':
@@ -176,7 +177,7 @@ def main():
 
 
 
-        samples = image_files[:100]
+        samples = image_files[:2000]
         # val_samples = val_image_files[:10]
         # print("\n\nSamples: %s" % samples)
         # print("Validation Samples: %s" % val_samples)

@@ -40,7 +40,7 @@ def process_image(img_path, model, transform, device, dir_name, results):
 
     # Set threshold values
     confidence_threshold = 0.7
-    entropy_threshold = 0.5
+    entropy_threshold = 0.3
 
     # Compute pixel confidence and entropy
     pixel_confidence = prob.max(1)[0].cpu().numpy()[0]  # HW
@@ -49,7 +49,7 @@ def process_image(img_path, model, transform, device, dir_name, results):
     
     # Apply thresholding
     # pred[pixel_confidence < confidence_threshold] = 255
-    # pred[pixel_entropy > entropy_threshold] = 255
+    pred[pixel_entropy > entropy_threshold] = 255
 
     # colorized_preds = Cityscapes.decode_target(pred).astype('uint8')
     # colorized_preds = Image.fromarray(colorized_preds)
