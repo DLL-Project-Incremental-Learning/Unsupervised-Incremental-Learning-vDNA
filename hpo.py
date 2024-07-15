@@ -12,10 +12,10 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 def setup_configuration_space():
     cs = ConfigurationSpace()
     lr = UniformFloatHyperparameter("lr", lower=1e-6, upper=1e-1, log=True)
-    total_itrs = UniformFloatHyperparameter("total_itrs", lower=10, upper=800, log=True)
-    batch_size = UniformFloatHyperparameter("batch_size", lower=2, upper=16, log = True)
+    total_itrs = UniformFloatHyperparameter("total_itrs", lower=20, upper=2400, log=False)
+    batch_size = UniformFloatHyperparameter("batch_size", lower=4, upper=64, log = True)
     weight_decay = UniformFloatHyperparameter("weight_decay", lower=1e-6, upper=1e-1, log=True)
-    crop_size = UniformIntegerHyperparameter("crop_size", lower=180, upper=370)
+    crop_size = UniformIntegerHyperparameter("crop_size", lower=120, upper=370)
     cs.add_hyperparameters([lr, total_itrs, batch_size, weight_decay, crop_size])
     return cs
 
@@ -46,10 +46,10 @@ def objective_function(config: Configuration, fidelity: float, **kwargs):
         "python", "test_v5.py",
         "--model", "deeplabv3plus_resnet101",
         "--gpu_id", "0",
-        "--checkpoint_dir", f'checkpoints/{dt}/',
+        "--checkpoint_dir", f'checkpoints/',
         "--json_file1", "cityscapes_val_set.json",
         "--json_file2", "kitti-360_val_set_v3.json",
-        "--num_test", "200"
+        "--num_test", "250"
     ]
 
     logging.info(f"Running test command: {' '.join(test_command)}")
@@ -59,7 +59,7 @@ def objective_function(config: Configuration, fidelity: float, **kwargs):
         logging.error(f"Test command failed: {e}")
         return {"fitness": float("-inf"), "cost": fidelity}
 
-    result_path = f'checkpoints/{dt}/validation_results_bn.json'
+    result_path = f'checkpoints/validation_results_bn.json'
     if not os.path.exists(result_path):
         logging.error(f"Result file not found: {result_path}")
         return {"fitness": float("-inf"), "cost": fidelity}
@@ -75,15 +75,19 @@ def objective_function(config: Configuration, fidelity: float, **kwargs):
     logging.info(f"Obtained mIoU: {mIoU}")
 
     # delete outputs/{dt} folder
-    subprocess.run(["rm", "-rf", f"outputs/{dt}"])
-    print("Deleted outputs/{dt} folder")
+    # subprocess.run(["rm", "-rf", f"outputs/{dt}"])
+    # print("Deleted outputs/{dt} folder")
     # delete checkpoints/{dt}/ .pth files in the folder
-    subprocess.run(["rm", "-rf", f"checkpoints/{dt}/*.pth"])
-    print(f"Deleted checkpoints/{dt}/ .pth files in the folder")
+    # subprocess.run(["rm", "-rf", f"checkpoints/{dt}/*.pth"])
+    # print(f"Deleted checkpoints/{dt}/ .pth files in the folder")
     print("================================================================================\n\n")
     return {"fitness": -mIoU, "cost": fidelity}
 
 def run_dehb_optimizer(cs):
+    dt = datetime.now().strftime("%Y%m%d-%H%M%S")
+    # incumbent_logs/dt folder 
+    # os.makedirs(f"incumbent_logs/{dt}", exist_ok=True)
+    # output_path = f"incumbent_logs/{dt}"
     dim = len(cs.get_hyperparameters())
     optimizer = DEHB(
         f=objective_function,

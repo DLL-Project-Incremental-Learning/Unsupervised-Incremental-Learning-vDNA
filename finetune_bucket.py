@@ -258,7 +258,7 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
         }, path)
         print("Model saved as %s" % path)
 
-    utils.mkdir(f'checkpoints/{datetime}')
+    utils.mkdir(f'checkpoints/')
 
     # Restore
     best_score = 0.0
@@ -391,6 +391,6 @@ def finetuner(opts, model, teacher_model, checkpoint, bucket_idx, train_image_pa
             scheduler.step()
 
             if cur_itrs >= opts.total_itrs:
-                save_ckpt('checkpoints/%s/latest_bucket_%s_%s_%s_%s_os%d.pth' %
-                          (datetime, bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
+                save_ckpt('checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth' %
+                          (bucket_idx, opts.buckets_order, model_name, "kitti", opts.output_stride))
                 break
