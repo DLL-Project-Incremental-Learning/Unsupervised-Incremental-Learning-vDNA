@@ -273,17 +273,51 @@ def finetuner(opts, model, checkpoint, bucket_idx, train_image_paths, train_labe
     for param in model.backbone.parameters():
         param.requires_grad = False
 
+    for name, param in model.named_parameters():
+        if "layer1." in name:
+            param.requires_grad = True
+
+    # freeze the segmentation head
+    # for param in model.classifier.parameters():
+    #     param.requires_grad = True
+
+    # Unfreeze only the bias terms in the classifier
+    #for name, param in model.classifier.named_parameters():
+    #    if 'bias' in name:
+    #        param.requires_grad = True
+
+    # Optional: Print the trainable parameters to verify
+    def count_parameters(model):
+        return sum(p.numel() for p in model.parameters() if p.requires_grad)
+    
+    print(f"Number of trainable parameters: {count_parameters(model)}")
+
+    # Optional: Print which parts of the model are trainable
+    def print_trainable_parameters(model):
+        for name, param in model.named_parameters():
+            if param.requires_grad:
+                print(f"Trainable: {name}")
+            else:
+                print(f"Frozen: {name}")
+    
+    print_trainable_parameters(model)
+
     # Set up optimizer
-    # optimizer = torch.optim.SGD(params=[
-    #     {'params': model.backbone.parameters(), 'lr': 0.1 * opts.lr},
-    #     {'params': model.classifier.parameters(), 'lr': opts.lr},
-    # ], lr=opts.lr, momentum=0.9, weight_decay=opts.weight_decay)
     optimizer = torch.optim.SGD(
-        params=model.classifier.parameters(),
-        lr=opts.lr,
-        momentum=0.9,
-        weight_decay=opts.weight_decay
+        params=[
+            {'params': model.backbone.layer1.parameters(), 'lr': 0.1 * opts.lr},
+            # {'params': model.classifier.parameters()}
+            ],
+            lr=opts.lr,
+            momentum=0.9,
+            weight_decay=opts.weight_decay
         )
+    # optimizer = torch.optim.SGD(
+    #     params=model.classifier.parameters(),
+    #     lr=opts.lr,
+    #     momentum=0.9,
+    #     weight_decay=opts.weight_decay
+    #     )
 
     if opts.lr_policy == 'poly':
         scheduler = utils.PolyLR(optimizer, opts.total_itrs, power=0.9)

@@ -114,7 +114,7 @@ def main():
     opts.dataset = 'cityscapes'
 
     num_buckets = 6
-    processor = DataProcessor('results_v1.json', num_buckets=num_buckets, train_ratio=0.8)
+    processor = DataProcessor('rank_1_val.json', num_buckets=num_buckets, train_ratio=0.8)
     # train_buckets, val_buckets = processor.asc_buckets()
     # if opts.buckets_order == 'asc':
     #     train_buckets, val_buckets = processor.asc_buckets()
