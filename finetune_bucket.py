@@ -152,8 +152,8 @@ def gradual_unfreezing(model, current_itrs, total_itrs):
 def finetuner(opts, model, teacher_model, teacher_ckpt ,checkpoint, bucket_idx, train_image_paths, train_label_dir, model_name , bucket_order = "asc"):
 
     # Setup wandb
-    wandb.init(project="segmentation_project", config=vars(opts))
-    wandb.config.update(opts)
+    # wandb.init(project="segmentation_project", config=vars(opts))
+    # wandb.config.update(opts)
 
     os.environ['CUDA_VISIBLE_DEVICES'] = opts.gpu_id
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -190,13 +190,13 @@ def finetuner(opts, model, teacher_model, teacher_ckpt ,checkpoint, bucket_idx, 
             param.requires_grad = True
 
     # freeze the segmentation head
-    for param in model.classifier.parameters():
-        param.requires_grad = True
+    # for param in model.classifier.parameters():
+    #     param.requires_grad = True
 
     # Unfreeze only the bias terms in the classifier
-    #for name, param in model.classifier.named_parameters():
-    #    if 'bias' in name:
-    #        param.requires_grad = True
+    for name, param in model.classifier.named_parameters():
+       if 'bias' in name:
+           param.requires_grad = True
 
     # Optional: Print the trainable parameters to verify
     def count_parameters(model):
@@ -286,7 +286,7 @@ def finetuner(opts, model, teacher_model, teacher_ckpt ,checkpoint, bucket_idx, 
         model = nn.DataParallel(model)
         model.to(device)
 
-    wandb.watch(model, log="all")
+    # wandb.watch(model, log="all")
 
     teacher_model_ckpt = teacher_ckpt
     teacher_model.load_state_dict(torch.load(teacher_model_ckpt, map_location=torch.device('cpu'))['model_state'])
@@ -383,14 +383,14 @@ def finetuner(opts, model, teacher_model, teacher_ckpt ,checkpoint, bucket_idx, 
             
             np_loss = loss.detach().cpu().numpy()
             interval_loss += np_loss
-            wandb.log({"Loss": np_loss})
+            # wandb.log({"Loss": np_loss})
 
             if (cur_itrs) % 10 == 0:
                 interval_loss = interval_loss / 10
                 print("Epoch %d, Itrs %d/%d, Loss=%f" %
                     (cur_epochs, cur_itrs, opts.total_itrs, interval_loss))
                 interval_loss = 0.0
-                wandb.log({"Epoch": cur_epochs, "Itrs": cur_itrs, "Loss": np_loss})
+                # wandb.log({"Epoch": cur_epochs, "Itrs": cur_itrs, "Loss": np_loss})
             scheduler.step()
 
             if cur_itrs >= opts.total_itrs:

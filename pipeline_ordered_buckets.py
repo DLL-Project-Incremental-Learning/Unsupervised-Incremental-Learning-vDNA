@@ -128,7 +128,8 @@ def main():
         
     opts = get_argparser().parse_args()
     opts.dataset = 'cityscapes'
-    # os.rmdir('outputs/')
+    # forcefully delete outputs folder
+    os.system('rm -rf outputs')
 
     num_buckets = 1
     processor = DataProcessor('rank_1_val.json', num_buckets=num_buckets, train_ratio=0.8)
