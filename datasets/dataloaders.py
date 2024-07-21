@@ -1,6 +1,10 @@
 import json
 import random
+import sys
 import os
+# Add the parent directory to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import argparse
 import numpy as np
 from tqdm import tqdm
@@ -11,11 +15,11 @@ from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from PIL import Image
 
-import network
-import utils
+import src.network
+import src.utils
 from datasets import Cityscapes
-from utils import ext_transforms as et
-from metrics import StreamSegMetrics
+from src.utils import ext_transforms as et
+from src.metrics import StreamSegMetrics
 from collections import namedtuple
 import wandb
 

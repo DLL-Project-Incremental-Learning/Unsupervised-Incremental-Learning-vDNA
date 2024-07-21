@@ -1,12 +1,16 @@
 import json
+import sys
 import os
+# Add the parent directory to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from collections import namedtuple
 
 import torch
 from torch.utils.data import DataLoader, Dataset
 from PIL import Image
 import numpy as np
-from utils import ext_transforms as et
+from src.utils import ext_transforms as et
 
 
 # Custom dataset for KITTI360 with weak labels

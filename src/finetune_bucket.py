@@ -2,9 +2,13 @@ from tqdm import tqdm
 import network
 import utils
 import os
+import sys
 import random
 import argparse
 import numpy as np
+
+# Add the parent directory to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from torch.utils import data
 from datasets import Cityscapes
@@ -204,7 +208,7 @@ def finetuner(
         )
         print("Model saved as %s" % path)
 
-    utils.mkdir("checkpoints")
+    utils.mkdir("./checkpoints")
 
     # Restore
     best_score = 0.0
@@ -312,7 +316,7 @@ def finetuner(
 
             if cur_itrs >= opts.total_itrs:
                 save_ckpt(
-                    "checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth"
+                    "./checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth"
                     % (
                         bucket_idx,
                         opts.buckets_order,

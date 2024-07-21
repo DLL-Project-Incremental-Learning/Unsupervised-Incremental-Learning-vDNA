@@ -9,12 +9,12 @@ def objective_function():
 
     # Run the pipeline command
     pipeline_command = [
-        "python", "pipeline_ordered_buckets.py",
+        "python", "./src/pipeline_ordered_buckets.py",
         "--buckets_order", "rand",
         "--buckets_num", str(1),
-        "--total_itrs", str(1800),
+        "--total_itrs", str(10),
         "--lr", str(0.014),
-        "--batch_size", str(16),
+        "--batch_size", str(4),
         "--crop_size", str(370),
         "--weight_decay", str(3e-5)
     ]
@@ -27,13 +27,13 @@ def objective_function():
     
     # Run the test command
     test_command = [
-        "python", "tests/test_v5.py",
+        "python", "./tests/test_v5.py",
         "--model", "deeplabv3plus_resnet101",
         "--gpu_id", "0",
         "--checkpoint_dir", 'checkpoints/',
-        "--json_file1", "tests/cityscapes_val_set.json",
-        "--json_file2", "tests/kitti-360_val_set_v3.json",
-        "--num_test", "2200"
+        "--json_file1", "./tests/cityscapes_val_set.json",
+        "--json_file2", "./tests/kitti-360_val_set_v3.json",
+        "--num_test", "25"
     ]
     logging.info(f"Running test command: {' '.join(test_command)}")
     try:
@@ -71,5 +71,4 @@ def objective_function():
     return {"fitness": -average_mIoU, "cost": 1}
 
 if __name__ == "__main__":
-    hyperparameters_file = "logs/incumbent.json"
     objective_function()

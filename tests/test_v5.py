@@ -5,8 +5,8 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from tqdm import tqdm
-import network
-import utils
+import src.network as network
+import src.utils
 import os
 import argparse
 import numpy as np
@@ -16,7 +16,7 @@ import torch.nn as nn
 from torch.utils import data
 from datasets.kitti_360 import KittiDatasetLoader
 from datasets.cityscapes_v1 import CityscapesDatasetLoader
-from metrics import StreamSegMetrics
+from src.metrics import StreamSegMetrics
 from reportlab.lib.pagesizes import landscape, letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors

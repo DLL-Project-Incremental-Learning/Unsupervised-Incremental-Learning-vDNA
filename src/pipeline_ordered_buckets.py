@@ -2,15 +2,20 @@ from tqdm import tqdm
 import network
 import utils
 import os
+import sys
 import random
 import argparse
 import numpy as np
 import json
 
+# Add the parent directory to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from torch.utils import data
-from datasets import Cityscapes
+# from .datasets import Cityscapes
 from utils import ext_transforms as et
 from metrics import StreamSegMetrics
+import network
 
 import torch
 import torch.nn as nn
@@ -27,8 +32,9 @@ from torch.utils.data import DataLoader, Dataset
 from glob import glob
 from collections import namedtuple
 from datasets.dataloaders import DataProcessor, KITTI360Dataset, DatasetLoader
-from weak_label_generator.weaklabelgenerator import labelgenerator
-import network
+from weaklabelgenerator import labelgenerator
+from finetune_bucket import finetuner
+
 
 # Define transforms
 transform = transforms.Compose(
@@ -37,9 +43,6 @@ transform = transforms.Compose(
         transforms.ToTensor()
     ]
 )
-
-from finetune.finetune_bucket import finetuner
-
 
 def get_argparser():
     parser = argparse.ArgumentParser()
@@ -203,7 +206,7 @@ def main():
 
     num_buckets = 1
     processor = DataProcessor(
-        "image_filtered/rank_1_val.json", num_buckets=num_buckets, train_ratio=0.8
+        "./assets/rank_1_val.json", num_buckets=num_buckets, train_ratio=0.8
     )
 
     # Dictionary to map bucket orders to their respective methods
@@ -224,7 +227,7 @@ def main():
     # val_data = processor.val_data
 
     model_name = "deeplabv3plus_resnet101"
-    ckpt = "checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth"
+    ckpt = "./checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth"
     teacher_ckpt = ckpt
     teacher_model = network.modeling.__dict__[model_name](
         num_classes=19, output_stride=16
@@ -235,7 +238,7 @@ def main():
         print("\n\n[INFO] Bucket %d" % bucket_idx)
 
         image_files = [d["image"] for d in train_buckets[bucket_idx]]
-        samples = random.sample(image_files, 2000)
+        samples = random.sample(image_files, 20)
 
         print("\n\n[INFO] Generating weak labels for bucket %d" % bucket_idx)
         filtered_samples, train_labelgen = labelgenerator(
@@ -260,7 +263,7 @@ def main():
                 model_name=model_name,
             )
 
-        ckpt = "checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth" % (
+        ckpt = "./checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth" % (
             bucket_idx,
             opts.buckets_order,
             model_name,

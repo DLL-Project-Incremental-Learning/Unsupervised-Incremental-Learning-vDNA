@@ -1,4 +1,9 @@
 import os
+import sys
+
+# Add the parent directory to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import torch
 import torch.nn as nn
 from tqdm import tqdm
@@ -14,7 +19,7 @@ import shutil
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the path to the config file
-config_path = os.path.join(script_dir, 'configs', 'weak_label_kitti_360.json')
+config_path = './configs/weak_label_kitti_360.json'
 
 # Load configuration from JSON file
 with open(config_path, 'r') as f:
