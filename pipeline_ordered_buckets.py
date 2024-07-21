@@ -25,7 +25,7 @@ from torchvision import transforms
 from torch.utils.data import DataLoader, Dataset
 from glob import glob
 from collections import namedtuple
-from dataloaders import DataProcessor, KITTI360Dataset, DatasetLoader
+from datasets.dataloaders import DataProcessor, KITTI360Dataset, DatasetLoader
 from weak_label_generator.weaklabelgenerator import labelgenerator
 import network
 
@@ -35,7 +35,7 @@ transform = transforms.Compose([
     transforms.ToTensor()
 ])
 
-from finetune_bucket import finetuner
+from finetune.finetune_bucket import finetuner
 
 
 def get_argparser():
@@ -132,7 +132,7 @@ def main():
     os.system('rm -rf outputs')
 
     num_buckets = 1
-    processor = DataProcessor('rank_1_val.json', num_buckets=num_buckets, train_ratio=0.8)
+    processor = DataProcessor('image_filtered/rank_1_val.json', num_buckets=num_buckets, train_ratio=0.8)
     # train_buckets, val_buckets = processor.asc_buckets()
     # if opts.buckets_order == 'asc':
     #     train_buckets, val_buckets = processor.asc_buckets()
@@ -178,7 +178,7 @@ def main():
 
 
 
-        samples = image_files[:2000]
+        samples = image_files[:30]
         # val_samples = val_image_files[:10]
         # print("\n\nSamples: %s" % samples)
         # print("Validation Samples: %s" % val_samples)
