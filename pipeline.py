@@ -25,7 +25,7 @@ from torch.utils.data import DataLoader, Dataset
 from glob import glob
 from collections import namedtuple
 from dataloaders import DataProcessor, KITTI360Dataset, DatasetLoader
-from weaklabelgenerator import labelgenerator
+from weak_label_generator.weaklabelgenerator import labelgenerator
 import network
 
 # Define transforms
