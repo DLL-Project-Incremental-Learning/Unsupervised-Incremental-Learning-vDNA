@@ -19,6 +19,7 @@ from metrics import StreamSegMetrics
 from collections import namedtuple
 import wandb
 
+
 class DataProcessor:
     def __init__(self, file_path, train_ratio=0.8, num_buckets=6, seed=42):
         self.data = self.load_data(file_path)
@@ -31,33 +32,31 @@ class DataProcessor:
     def load_data(file_path):
         with open(file_path) as f:
             return json.load(f)
-    
+
     def split_data(self, data):
 
-        train_data = [d for d in data if not d['val_set']]
-        val_data = [d for d in data if d['val_set']]
+        train_data = [d for d in data if not d["val_set"]]
+        val_data = [d for d in data if d["val_set"]]
 
         return train_data, val_data
 
     def create_buckets(self, data, sort_key=None, reverse=False):
         if sort_key:
             data = sorted(data, key=lambda x: x[sort_key], reverse=reverse)
-        
-        bucket_size = len(data) // self.num_buckets
-        buckets = [data[i * bucket_size:(i + 1) * bucket_size] for i in range(self.num_buckets)]
 
-        # # Handle any remaining data points
-        # remainder = len(data) % self.num_buckets
-        # if remainder > 0:
-        #     buckets[-1].extend(data[-remainder:])
-        
+        bucket_size = len(data) // self.num_buckets
+        buckets = [
+            data[i * bucket_size : (i + 1) * bucket_size]
+            for i in range(self.num_buckets)
+        ]
+
         return buckets
 
     def asc_buckets(self):
-        return self.create_buckets(self.train_data, sort_key='emd', reverse=False)
+        return self.create_buckets(self.train_data, sort_key="emd", reverse=False)
 
     def desc_buckets(self):
-        return self.create_buckets(self.train_data, sort_key='emd', reverse=True)
+        return self.create_buckets(self.train_data, sort_key="emd", reverse=True)
 
     def random_buckets(self):
         random.shuffle(self.train_data)
@@ -119,15 +118,14 @@ class KITTI360Dataset(Dataset):
         CityscapesClass('license plate',        -1, 255, 'vehicle', 7, False, True, (0, 0, 142)),
     ]
 
-    train_id_to_color = [c.color for c in classes if (c.train_id != -1 and c.train_id != 255)]
+    train_id_to_color = [
+        c.color for c in classes if (c.train_id != -1 and c.train_id != 255)
+    ]
     train_id_to_color.append([0, 0, 0])
     train_id_to_color = np.array(train_id_to_color)
     id_to_train_id = np.array([c.train_id for c in classes])
 
-
-
     def __init__(self, image_paths, label_dir, transform=None):
-        # self.image_paths = image_paths
         self.image_paths = image_paths
         self.label_dir = label_dir
         self.transform = transform
@@ -142,70 +140,44 @@ class KITTI360Dataset(Dataset):
     @classmethod
     def decode_target(cls, target):
         target[target == 255] = 19
-        #target = target.astype('uint8') + 1
         return cls.train_id_to_color[target]
-    
+
     def __getitem__(self, idx):
         img_path = self.image_paths[idx]
         target_path = os.path.join(self.label_dir, os.path.basename(img_path))
         image = Image.open(img_path).convert("RGB")
         target = Image.open(target_path)
-        # print(f"img_path: {img_path}")
-        # print(f"label_dir: {os.path.join(self.label_dir, os.path.basename(img_path))}")
 
         if self.transform:
-            # image = self.transform(image)
-            # target = self.transform(target)
-            # target = torch.squeeze(target, 0)
             image, target = self.transform(image, target)
-        # target = self.encode_target(target)
+
         return image, target
+
 
 class DatasetLoader:
     def __init__(self, opts):
         self.opts = opts
 
     def get_transforms(self):
-        train_transform = et.ExtCompose([
-            et.ExtRandomCrop(size=(self.opts.crop_size, self.opts.crop_size)),
-            et.ExtColorJitter(brightness=0.5, contrast=0.5, saturation=0.5),
-            et.ExtRandomHorizontalFlip(),
-            et.ExtToTensor(),
-            et.ExtNormalize(mean=[0.485, 0.456, 0.406],
-                            std=[0.229, 0.224, 0.225]),
-        ])
+        train_transform = et.ExtCompose(
+            [
+                et.ExtRandomCrop(size=(self.opts.crop_size, self.opts.crop_size)),
+                et.ExtColorJitter(brightness=0.5, contrast=0.5, saturation=0.5),
+                et.ExtRandomHorizontalFlip(),
+                et.ExtToTensor(),
+                et.ExtNormalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            ]
+        )
 
-        val_transform = et.ExtCompose([
-            et.ExtToTensor(),
-            et.ExtNormalize(mean=[0.485, 0.456, 0.406],
-                            std=[0.229, 0.224, 0.225]),
-        ])
-
-        return train_transform, val_transform
+        return train_transform
 
     def get_datasets(self, train_image_paths, train_label_dir):
-        train_transform, val_transform = self.get_transforms()
+        train_transform = self.get_transforms()
 
         train_dst = KITTI360Dataset(
             image_paths=train_image_paths,
             label_dir=train_label_dir,
-            transform=train_transform
+            transform=train_transform,
         )
 
-        # val_dst = KITTI360Dataset(
-        #     image_paths=val_image_paths,
-        #     label_dir=val_label_dir,
-        #     transform=val_transform
-        # )
-
-        return train_dst #, val_dst
-
-
-# Example usage:
-# num_buckets = 6
-# bucket_idx = 1
-# processor = DataProcessor('results.json', num_buckets=num_buckets, train_ratio=0.8)
-# train_buckets, val_buckets = processor.asc_buckets()
-# image_files = [d['image'] for d in train_buckets[bucket_idx]]
-# print("\n\nNumber of images: %d" % len(image_files))
-# print("Image files: %s" % image_files[:5])
+        return train_dst
