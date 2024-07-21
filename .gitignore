@@ -18,9 +18,11 @@ DLL_Project_Workspace.code-workspace
 KITTI-360/
 wandb
 datasets/data/
+datasets/10k_images_train/bdd100k/images/10k/train/*.jpg
 datasets\data\KITTI-360\2013_05_28_drive_0008_sync\image_00\data_rect\0000004987.png
 dataset/data/
 weak_labels
 *.pth
 logs/
 history.parquet.gzip
+samples/temp_2.txt.bak

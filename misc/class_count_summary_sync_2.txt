@@ -1,0 +1,13 @@
+Summary of images grouped by unique class counts:
+------------------------------------------------
+Class count 13: 3 images
+Class count 12: 30 images
+Class count 11: 232 images
+Class count 10: 608 images
+Class count 9: 702 images
+Class count 8: 332 images
+Class count 7: 159 images
+Class count 6: 67 images
+Class count 5: 32 images
+Class count 4: 10 images
+Class count 3: 3 images

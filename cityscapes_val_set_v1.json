@@ -1,0 +1,146 @@
+[
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/frankfurt/frankfurt_000000_000294_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/frankfurt/frankfurt_000000_000294_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/frankfurt/frankfurt_000000_000576_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/frankfurt/frankfurt_000000_000576_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/frankfurt/frankfurt_000000_001016_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/frankfurt/frankfurt_000000_001016_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/frankfurt/frankfurt_000000_001236_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/frankfurt/frankfurt_000000_001236_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/frankfurt/frankfurt_000000_001751_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/frankfurt/frankfurt_000000_001751_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/frankfurt/frankfurt_000000_002196_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/frankfurt/frankfurt_000000_002196_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/frankfurt/frankfurt_000000_002963_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/frankfurt/frankfurt_000000_002963_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/frankfurt/frankfurt_000000_003025_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/frankfurt/frankfurt_000000_003025_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/frankfurt/frankfurt_000000_003357_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/frankfurt/frankfurt_000000_003357_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/frankfurt/frankfurt_000000_003920_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/frankfurt/frankfurt_000000_003920_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000160_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000160_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000161_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000161_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000162_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000162_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000163_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000163_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000164_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000164_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000165_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000165_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000166_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000166_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000167_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000167_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000168_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000168_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000169_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000169_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000170_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000170_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000171_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000171_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000172_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000172_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/val/munster/munster_000173_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/val/munster/munster_000173_000019_gtFine_labelIds.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    }
+]

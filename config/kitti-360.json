@@ -1,0 +1,93 @@
+// this file is sample, we need to update this later and then use this file for retrieving the configuration
+{
+    "visual_dna_params": {
+
+        "source_dataset_path": "path/to/cityscapes_datset",
+        "target_dataset_path": "path/to/kitt-360-dataset",
+        "num_workers": 0,
+        "feat_extractor_name": "dinov2_small_224",
+        "vdna_cityscapes_path": "output/vdna_cityscapes",
+        "vdna_kitti_360_path": "output/vdna_kitti_360",
+        "results_json_path": "output/results.json"
+      },
+    
+    "model_params": {
+      "backbone": "resnet50",
+      "num_classes": 19,  // Replace with your number of classes
+      "pretrained": true,
+      "pretrained_path": "path/to/pretrained_model.pth",
+      "finetune": true,
+      "freeze_backbone": false,
+      "dropout": 0.1
+    },
+    "training_params": {
+      "batch_size": 8,
+      "num_epochs": 50,
+      "learning_rate": 0.001,
+      "optimizer": "Adam",
+      "weight_decay": 1e-5,
+      "lr_scheduler": {
+        "step_size": 10,
+        "gamma": 0.1
+      }
+    },
+    "dataset_params": {
+      "root_dir": "path/to/dataset",
+      "train_subdir": "train",
+      "val_subdir": "val",
+      "image_folder": "images",
+      "mask_folder": "masks",
+      "image_extension": ".jpg",
+      "mask_extension": ".png",
+      "augmentation": {
+        "horizontal_flip": true,
+        "vertical_flip": false,
+        "rotation_range": 10,
+        "resize": {
+          "height": 256,
+          "width": 256
+        }
+      }
+    }
+  }
+{
+    "model_params": {
+      "backbone": "resnet50",
+      "num_classes": 19,  // Replace with your number of classes
+      "pretrained": true,
+      "pretrained_path": "path/to/pretrained_model.pth",
+      "finetune": true,
+      "freeze_backbone": false,
+      "dropout": 0.1
+    },
+    "training_params": {
+      "batch_size": 8,
+      "num_epochs": 50,
+      "learning_rate": 0.001,
+      "optimizer": "Adam",
+      "weight_decay": 1e-5,
+      "lr_scheduler": {
+        "step_size": 10,
+        "gamma": 0.1
+      }
+    },
+    "dataset_params": {
+      "root_dir": "path/to/dataset",
+      "train_subdir": "train",
+      "val_subdir": "val",
+      "image_folder": "images",
+      "mask_folder": "masks",
+      "image_extension": ".jpg",
+      "mask_extension": ".png",
+      "augmentation": {
+        "horizontal_flip": true,
+        "vertical_flip": false,
+        "rotation_range": 10,
+        "resize": {
+          "height": 256,
+          "width": 256
+        }
+      }
+    }
+  }
+  

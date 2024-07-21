@@ -1,0 +1,116 @@
+[
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000002660.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0010_sync/image_00/semantic/0000002660.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000002650.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0010_sync/image_00/semantic/0000002650.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000002655.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0010_sync/image_00/semantic/0000002655.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005105.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005105.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005155.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005155.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005085.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005085.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005850.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005850.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005100.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005100.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005080.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005080.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005860.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005860.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005090.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005090.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0004_sync/image_00/data_rect/0000003805.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0004_sync/image_00/semantic/0000003805.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005110.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005110.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005115.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005115.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005120.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005120.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005145.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005145.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005125.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005125.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005135.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005135.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    },
+    {
+        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000005130.png",
+        "ground_truth": "datasets/data/KITTI-360/data_2d_semantics/train/2013_05_28_drive_0005_sync/image_00/semantic/0000005130.png",
+        "image_exists": true,
+        "ground_truth_exists": true
+    }
+]

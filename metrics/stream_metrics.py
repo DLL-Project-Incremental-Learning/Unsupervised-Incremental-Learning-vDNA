@@ -1,5 +1,7 @@
 import numpy as np
 from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+from sklearn.metrics import ConfusionMatrixDisplay
 
 class _StreamMetrics(object):
     def __init__(self):
@@ -32,7 +34,9 @@ class StreamSegMetrics(_StreamMetrics):
 
     def update(self, label_trues, label_preds):
         for lt, lp in zip(label_trues, label_preds):
-            self.confusion_matrix += self._fast_hist( lt.flatten(), lp.flatten() )
+            #print("printing lt and lp")
+            #print(lt.shape, lp.shape)
+            self.confusion_matrix += self._fast_hist(lt.flatten(), lp.flatten())
     
     @staticmethod
     def to_str(results):
@@ -81,6 +85,37 @@ class StreamSegMetrics(_StreamMetrics):
         
     def reset(self):
         self.confusion_matrix = np.zeros((self.n_classes, self.n_classes))
+
+    #def plot_confusion_matrix(self, class_names=None):
+    #    """Plots the confusion matrix using Matplotlib"""
+    #    if class_names is None:
+    #        class_names = [f'Class {i}' for i in range(self.n_classes)]
+    #    
+    #    cm = self.confusion_matrix
+    #    cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        
+    #    plt.figure(figsize=(10, 8))
+    #    ConfusionMatrixDisplay(cm_normalized, display_labels=class_names).plot(include_values=True, xticks_rotation='vertical')
+    #    plt.title("Normalized Confusion Matrix")
+    #    plt.xlabel("Predicted Class")
+    #    plt.ylabel("True Class")
+    #    plt.show()
+
+    def plot_confusion_matrix(self, class_names=None):
+        """Plots the confusion matrix using Matplotlib"""
+        if class_names is None:
+            class_names = [f'Class {i}' for i in range(self.n_classes)]
+        
+        cm = self.confusion_matrix
+        cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        
+        plt.figure(figsize=(10, 8))
+        disp = ConfusionMatrixDisplay(cm_normalized, display_labels=class_names)
+        disp.plot(include_values=True, xticks_rotation='vertical', values_format='.2f')
+        plt.title("Normalized Confusion Matrix")
+        plt.xlabel("Predicted Class")
+        plt.ylabel("True Class")
+        plt.show()
 
 class AverageMeter(object):
     """Computes average values"""

@@ -1,0 +1,13 @@
+Checkpoint,Metrics
+latest_bucket_0_asc_deeplabv3plus_resnet101_kitti_os16.pth,"
+Overall Acc: 0.910461
+Mean Acc: 0.463895
+FreqW Acc: 0.871436
+Mean IoU: 0.356816
+"
+latest_bucket_1_asc_deeplabv3plus_resnet101_kitti_os16.pth,"
+Overall Acc: 0.925775
+Mean Acc: 0.430824
+FreqW Acc: 0.887686
+Mean IoU: 0.367844
+"

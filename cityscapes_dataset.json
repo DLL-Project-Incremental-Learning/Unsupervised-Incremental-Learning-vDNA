@@ -1,0 +1,802 @@
+[
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_067223_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_067223_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_043102_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_043102_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/stuttgart/stuttgart_000139_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/stuttgart/stuttgart_000139_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000002_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000002_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_024604_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_024604_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_098061_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_098061_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_005289_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_005289_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_038915_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_038915_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_091038_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_091038_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000127_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000127_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/erfurt/erfurt_000012_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/erfurt/erfurt_000012_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_019938_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_019938_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bochum/bochum_000000_011711_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bochum/bochum_000000_011711_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000096_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000096_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000126_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000126_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_015605_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_015605_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_001901_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_001901_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bochum/bochum_000000_006026_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bochum/bochum_000000_006026_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000042_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000042_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_043748_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_043748_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_012353_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_012353_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_024379_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_024379_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/aachen/aachen_000146_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/aachen/aachen_000146_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_079657_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_079657_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/weimar/weimar_000075_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/weimar/weimar_000075_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/aachen/aachen_000113_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/aachen/aachen_000113_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/zurich/zurich_000093_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/zurich/zurich_000093_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_019791_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_019791_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/erfurt/erfurt_000048_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/erfurt/erfurt_000048_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/weimar/weimar_000064_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/weimar/weimar_000064_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/zurich/zurich_000120_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/zurich/zurich_000120_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/erfurt/erfurt_000088_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/erfurt/erfurt_000088_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000029_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000029_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000315_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000315_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/jena/jena_000041_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/jena/jena_000041_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000118_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000118_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/stuttgart/stuttgart_000174_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/stuttgart/stuttgart_000174_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_054555_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_054555_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000177_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000177_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_058105_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_058105_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/zurich/zurich_000092_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/zurich/zurich_000092_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_034231_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_034231_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000041_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000041_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/aachen/aachen_000128_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/aachen/aachen_000128_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000030_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000030_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000057_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000057_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/weimar/weimar_000006_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/weimar/weimar_000006_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/stuttgart/stuttgart_000160_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/stuttgart/stuttgart_000160_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/jena/jena_000039_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/jena/jena_000039_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000068_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000068_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_028439_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_028439_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000089_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000089_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/ulm/ulm_000011_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/ulm/ulm_000011_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_033457_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_033457_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000056_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000056_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000166_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000166_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_010160_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_010160_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_064393_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_064393_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_043822_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_043822_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000147_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000147_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/erfurt/erfurt_000022_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/erfurt/erfurt_000022_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_045446_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_045446_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/zurich/zurich_000072_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/zurich/zurich_000072_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000009_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000009_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/jena/jena_000076_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/jena/jena_000076_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bochum/bochum_000000_000885_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bochum/bochum_000000_000885_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/stuttgart/stuttgart_000165_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/stuttgart/stuttgart_000165_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/aachen/aachen_000084_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/aachen/aachen_000084_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bochum/bochum_000000_037039_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bochum/bochum_000000_037039_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/jena/jena_000090_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/jena/jena_000090_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_006355_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_006355_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/ulm/ulm_000004_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/ulm/ulm_000004_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/monchengladbach/monchengladbach_000000_024964_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/monchengladbach/monchengladbach_000000_024964_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_003937_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_003937_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/ulm/ulm_000077_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/ulm/ulm_000077_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000084_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000084_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/erfurt/erfurt_000087_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/erfurt/erfurt_000087_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000172_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000172_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/cologne/cologne_000111_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/cologne/cologne_000111_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_010653_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_010653_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000252_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000252_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000000_006621_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000000_006621_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_071942_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_071942_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/weimar/weimar_000007_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/weimar/weimar_000007_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000008_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000008_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000076_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000076_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_057517_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_057517_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_000108_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_000108_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000150_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000150_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bochum/bochum_000000_017216_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bochum/bochum_000000_017216_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000000_017761_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000000_017761_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_036697_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_036697_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_026743_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_026743_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000067_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000067_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_027857_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_027857_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/cologne/cologne_000085_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/cologne/cologne_000085_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000000_031602_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000000_031602_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_024251_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_024251_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000108_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000108_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/zurich/zurich_000069_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/zurich/zurich_000069_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000186_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000186_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/stuttgart/stuttgart_000036_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/stuttgart/stuttgart_000036_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_053776_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_053776_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/stuttgart/stuttgart_000130_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/stuttgart/stuttgart_000130_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/stuttgart/stuttgart_000045_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/stuttgart/stuttgart_000045_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_034935_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_034935_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000131_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000131_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/monchengladbach/monchengladbach_000000_000076_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/monchengladbach/monchengladbach_000000_000076_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_004983_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_004983_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000000_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000000_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_021553_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_021553_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000079_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000079_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000053_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000053_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/zurich/zurich_000016_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/zurich/zurich_000016_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_036562_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_036562_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/zurich/zurich_000088_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/zurich/zurich_000088_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_003489_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_003489_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_058591_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_058591_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_046646_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_046646_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000299_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000299_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_023271_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_023271_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/erfurt/erfurt_000080_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/erfurt/erfurt_000080_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000135_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000135_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/darmstadt/darmstadt_000046_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/darmstadt/darmstadt_000046_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/jena/jena_000097_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/jena/jena_000097_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/stuttgart/stuttgart_000084_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/stuttgart/stuttgart_000084_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_014319_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_014319_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000000_020653_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000000_020653_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/aachen/aachen_000058_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/aachen/aachen_000058_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000184_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000184_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_001106_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_001106_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000120_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000120_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/cologne/cologne_000070_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/cologne/cologne_000070_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/darmstadt/darmstadt_000013_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/darmstadt/darmstadt_000013_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/zurich/zurich_000026_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/zurich/zurich_000026_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/weimar/weimar_000140_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/weimar/weimar_000140_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bochum/bochum_000000_016758_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bochum/bochum_000000_016758_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000237_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000237_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/erfurt/erfurt_000004_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/erfurt/erfurt_000004_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_030953_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_030953_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bochum/bochum_000000_007651_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bochum/bochum_000000_007651_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/erfurt/erfurt_000084_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/erfurt/erfurt_000084_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000029_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000029_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000049_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000049_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_025833_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_025833_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000295_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000295_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_009097_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_009097_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_044219_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_044219_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000136_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000136_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000021_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000021_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_005252_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_005252_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_052122_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_052122_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_064825_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_064825_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000000_014416_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000000_014416_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000000_022489_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000000_022489_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/cologne/cologne_000046_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/cologne/cologne_000046_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_083696_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_083696_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/cologne/cologne_000091_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/cologne/cologne_000091_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/aachen/aachen_000068_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/aachen/aachen_000068_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_043080_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_043080_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000113_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000113_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/stuttgart/stuttgart_000191_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/stuttgart/stuttgart_000191_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_007524_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_007524_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_030400_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_030400_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000089_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000089_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/aachen/aachen_000085_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/aachen/aachen_000085_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/erfurt/erfurt_000019_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/erfurt/erfurt_000019_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000122_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000122_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/weimar/weimar_000071_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/weimar/weimar_000071_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000039_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000039_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/monchengladbach/monchengladbach_000000_033454_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/monchengladbach/monchengladbach_000000_033454_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_032906_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_032906_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_056601_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_056601_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000032_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000032_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000051_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000051_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/cologne/cologne_000071_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/cologne/cologne_000071_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/zurich/zurich_000036_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/zurich/zurich_000036_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000137_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000137_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hamburg/hamburg_000000_073758_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hamburg/hamburg_000000_073758_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000056_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000056_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000012_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000012_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000156_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000156_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000121_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000121_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/krefeld/krefeld_000000_019125_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/krefeld/krefeld_000000_019125_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000063_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000063_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_042770_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_042770_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/hanover/hanover_000000_024136_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/hanover/hanover_000000_024136_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000058_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000058_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/tubingen/tubingen_000058_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/tubingen/tubingen_000058_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/zurich/zurich_000017_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/zurich/zurich_000017_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/monchengladbach/monchengladbach_000000_005686_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/monchengladbach/monchengladbach_000000_005686_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000043_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000043_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/dusseldorf/dusseldorf_000210_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/dusseldorf/dusseldorf_000210_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_062362_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_062362_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/darmstadt/darmstadt_000063_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/darmstadt/darmstadt_000063_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000001_006153_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000001_006153_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/ulm/ulm_000047_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/ulm/ulm_000047_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bremen/bremen_000171_000019_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bremen/bremen_000171_000019_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/bochum/bochum_000000_024524_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/bochum/bochum_000000_024524_gtFine_labelIds.png"
+    },
+    {
+        "image": "datasets/data/cityscapes/leftImg8bit/train/strasbourg/strasbourg_000000_018358_leftImg8bit.png",
+        "ground_truth": "datasets/data/cityscapes/gtFine/train/strasbourg/strasbourg_000000_018358_gtFine_labelIds.png"
+    }
+]

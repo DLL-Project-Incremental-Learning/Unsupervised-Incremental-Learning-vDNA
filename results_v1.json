@@ -50,11 +50,6 @@
         "val_set": false
     },
     {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000012765.png",
-        "emd": 8.67938678277358,
-        "val_set": false
-    },
-    {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000004245.png",
         "emd": 8.69805573179587,
         "val_set": false
@@ -120,11 +115,6 @@
         "val_set": false
     },
     {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000012775.png",
-        "emd": 8.872255647619726,
-        "val_set": false
-    },
-    {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000007745.png",
         "emd": 8.885768005383843,
         "val_set": false
@@ -152,11 +142,6 @@
     {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000005010.png",
         "emd": 8.911275300789287,
-        "val_set": false
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000012780.png",
-        "emd": 8.925408724324818,
         "val_set": false
     },
     {
@@ -195,18 +180,8 @@
         "val_set": false
     },
     {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000011655.png",
-        "emd": 8.98595085819423,
-        "val_set": false
-    },
-    {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000000230.png",
         "emd": 8.986790136886851,
-        "val_set": false
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000012770.png",
-        "emd": 8.99050732763175,
         "val_set": false
     },
     {
@@ -24795,11 +24770,6 @@
         "val_set": false
     },
     {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000003655.png",
-        "emd": 10.953764443670325,
-        "val_set": false
-    },
-    {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0002_sync/image_00/data_rect/0000004441.png",
         "emd": 10.95391295372535,
         "val_set": true
@@ -24808,11 +24778,6 @@
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0006_sync/image_00/data_rect/0000000480.png",
         "emd": 10.95393548986492,
         "val_set": true
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0002_sync/image_00/data_rect/0000018566.png",
-        "emd": 10.954035447462442,
-        "val_set": false
     },
     {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000005070.png",
@@ -24840,11 +24805,6 @@
         "val_set": false
     },
     {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000013840.png",
-        "emd": 10.954999555643877,
-        "val_set": false
-    },
-    {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0002_sync/image_00/data_rect/0000011266.png",
         "emd": 10.955245617066053,
         "val_set": false
@@ -24855,38 +24815,8 @@
         "val_set": true
     },
     {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000011450.png",
-        "emd": 10.956098618398283,
-        "val_set": false
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0004_sync/image_00/data_rect/0000000645.png",
-        "emd": 10.956160760922158,
-        "val_set": false
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000012670.png",
-        "emd": 10.956190537237054,
-        "val_set": false
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0007_sync/image_00/data_rect/0000003060.png",
-        "emd": 10.956257489339654,
-        "val_set": false
-    },
-    {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000003075.png",
         "emd": 10.956360675593205,
-        "val_set": false
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0004_sync/image_00/data_rect/0000002515.png",
-        "emd": 10.956478442544343,
-        "val_set": false
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0004_sync/image_00/data_rect/0000002590.png",
-        "emd": 10.956580565330004,
         "val_set": false
     },
     {
@@ -24903,11 +24833,6 @@
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000002060.png",
         "emd": 10.957303031284358,
         "val_set": true
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0004_sync/image_00/data_rect/0000001530.png",
-        "emd": 10.957439880396945,
-        "val_set": false
     },
     {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000004255.png",
@@ -24965,11 +24890,6 @@
         "val_set": false
     },
     {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0004_sync/image_00/data_rect/0000002565.png",
-        "emd": 10.96087322765833,
-        "val_set": false
-    },
-    {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0003_sync/image_00/data_rect/0000000790.png",
         "emd": 10.960996961452954,
         "val_set": false
@@ -24990,11 +24910,6 @@
         "val_set": false
     },
     {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0002_sync/image_00/data_rect/0000016236.png",
-        "emd": 10.962024184711307,
-        "val_set": false
-    },
-    {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000007890.png",
         "emd": 10.96220296364581,
         "val_set": false
@@ -25012,11 +24927,6 @@
     {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000002330.png",
         "emd": 10.962673410242587,
-        "val_set": false
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000012390.png",
-        "emd": 10.962723317514683,
         "val_set": false
     },
     {
@@ -50280,11 +50190,6 @@
         "val_set": false
     },
     {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000003290.png",
-        "emd": 12.071115135293876,
-        "val_set": false
-    },
-    {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0002_sync/image_00/data_rect/0000010441.png",
         "emd": 12.071269465733026,
         "val_set": false
@@ -50325,11 +50230,6 @@
         "val_set": true
     },
     {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0004_sync/image_00/data_rect/0000000315.png",
-        "emd": 12.07273628270525,
-        "val_set": false
-    },
-    {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0002_sync/image_00/data_rect/0000009501.png",
         "emd": 12.073846655318828,
         "val_set": false
@@ -50347,11 +50247,6 @@
     {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0002_sync/image_00/data_rect/0000012776.png",
         "emd": 12.07529115387551,
-        "val_set": false
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0004_sync/image_00/data_rect/0000001575.png",
-        "emd": 12.075362857916298,
         "val_set": false
     },
     {
@@ -50420,11 +50315,6 @@
         "val_set": false
     },
     {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0006_sync/image_00/data_rect/0000000060.png",
-        "emd": 12.077924578092247,
-        "val_set": false
-    },
-    {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000002280.png",
         "emd": 12.078048310838863,
         "val_set": false
@@ -50437,11 +50327,6 @@
     {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0002_sync/image_00/data_rect/0000014111.png",
         "emd": 12.078260042605798,
-        "val_set": false
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0004_sync/image_00/data_rect/0000001335.png",
-        "emd": 12.078294366234982,
         "val_set": false
     },
     {
@@ -50477,11 +50362,6 @@
     {
         "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000004210.png",
         "emd": 12.080634599245277,
-        "val_set": false
-    },
-    {
-        "image": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0005_sync/image_00/data_rect/0000006715.png",
-        "emd": 12.080686381930812,
         "val_set": false
     },
     {

@@ -1,0 +1,194 @@
+[
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000000235.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000000235.png",
+        "entropy": 0.5118484497070312,
+        "confidence": 0.8560140132904053
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000010440.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000010440.png",
+        "entropy": 0.43382132053375244,
+        "confidence": 0.8669187426567078
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000000285.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000000285.png",
+        "entropy": 0.32767045497894287,
+        "confidence": 0.9104175567626953
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000007750.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000007750.png",
+        "entropy": 0.5786293745040894,
+        "confidence": 0.8361401557922363
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000000225.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000000225.png",
+        "entropy": 0.7054675817489624,
+        "confidence": 0.7959391474723816
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000007740.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000007740.png",
+        "entropy": 0.6839674711227417,
+        "confidence": 0.8075711131095886
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000000550.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000000550.png",
+        "entropy": 0.716543436050415,
+        "confidence": 0.7917212247848511
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000010445.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000010445.png",
+        "entropy": 0.39071205258369446,
+        "confidence": 0.880748450756073
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000000240.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000000240.png",
+        "entropy": 0.5891180038452148,
+        "confidence": 0.8260514736175537
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000002475.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000002475.png",
+        "entropy": 0.6033973693847656,
+        "confidence": 0.8176515102386475
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000012765.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000012765.png",
+        "entropy": 0.47017404437065125,
+        "confidence": 0.8609519004821777
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000004245.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000004245.png",
+        "entropy": 0.6651274561882019,
+        "confidence": 0.7982156276702881
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000010435.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000010435.png",
+        "entropy": 0.49208229780197144,
+        "confidence": 0.8530536890029907
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000007600.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000007600.png",
+        "entropy": 0.4473980665206909,
+        "confidence": 0.8728163242340088
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000007650.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000007650.png",
+        "entropy": 0.5129401683807373,
+        "confidence": 0.8466775417327881
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000002055.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000002055.png",
+        "entropy": 0.6643733382225037,
+        "confidence": 0.8044909238815308
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0004_sync/image_00/data_rect/0000010175.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000010175.png",
+        "entropy": 0.5490279793739319,
+        "confidence": 0.8395200967788696
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000011125.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000011125.png",
+        "entropy": 0.4757547676563263,
+        "confidence": 0.8511806726455688
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000005015.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000005015.png",
+        "entropy": 0.4414035677909851,
+        "confidence": 0.8667954206466675
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000011130.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000011130.png",
+        "entropy": 0.5754234790802002,
+        "confidence": 0.8178761005401611
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000002460.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000002460.png",
+        "entropy": 0.6596837639808655,
+        "confidence": 0.8096303939819336
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000000610.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000000610.png",
+        "entropy": 0.9634066820144653,
+        "confidence": 0.7173489332199097
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000012775.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000012775.png",
+        "entropy": 0.33957329392433167,
+        "confidence": 0.9029856324195862
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000007745.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000007745.png",
+        "entropy": 0.6881701946258545,
+        "confidence": 0.7998738288879395
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000004225.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000004225.png",
+        "entropy": 0.5923997163772583,
+        "confidence": 0.822052538394928
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0004_sync/image_00/data_rect/0000010170.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000010170.png",
+        "entropy": 0.6026051640510559,
+        "confidence": 0.8163267374038696
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000000565.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000000565.png",
+        "entropy": 0.7927436828613281,
+        "confidence": 0.7670356035232544
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000005010.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000005010.png",
+        "entropy": 0.4255271255970001,
+        "confidence": 0.8782966136932373
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0009_sync/image_00/data_rect/0000012780.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000012780.png",
+        "entropy": 0.43186524510383606,
+        "confidence": 0.8791553974151611
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000002470.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000002470.png",
+        "entropy": 0.6379908323287964,
+        "confidence": 0.8100062608718872
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0000_sync/image_00/data_rect/0000007635.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000007635.png",
+        "entropy": 0.5727733373641968,
+        "confidence": 0.8273067474365234
+    },
+    {
+        "image_path": "datasets/data/KITTI-360/data_2d_raw/2013_05_28_drive_0010_sync/image_00/data_rect/0000000245.png",
+        "label_path": "outputs/weaklabels/KITTI-360/asc/bucket_0/0000000245.png",
+        "entropy": 0.6290165781974792,
+        "confidence": 0.8139791488647461
+    }
+]
