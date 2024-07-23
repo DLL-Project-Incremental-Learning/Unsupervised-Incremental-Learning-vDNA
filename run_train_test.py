@@ -10,13 +10,7 @@ def objective_function():
     # Run the pipeline command
     pipeline_command = [
         "python", "./src/pipeline_ordered_buckets.py",
-        "--buckets_order", "rand",
-        "--buckets_num", str(1),
-        "--total_itrs", str(10),
-        "--lr", str(0.014),
-        "--batch_size", str(4),
-        "--crop_size", str(370),
-        "--weight_decay", str(3e-5)
+        "./configs/training_pipeline.json"
     ]
     logging.info(f"Running pipeline command: {' '.join(pipeline_command)}")
     try:
