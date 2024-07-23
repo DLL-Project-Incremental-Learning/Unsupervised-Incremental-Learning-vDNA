@@ -12,9 +12,9 @@ def objective_function(args):
         "python", "./src/pipeline_ordered_buckets.py",
         "--buckets_order", "rand",
         "--buckets_num", str(1),
-        "--total_itrs", str(10),
+        "--total_itrs", str(1800),
         "--lr", str(0.014),
-        "--batch_size", str(4),
+        "--batch_size", str(16),
         "--crop_size", str(370),
         "--weight_decay", str(3e-5),
         "--json_input", args.json_input,
@@ -55,7 +55,7 @@ def objective_function(args):
         "--json_file1", "./tests/cityscapes_val_set.json",
         "--json_file2", "./tests/kitti-360_val_set_v3.json",
         "--new_ckpt",checkpoint_name, 
-        "--num_test", "25"
+        "--num_test", "2200"
     ]
     logging.info(f"Running test command: {' '.join(test_command)}")
     try:

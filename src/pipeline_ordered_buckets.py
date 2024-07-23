@@ -262,7 +262,7 @@ def main():
     print("\n\n[INFO] Bucket %d" % bucket_idx)
 
     image_files = [d["image"] for d in train_buckets[bucket_idx]]
-    samples = random.sample(image_files, 20)
+    samples = random.sample(image_files, 2000)
 
     print("\n\n[INFO] Generating weak labels for bucket %d" % bucket_idx)
     filtered_samples, train_labelgen = labelgenerator(
