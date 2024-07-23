@@ -21,19 +21,6 @@ from reportlab.lib.pagesizes import landscape, letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 
-def get_argparser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, default='deeplabv3plus_resnet101', help='model name')
-    parser.add_argument("--output_stride", type=int, default=16, choices=[8, 16])
-    parser.add_argument("--gpu_id", type=str, default='0', help="GPU ID")
-    parser.add_argument("--random_seed", type=int, default=1, help="random seed")
-    parser.add_argument("--val_batch_size", type=int, default=4, help='batch size for validation')
-    parser.add_argument("--checkpoint_dir", default='checkpoints\\', type=str, required=True, help='path to the directory containing checkpoint files')
-    parser.add_argument("--json_file1", default='cityscapes_val_set.json', type=str, required=True, help='path to the first JSON file containing image and label paths')
-    parser.add_argument("--json_file2", default='kitti-360_val_set_v1.json', type=str, required=True, help='path to the second JSON file containing image and label paths')
-    parser.add_argument("--num_test", type=int, default=250, help='number of test images')
-    return parser
-
 def validate(opts, model, loader, device, metrics, image_paths, label_paths):
     metrics.reset()
     with torch.no_grad():
@@ -97,7 +84,8 @@ def generate_pdf(results, output_file):
     elements.append(table)
     doc.build(elements)
 
-def process_dataset(json_file, dataset_name, opts, model, device, metrics, results):
+def process_dataset(json_file, dataset_name, config, model, device, metrics, results):
+    print(json_file)
     if dataset_name == 'cityscapes':
         dataset_loader = CityscapesDatasetLoader()
     elif dataset_name == 'kitti_360':
@@ -116,8 +104,8 @@ def process_dataset(json_file, dataset_name, opts, model, device, metrics, resul
             val_ground_truth_paths.append(item.get('ground_truth'))
 
     # Randomly sample 500 images
-    if len(val_image_paths) > opts.num_test:
-        sampled_indices = np.random.choice(len(val_image_paths), opts.num_test, replace=False)
+    if len(val_image_paths) > config['num_test']:
+        sampled_indices = np.random.choice(len(val_image_paths), config['num_test'], replace=False)
         val_image_paths = [val_image_paths[i] for i in sampled_indices]
         val_ground_truth_paths = [val_ground_truth_paths[i] for i in sampled_indices]
 
@@ -125,10 +113,10 @@ def process_dataset(json_file, dataset_name, opts, model, device, metrics, resul
     print(f"Number of validation ground truth images for {dataset_name}: {len(val_ground_truth_paths)}")
     
     val_dst = dataset_loader.get_datasets(val_image_paths, val_ground_truth_paths)
-    val_loader = data.DataLoader(val_dst, batch_size=opts.val_batch_size, shuffle=True, num_workers=2)
+    val_loader = data.DataLoader(val_dst, batch_size=config['val_batch_size'], shuffle=True, num_workers=2)
     
     model.eval()
-    val_score = validate(opts=opts, model=model, loader=val_loader, device=device, metrics=metrics, image_paths=val_image_paths, label_paths=val_ground_truth_paths)
+    val_score = validate(opts=config, model=model, loader=val_loader, device=device, metrics=metrics, image_paths=val_image_paths, label_paths=val_ground_truth_paths)
     print(metrics.to_str(val_score))
 
     class_names = [
@@ -139,34 +127,44 @@ def process_dataset(json_file, dataset_name, opts, model, device, metrics, resul
     # metrics.plot_confusion_matrix(class_names = class_names)
     
     for result in results:
-        if result['order'] in opts.checkpoint_file:
+        if result['order'] in config['checkpoint_file']:
             result['checkpoints'].append({
-                "name": opts.checkpoint_file,
+                "name": config['checkpoint_file'],
                 "metrics_val": val_score,
                 "dataset": dataset_name
             })
             break
 
-def main():
-    opts = get_argparser().parse_args()
-    os.environ['CUDA_VISIBLE_DEVICES'] = opts.gpu_id
+def load_config(config_path):
+    with open(config_path, 'r') as f:
+        return json.load(f)
+
+def main(config_path):
+
+    config = load_config(config_path)
+    
+    
+    # opts = get_argparser().parse_args()
+    
+    
+    os.environ['CUDA_VISIBLE_DEVICES'] = config['gpu_id']
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print("Device: %s" % device)
-    torch.manual_seed(opts.random_seed)
-    np.random.seed(opts.random_seed)
+    torch.manual_seed(config['random_seed'])
+    np.random.seed(config['random_seed'])
     print("setting up metrics")
     metrics = StreamSegMetrics(19)
     results = []
     orders = ['asc', 'desc', 'rand']
     for order in orders:
         results.append({'order': order, 'checkpoints': []})
-    checkpoint_files = [f for f in os.listdir(opts.checkpoint_dir) if f.endswith('.pth') and any(keyword in f for keyword in orders)]
+    checkpoint_files = [f for f in os.listdir(config['checkpoint_dir']) if f.endswith('.pth') and any(keyword in f for keyword in orders)]
     
     for checkpoint_file in checkpoint_files:
-        opts.checkpoint_file = checkpoint_file
-        model = network.modeling.__dict__[opts.model](num_classes=19, output_stride=opts.output_stride)
-        print("Model: %s, Output Stride: %d" % (opts.model, opts.output_stride))
-        checkpoint_path = os.path.join(opts.checkpoint_dir, checkpoint_file)
+        config['checkpoint_file'] = checkpoint_file
+        model = network.modeling.__dict__[config['model']](num_classes=19, output_stride=config['output_stride'])
+        print("Model: %s, Output Stride: %d" % (config['model'], config['output_stride']))
+        checkpoint_path = os.path.join(config['checkpoint_dir'], checkpoint_file)
         if os.path.isfile(checkpoint_path):
             checkpoint = torch.load(checkpoint_path, map_location=torch.device('cpu'))
             print("Model restored from %s" % checkpoint_path)
@@ -180,15 +178,19 @@ def main():
         else:
             print(f"Checkpoint file not found: {checkpoint_path}")
         
-        process_dataset(opts.json_file1, 'cityscapes', opts, model, device, metrics, results)
-        process_dataset(opts.json_file2, 'kitti_360', opts, model, device, metrics, results)
+        process_dataset(config['json_file1'], 'cityscapes', config, model, device, metrics, results)
+        process_dataset(config['json_file2'], 'kitti_360', config, model, device, metrics, results)
 
-    pdf_file = os.path.join(opts.checkpoint_dir, 'validation_results_bn.pdf')
+    pdf_file = os.path.join(config['checkpoint_dir'], 'validation_results_bn.pdf')
     # save results to location as json file
-    with open(os.path.join(opts.checkpoint_dir, 'validation_results_bn.json'), 'w') as file:
+    with open(os.path.join(config['checkpoint_dir'], 'validation_results_bn.json'), 'w') as file:
         json.dump(results, file, indent=4)
     # generate_pdf(results, pdf_file)
     print(f"Results saved to {pdf_file}")
 
 if __name__ == '__main__':
-    main()
+    import sys
+    if len(sys.argv) != 2:
+        print("Usage: test.py <path_to_config.json>")
+        sys.exit(1)
+    main(sys.argv[1])
