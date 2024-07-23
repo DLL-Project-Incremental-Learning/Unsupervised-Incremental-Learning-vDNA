@@ -114,6 +114,20 @@ def finetuner(
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Device: %s" % device)
 
+    # Creating unique checkpoint name
+    json_input = opts.json_input
+    layer = opts.layer
+    full = opts.full
+    kd = opts.kd
+    pixel = opts.pixel
+
+    checkpoint_name = f"{json_input.split('.')[0]}_{layer.upper()}_{'full' if full=='True' else 'BBN'}"
+    if kd == "True":
+        checkpoint_name += "_KD"
+    if pixel== "True":
+        checkpoint_name += "_pixel"
+
+
     # Setup random seed
     torch.manual_seed(opts.random_seed)
     np.random.seed(opts.random_seed)
@@ -141,18 +155,38 @@ def finetuner(
     for param in model.backbone.parameters():
         param.requires_grad = False
 
-    for name, param in model.named_parameters():
-        if "layer1." in name:
-            param.requires_grad = True
 
+    if opts.layer =="sl":
+        layers_to_unfreeze = ['layer1.0', 'layer1.1', 'layer1.2', 'layer2.0', 'layer3.1.', 'layer3.2.']
+        for name, param in model.named_parameters():
+            if any(layer in name for layer in layers_to_unfreeze):
+                param.requires_grad = True
+
+    elif opts.layer =="gl":
+        print("Gradual Unfreezing")
+
+    elif int(opts.layer[1]) < 5:
+        layer_num = opts.layer[1]
+        # Unfreeze the last layer of the backbone 
+        for name, param in model.named_parameters():
+            if f"layer{layer_num}." in name:
+                param.requires_grad = True
+
+    print("----Opts FULL:-------", opts.full)
     # freeze the segmentation head
-    for param in model.classifier.parameters():
-        param.requires_grad = True
-
+    if opts.full == "True":
+        for param in model.classifier.parameters():
+            param.requires_grad = True
+            
+    elif opts.full == "False":
+        print("Inside BBN")
+        for param in model.classifier.parameters():
+            param.requires_grad = False
+            
     # Unfreeze only the bias terms in the classifier
-    # for name, param in model.classifier.named_parameters():
-    #    if 'bias' in name:
-    #        param.requires_grad = True
+        for name, param in model.classifier.named_parameters():
+            if 'bias' in name or 'bn' in name:
+                param.requires_grad = True
 
     # Optional: Print the trainable parameters to verify
     def count_parameters(model):
@@ -271,8 +305,8 @@ def finetuner(
     # while True:  # cur_itrs < opts.total_itrs:
     while cur_itrs < opts.total_itrs:
 
-        # Gradual unfreezing
-        # gradual_unfreezing(model, cur_itrs, opts.total_itrs)
+        if opts.layer == "gl":        
+            gradual_unfreezing(model, cur_itrs, opts.total_itrs)
         # =====  Train  =====
         model.train()
         print("Epoch %d, Itrs %d/%d" % (cur_epochs, cur_itrs, opts.total_itrs))
@@ -290,12 +324,14 @@ def finetuner(
             with torch.no_grad():
                 teacher_outputs = teacher_model(images)
 
-            distillation_loss = kd_loss_fn(outputs, teacher_outputs)
-            segmentation_loss = criterion(outputs, labels).mean()  # scalar
-
-            # loss = criterion(outputs, labels)
-
-            loss = 1 * distillation_loss + segmentation_loss
+            if opts.kd == "True":
+                # print("Using Knowledge Distillation Loss------------------------------------")
+                distillation_loss = kd_loss_fn(outputs, teacher_outputs)
+                segmentation_loss = criterion(outputs, labels).mean()  # scalar
+                loss = 1 * distillation_loss + segmentation_loss
+            else:
+                # print("Using Segmentation Loss------------------------------------")
+                loss = criterion(outputs, labels).mean() 
 
             loss.backward()
             optimizer.step()
@@ -316,13 +352,6 @@ def finetuner(
 
             if cur_itrs >= opts.total_itrs:
                 save_ckpt(
-                    "./checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth"
-                    % (
-                        bucket_idx,
-                        opts.buckets_order,
-                        model_name,
-                        "kitti",
-                        opts.output_stride,
-                    )
+                    f"./checkpoints/{checkpoint_name}.pth"    
                 )
                 break

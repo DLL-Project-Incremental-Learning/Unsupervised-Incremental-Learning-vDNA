@@ -176,6 +176,25 @@ def get_argparser():
         "--download", action="store_true", default=False, help="download datasets"
     )
 
+    parser.add_argument(
+        "--json_input", type=str, default="rank_1_val.json",
+    )
+
+    parser.add_argument(
+        "--layer",
+        type=str,
+        default="l1",
+        help="layer number",
+        choices=["l1", "l2", "l3", "l4", "l5", "sl", "gl"],
+    )
+    parser.add_argument(
+        "--full", type=str, default="True", help="full or Bias BN", choices=["True", "False"]
+    )
+    parser.add_argument("--kd", type=str, default="False", help="Knowledge distillation")
+    parser.add_argument(
+        "--pixel", type=str, default="False", help="Pixel level distillation"
+    )
+
     return parser
 
 
@@ -199,14 +218,18 @@ def main():
 
     opts = get_argparser().parse_args()
     opts.dataset = "KITTI-360-FILTERED"
+    use_pixel = opts.pixel
     random.seed(opts.random_seed)
 
     # forcefully delete outputs folder
     # os.system("rm -rf outputs")
 
     num_buckets = 1
+    input_file = os.path.join("assets", opts.json_input)
+    print(f"Using input file: {input_file}")
+
     processor = DataProcessor(
-        "./assets/rank_1_val.json", num_buckets=num_buckets, train_ratio=0.8
+        input_file, num_buckets=num_buckets, train_ratio=0.8
     )
 
     # Dictionary to map bucket orders to their respective methods
@@ -234,47 +257,46 @@ def main():
     )
     model = network.modeling.__dict__[model_name](num_classes=19, output_stride=16)
 
-    for bucket_idx in range(num_buckets):
-        print("\n\n[INFO] Bucket %d" % bucket_idx)
+    # for bucket_idx in range(num_buckets):
+    bucket_idx = 0
+    print("\n\n[INFO] Bucket %d" % bucket_idx)
 
-        image_files = [d["image"] for d in train_buckets[bucket_idx]]
-        samples = random.sample(image_files, 20)
+    image_files = [d["image"] for d in train_buckets[bucket_idx]]
+    samples = random.sample(image_files, 20)
 
-        print("\n\n[INFO] Generating weak labels for bucket %d" % bucket_idx)
-        filtered_samples, train_labelgen = labelgenerator(
-            samples, model, ckpt, bucket_idx, val=False, order=opts.buckets_order
-        )
-        # val_labelgen = labelgenerator(val_samples, model, ckpt, bucket_idx, val=True, order=opts.buckets_order)
+    print("\n\n[INFO] Generating weak labels for bucket %d" % bucket_idx)
+    filtered_samples, train_labelgen = labelgenerator(
+        samples, model, ckpt, bucket_idx, val=False, order=opts.buckets_order, use_pixel=use_pixel
+    )
+    # val_labelgen = labelgenerator(val_samples, model, ckpt, bucket_idx, val=True, order=opts.buckets_order)
 
-        print("\n\n[INFO] Starting finetuning for bucket %d" % bucket_idx)
+    print("\n\n[INFO] Starting finetuning for bucket %d" % bucket_idx)
 
-        if bucket_idx >= 0:
-            finetuner(
-                opts=opts,
-                model=model,
-                teacher_model=teacher_model,
-                teacher_ckpt=teacher_ckpt,
-                checkpoint=ckpt,
-                bucket_idx=bucket_idx,
-                train_image_paths=filtered_samples,
-                # val_image_paths=val_samples,
-                train_label_dir=train_labelgen,
-                # val_label_dir=val_labelgen,
-                model_name=model_name,
-            )
-
-        ckpt = "./checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth" % (
-            bucket_idx,
-            opts.buckets_order,
-            model_name,
-            "kitti",
-            opts.output_stride,
+    if bucket_idx >= 0:
+        finetuner(
+            opts=opts,
+            model=model,
+            teacher_model=teacher_model,
+            teacher_ckpt=teacher_ckpt,
+            checkpoint=ckpt,
+            bucket_idx=bucket_idx,
+            train_image_paths=filtered_samples,
+            train_label_dir=train_labelgen,
+            model_name=model_name,
         )
 
-        print(f"Iteration {bucket_idx} completed.")
-        print(
-            "\n------------------------------------------------------------------------------------------------------------------------\n"
-        )
+    # ckpt = "./checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth" % (
+    #     bucket_idx,
+    #     opts.buckets_order,
+    #     model_name,
+    #     "kitti",
+    #     opts.output_stride,
+    # )
+
+    print(f"Iteration completed.")
+    print(
+        "\n------------------------------------------------------------------------------------------------------------------------\n"
+    )
 
 
 if __name__ == "__main__":

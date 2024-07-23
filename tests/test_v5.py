@@ -32,6 +32,7 @@ def get_argparser():
     parser.add_argument("--json_file1", default='cityscapes_val_set.json', type=str, required=True, help='path to the first JSON file containing image and label paths')
     parser.add_argument("--json_file2", default='kitti-360_val_set_v1.json', type=str, required=True, help='path to the second JSON file containing image and label paths')
     parser.add_argument("--num_test", type=int, default=250, help='number of test images')
+    parser.add_argument("--new_ckpt", type=str, help='path to the new checkpoint file')
     return parser
 
 def validate(opts, model, loader, device, metrics, image_paths, label_paths):
@@ -55,7 +56,7 @@ def generate_pdf(results, output_file):
     miou_values = []
 
     for result in results:
-        print(result)
+        # print(result)
         order = result['order']
         for checkpoint in result['checkpoints']:
             metrics_val = checkpoint['metrics_val']
@@ -139,13 +140,15 @@ def process_dataset(json_file, dataset_name, opts, model, device, metrics, resul
     # metrics.plot_confusion_matrix(class_names = class_names)
     
     for result in results:
-        if result['order'] in opts.checkpoint_file:
-            result['checkpoints'].append({
-                "name": opts.checkpoint_file,
-                "metrics_val": val_score,
-                "dataset": dataset_name
-            })
-            break
+        # if result['order'] in opts.checkpoint_file:
+        result['checkpoints'].append({
+            "name": opts.checkpoint_file,
+            "metrics_val": val_score,
+            "dataset": dataset_name
+        })
+        break
+    
+    # print(f"Results for {dataset_name}: {results}")
 
 def main():
     opts = get_argparser().parse_args()
@@ -160,8 +163,14 @@ def main():
     orders = ['asc', 'desc', 'rand']
     for order in orders:
         results.append({'order': order, 'checkpoints': []})
-    checkpoint_files = [f for f in os.listdir(opts.checkpoint_dir) if f.endswith('.pth') and any(keyword in f for keyword in orders)]
+
+    if opts.new_ckpt:
+        checkpoint_files = [opts.new_ckpt+'.pth']
+    else:    
+        checkpoint_files = [f for f in os.listdir(opts.checkpoint_dir) if f.endswith('.pth') and any(keyword in f for keyword in orders)]
     
+
+    # print("Testing checkpoints: %s" % checkpoint_files)
     for checkpoint_file in checkpoint_files:
         opts.checkpoint_file = checkpoint_file
         model = network.modeling.__dict__[opts.model](num_classes=19, output_stride=opts.output_stride)
@@ -183,11 +192,14 @@ def main():
         process_dataset(opts.json_file1, 'cityscapes', opts, model, device, metrics, results)
         process_dataset(opts.json_file2, 'kitti_360', opts, model, device, metrics, results)
 
-    pdf_file = os.path.join(opts.checkpoint_dir, 'validation_results_bn.pdf')
+    pdf_file = os.path.join(opts.checkpoint_dir, f'{opts.new_ckpt.split(".")[0]}.pdf')
     # save results to location as json file
-    with open(os.path.join(opts.checkpoint_dir, 'validation_results_bn.json'), 'w') as file:
+    # print("Results: ", results)
+    
+    with open(os.path.join(opts.checkpoint_dir, f'{opts.new_ckpt.split(".")[0]}.json'), 'w') as file:
         json.dump(results, file, indent=4)
-    # generate_pdf(results, pdf_file)
+
+    generate_pdf(results, pdf_file)
     print(f"Results saved to {pdf_file}")
 
 if __name__ == '__main__':

@@ -45,7 +45,7 @@ def load_model(model: nn.Module, ckpt: str, device: torch.device) -> nn.Module:
     return model
 
 def process_image(img_path: str, model: nn.Module, transform: T.Compose, 
-                  device: torch.device, dir_name: str, results: List[Dict]) -> bool:
+                  device: torch.device, dir_name: str, results: List[Dict], use_pixel) -> bool:
     """Process a single image and save results."""
     img_name = os.path.splitext(os.path.basename(img_path))[0]
     
@@ -65,7 +65,9 @@ def process_image(img_path: str, model: nn.Module, transform: T.Compose,
     pred = output.max(1)[1].cpu().numpy()[0]
     pixel_entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1).cpu().numpy()[0]
     
-    pred[pixel_entropy > ENTROPY_THRESHOLD] = 255
+    if use_pixel == "True":
+        # print("Using pixel thresholding.")
+        pred[pixel_entropy > ENTROPY_THRESHOLD] = 255
     
     colorized_preds = Image.fromarray(pred.astype('uint8'))
     label_path = os.path.join(dir_name, f"{img_name}.png")
@@ -81,7 +83,7 @@ def process_image(img_path: str, model: nn.Module, transform: T.Compose,
     return True
 
 def labelgenerator(imagefilepaths: List[str], model: nn.Module, ckpt: str, 
-                   bucket_idx: int = 0, val: bool = True, order: str = "asc") -> Tuple[List[str], str]:
+                   bucket_idx: int = 0, val: bool = True, order: str = "asc", use_pixel = "True") -> Tuple[List[str], str]:
     """Generate labels for a set of images."""
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Device: {device}")
@@ -105,7 +107,7 @@ def labelgenerator(imagefilepaths: List[str], model: nn.Module, ckpt: str,
     with torch.no_grad():
         model.eval()
         for img_path in tqdm(imagefilepaths):
-            if process_image(img_path, model, transform, device, dir_name, results):
+            if process_image(img_path, model, transform, device, dir_name, results, use_pixel):
                 filtered_image_paths.append(img_path)
 
     # Compute and print overall averages
