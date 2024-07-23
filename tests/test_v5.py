@@ -142,11 +142,6 @@ def load_config(config_path):
 def main(config_path):
 
     config = load_config(config_path)
-    
-    
-    # opts = get_argparser().parse_args()
-    
-    
     os.environ['CUDA_VISIBLE_DEVICES'] = config['gpu_id']
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print("Device: %s" % device)
