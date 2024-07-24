@@ -33,15 +33,6 @@ from datasets.dataloaders import DataProcessor, KITTI360Dataset, DatasetLoader
 
 import torch.nn.functional as F
 
-# Define transforms
-transform = transforms.Compose(
-    [
-        # transforms.Resize((512, 1024)),
-        transforms.ToTensor()
-    ]
-)
-
-
 # Define the KnowledgeDistillationLoss class
 class KnowledgeDistillationLoss(nn.Module):
     def __init__(self, reduction="mean", alpha=1.0):

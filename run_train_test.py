@@ -21,7 +21,7 @@ def objective_function():
     
     # Run the test command
     test_command = [
-        "python", "./tests/test_v6.py",
+        "python", "./tests/run_test.py",
         "./configs/testing_pipeline.json"
     ]
     logging.info(f"Running test command: {' '.join(test_command)}")
