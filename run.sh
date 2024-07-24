@@ -4,7 +4,7 @@
 #SBATCH --partition mlhiwidlc_gpu-rtx2080    # short: -p <partition_name>
 
 # Define a name for your job
-#SBATCH --job-name kbp_hpo             # short: -J <job name>
+#SBATCH --job-name rank2k_SL             # short: -J <job name>
 
 # Define the files to write the outputs of the job to.
 # Please note that SLURM will not create this directory for you, and if it is missing, no logs will be saved.
@@ -14,7 +14,7 @@
 #SBATCH --error logs/%x-%A-fe.err    # STDERR  short: -e logs/%x-%A-job_name.out
 
 # Define the amount of memory required per node
-#SBATCH --mem 10GB
+#SBATCH --mem 16GB
 
 # Ensure the logs directory exists
 mkdir -p logs
@@ -34,7 +34,9 @@ conda activate fe
 start=`date +%s`
 
 # python hpo.py
-python pipeline_ordered_buckets.py --total_itrs 1800 --lr 0.01 --batch_size 16 --crop_size 370 --buckets_order rand
+python run_train_test.py --json "ranked_2k.json" --layer "sl" --full True --kd True --pixel True
+# python run_train_test.py --json "random_2k.json" --layer "l5" --full True --kd False --pixel False
+# python run_train_test.py --json "random_2k_every_4th.json" --layer "l5" --full True --kd False --pixel False
 end=`date +%s`
 runtime=$((end-start))
 
