@@ -268,7 +268,9 @@ def main():
     filtered_samples, train_labelgen = labelgenerator(
         samples, model, ckpt, bucket_idx, val=False, order=opts.buckets_order, use_pixel=use_pixel
     )
-    # val_labelgen = labelgenerator(val_samples, model, ckpt, bucket_idx, val=True, order=opts.buckets_order)
+    
+    # filtered_samples = samples
+    # train_labelgen = "outputs/weaklabels/KITTI-360/rand/bucket_0/"
 
     print("\n\n[INFO] Starting finetuning for bucket %d" % bucket_idx)
 
