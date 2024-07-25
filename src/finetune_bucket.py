@@ -1,6 +1,6 @@
 from tqdm import tqdm
-import network
-import utils
+import src.network
+import src.utils
 import os
 import sys
 import random
@@ -12,8 +12,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from torch.utils import data
 from datasets import Cityscapes
-from utils import ext_transforms as et
-from metrics import StreamSegMetrics
+from src.utils import ext_transforms as et
+from src.metrics import StreamSegMetrics
 
 import torch
 import torch.nn as nn
