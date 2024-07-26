@@ -21,6 +21,8 @@ def load_model(model, ckpt, device):
     return model
 
 def process_image(img_path, model, transform, device, dir_name, results):
+
+    
     ext = os.path.basename(img_path).split('.')[-1]
     img_name = os.path.basename(img_path)[:-len(ext)-1]
     try:
@@ -28,6 +30,11 @@ def process_image(img_path, model, transform, device, dir_name, results):
     except Exception as e:
         print(f"Error loading image {img_path}: {e}")
         return
+    
+    # save the input image also in the output folder
+    # Copy the input image to the output directory
+    input_image_path = os.path.join(dir_name, img_name + '_input.' + ext)
+    shutil.copy(img_path, input_image_path)
 
     img = transform(img).unsqueeze(0).to(device)  # To tensor of NCHW
     output = model(img)  # Forward pass
@@ -43,14 +50,14 @@ def process_image(img_path, model, transform, device, dir_name, results):
     colorized_preds = Image.fromarray(colorized_preds)
     # colorized_preds = Image.fromarray(pred.astype('uint8'))
 
-    label_path = os.path.join(dir_name, img_name + '.png')
+    label_path = os.path.join(dir_name, img_name + '_mask.png')
     colorized_preds.save(label_path)
     
     
     pred[pixel_entropy > 0.3] = 255
     
     colorized_preds_filter = Image.fromarray(pred.astype('uint8'))
-    label_path = os.path.join(dir_name, f"{img_name}_mask.png")
+    label_path = os.path.join(dir_name, f"{img_name}.png")
     colorized_preds_filter.save(label_path)
     
     
