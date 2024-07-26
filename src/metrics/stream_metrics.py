@@ -1,5 +1,8 @@
 import numpy as np
 from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+from sklearn.metrics import ConfusionMatrixDisplay
+import seaborn as sns
 
 class _StreamMetrics(object):
     def __init__(self):
@@ -81,6 +84,66 @@ class StreamSegMetrics(_StreamMetrics):
         
     def reset(self):
         self.confusion_matrix = np.zeros((self.n_classes, self.n_classes))
+
+
+    # def plot_confusion_matrix(self, class_names=None):
+    #     """Plots the confusion matrix using Matplotlib"""
+    #     if class_names is None:
+    #         class_names = [f'Class {i}' for i in range(self.n_classes)]
+        
+    #     cm = self.confusion_matrix
+    #     cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        
+    #     plt.figure(figsize=(10, 8))
+    #     disp = ConfusionMatrixDisplay(cm_normalized, display_labels=class_names)
+    #     disp.plot(include_values=True, xticks_rotation='vertical', values_format='.2f')
+    #     plt.title("Normalized Confusion Matrix")
+    #     plt.xlabel("Predicted Class")
+    #     plt.ylabel("True Class")
+    #     plt.show()
+
+
+
+    def plot_confusion_matrix(self, class_names = None):
+        
+        fig, ax = plt.subplots(figsize=(8, 6.7), dpi=300)
+        
+        if class_names is None:
+            class_names = [f'{i}' for i in range(self.n_classes)]
+        
+        cm = self.confusion_matrix
+        cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        
+        
+        sns.heatmap(cm_normalized, fmt = '.2f', annot=False, cmap='Blues', xticklabels=class_names, yticklabels=class_names, ax=ax, annot_kws={"size": 8})
+
+        # ax.set_title(f"Normalized Confusion Matrix", fontsize=16, fontweight='bold')
+        ax.set_xlabel('Predicted Label', fontsize=12)
+        ax.set_ylabel('True Label', fontsize=12)
+        
+        plt.setp(ax.get_yticklabels(), rotation=0, ha="right", rotation_mode="anchor")
+        plt.setp(ax.get_xticklabels(), rotation=0, ha="right", rotation_mode="anchor")
+        plt.tight_layout()
+        return fig
+
+
+
+
+    def get_precision_recall_f1(self):
+        tp = self.confusion_matrix.diagonal()
+        fp = self.confusion_matrix.sum(axis=0) - tp
+        fn = self.confusion_matrix.sum(axis=1) - tp
+        
+        precision = tp / (tp + fp + 1e-10)
+        recall = tp / (tp + fn + 1e-10)
+        f1 = 2 * (precision * recall) / (precision + recall + 1e-10)
+        
+        return {
+            'Precision': precision.mean(),
+            'Recall': recall.mean(),
+            'F1-Score': f1.mean(),
+            'Confusion Matrix': self.confusion_matrix
+            }
 
 class AverageMeter(object):
     """Computes average values"""
