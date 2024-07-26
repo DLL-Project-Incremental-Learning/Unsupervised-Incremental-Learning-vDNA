@@ -37,13 +37,25 @@ def process_image(img_path, model, transform, device, dir_name, results):
     prob = torch.softmax(output, dim=1)
     confidence = prob.max(1)[0].mean().item()
     entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1).mean().item()
+    pixel_entropy = -torch.sum(prob * torch.log(prob + 1e-10), dim=1).cpu().numpy()[0]
 
-    # colorized_preds = Cityscapes.decode_target(pred).astype('uint8')
-    # colorized_preds = Image.fromarray(colorized_preds)
+    colorized_preds = Cityscapes.decode_target(pred).astype('uint8')
+    colorized_preds = Image.fromarray(colorized_preds)
     # colorized_preds = Image.fromarray(pred.astype('uint8'))
 
     label_path = os.path.join(dir_name, img_name + '.png')
-    # colorized_preds.save(label_path)
+    colorized_preds.save(label_path)
+    
+    
+    pred[pixel_entropy > 0.3] = 255
+    
+    colorized_preds_filter = Image.fromarray(pred.astype('uint8'))
+    label_path = os.path.join(dir_name, f"{img_name}_mask.png")
+    colorized_preds_filter.save(label_path)
+    
+    
+    
+    
     num_classes_pred = len(np.unique(pred))
     # Add the image path and label path to the results list
     # if entropy > 0.20 and confidence >= 0.82 and num_classes_pred > 8:
@@ -59,7 +71,7 @@ def process_image(img_path, model, transform, device, dir_name, results):
 
 base_source_dir = "datasets/data/KITTI-360/data_2d_semantics/train/"
 
-def labelgenerator(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="asc"):
+def labelgenerator_v1(imagefilepaths, model, ckpt, bucket_idx=0, val=True, order="asc"):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print("Device: %s" % device)
     if not val:

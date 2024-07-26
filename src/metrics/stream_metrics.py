@@ -115,7 +115,7 @@ class StreamSegMetrics(_StreamMetrics):
         cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
         
         
-        sns.heatmap(cm_normalized, fmt = '.2f', annot=False, cmap='Blues', xticklabels=class_names, yticklabels=class_names, ax=ax, annot_kws={"size": 8})
+        sns.heatmap(cm_normalized, fmt = '.2f', annot=True, cmap='Blues', xticklabels=class_names, yticklabels=class_names, ax=ax, annot_kws={"size": 8})
 
         # ax.set_title(f"Normalized Confusion Matrix", fontsize=16, fontweight='bold')
         ax.set_xlabel('Predicted Label', fontsize=12)
