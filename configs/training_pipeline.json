@@ -1,7 +1,7 @@
 {
     "random_seed": 1,
     "data_processor": {
-      "json_file": "./assets/rank_1_val.json",
+      "json_file": "./assets/ranked_2k_class.json",
       "num_buckets": 1,
       "train_ratio": 0.8
     },
