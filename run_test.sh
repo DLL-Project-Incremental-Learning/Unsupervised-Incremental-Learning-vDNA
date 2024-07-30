@@ -44,3 +44,5 @@ rm -rf outputs/
 
 echo Job execution complete.
 echo Runtime: $runtime
+
+
