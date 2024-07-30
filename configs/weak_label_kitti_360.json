@@ -1,0 +1,10 @@
+{
+    "confidence_threshold": 0.7,
+    "entropy_threshold": 0.3,
+    "base_source_dir": "./datasets/data/KITTI-360/data_2d_semantics/train/",
+    "output_dir": "./outputs/weaklabels/KITTI-360",
+    "normalization": {
+        "mean": [0.485, 0.456, 0.406],
+        "std": [0.229, 0.224, 0.225]
+    }
+}

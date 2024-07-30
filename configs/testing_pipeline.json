@@ -1,0 +1,12 @@
+{
+  "gpu_id": "0",
+  "random_seed": 1,
+  "val_batch_size": 4,
+  "model": "deeplabv3plus_resnet101",
+  "num_classes": 19,
+  "output_stride": 16,
+  "checkpoint_dir": "./checkpoints",
+  "json_file1": "./tests/cityscapes_val_set.json",
+  "json_file2": "./tests/kitti-360_val_set_v3.json",
+  "num_test": 25
+}

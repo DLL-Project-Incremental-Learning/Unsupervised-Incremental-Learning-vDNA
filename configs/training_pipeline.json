@@ -1,0 +1,33 @@
+{
+    "random_seed": 1,
+    "data_processor": {
+      "json_file": "./assets/rank_1_val.json",
+      "num_buckets": 1,
+      "train_ratio": 0.8
+    },
+
+    "gpu_id": "0",
+    "lr": 0.01,
+    "weight_decay": 1e-4,
+    "lr_policy": "poly",
+    "total_itrs": 20,
+    "step_size": 600,
+    "loss_type": "cross_entropy",
+
+    "dataset": "kitti-360 filtered",
+    "batch_size": 16,
+    "continue_training": false,
+
+    "crop_size": 370,
+
+    "buckets_order": "rand",
+    "buckets_num": 1,
+    "model": "deeplabv3plus_resnet101",
+    "num_classes": 19,
+    "output_stride": 16,
+    "ckpt": "./checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth",
+    "teacher_ckpt": "./checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth",
+    "labelgenerator": {
+      "num_samples": 20
+    }
+  }

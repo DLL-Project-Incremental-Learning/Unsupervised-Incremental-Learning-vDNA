@@ -1,12 +1,17 @@
 import json
+import sys
 import os
+
+# Add the parent directory to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from collections import namedtuple
 
 import torch
 import torch.utils.data as data
 from PIL import Image
 import numpy as np
-from utils import ext_transforms as et
+from src.utils import ext_transforms as et
 
 
 class Cityscapes(data.Dataset):
