@@ -12,8 +12,6 @@ import json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from torch.utils import data
-
-# from .datasets import Cityscapes
 from utils import ext_transforms as et
 from metrics import StreamSegMetrics
 import network
@@ -27,8 +25,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 from torchvision import transforms
-
-# from torchvision.models.segmentation import deeplabv3_resnet50
 from torch.utils.data import DataLoader, Dataset
 from glob import glob
 from collections import namedtuple
@@ -36,17 +32,37 @@ from datasets.dataloaders import DataProcessor, KITTI360Dataset, DatasetLoader
 from weaklabelgenerator import labelgenerator
 from finetune_bucket import finetuner
 
-
 def load_config(config_path):
+    """
+    Loads the configuration from a JSON file.
+
+    Args:
+        config_path (str): Path to the JSON configuration file.
+
+    Returns:
+        dict: The configuration as a dictionary.
+    """
     with open(config_path, "r") as f:
         return json.load(f)
 
-
 def main(config_path):
+    """
+    Main function to run the training and fine-tuning pipeline with ordered buckets.
+
+    This function performs the following steps:
+    1. Loads the configuration from a JSON file.
+    2. Sets up the data processor and bucket ordering methods.
+    3. Initializes the model and teacher model.
+    4. Iteratively processes each bucket to generate weak labels and fine-tune the model.
+
+    Args:
+        config_path (str): Path to the JSON configuration file.
+    """
 
     config = load_config(config_path)
     random.seed(config["random_seed"])
 
+    # Initialize the data processor
     processor = DataProcessor(
         config["data_processor"]["json_file"],
         num_buckets=config["data_processor"]["num_buckets"],
@@ -67,12 +83,14 @@ def main(config_path):
     if bucket_method is None:
         raise ValueError(f"Invalid bucket_order: {config['buckets_order']}")
 
+    # Get the training buckets
     train_buckets = bucket_method()
     model_name = config["model"]
 
     ckpt = config["ckpt"]
     teacher_ckpt = config["teacher_ckpt"]
 
+    # Initialize the model and teacher model
     model = network.modeling.__dict__[model_name](
         num_classes=config["num_classes"], output_stride=config["output_stride"]
     )
@@ -80,6 +98,7 @@ def main(config_path):
         num_classes=config["num_classes"], output_stride=config["output_stride"]
     )
 
+    # Process each bucket iteratively
     for bucket_idx in range(config["buckets_num"]):
         print(f"\n\n[INFO] Bucket {bucket_idx}")
         image_files = [d["image"] for d in train_buckets[bucket_idx]]
@@ -108,7 +127,6 @@ def main(config_path):
 
         print(f"Iteration {bucket_idx} completed.")
         print("\n" + "-" * 120 + "\n")
-
 
 if __name__ == "__main__":
     import sys

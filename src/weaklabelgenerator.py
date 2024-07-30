@@ -31,9 +31,18 @@ ENTROPY_THRESHOLD = config["entropy_threshold"]
 BASE_SOURCE_DIR = config["base_source_dir"]
 WEAK_LABEL_DIR = config["output_dir"]
 
-
 def load_model(model: nn.Module, ckpt: str, device: torch.device) -> nn.Module:
-    """Load model from checkpoint."""
+    """
+    Load a model from a checkpoint file.
+
+    Args:
+        model (nn.Module): The model instance to load the weights into.
+        ckpt (str): Path to the checkpoint file.
+        device (torch.device): The device to load the model on.
+
+    Returns:
+        nn.Module: The model loaded with the checkpoint weights.
+    """
     if not os.path.isfile(ckpt):
         raise FileNotFoundError(f"Checkpoint file {ckpt} not found.")
 
@@ -44,7 +53,6 @@ def load_model(model: nn.Module, ckpt: str, device: torch.device) -> nn.Module:
     print(f"Resume model from {ckpt}")
     return model
 
-
 def process_image(
     img_path: str,
     model: nn.Module,
@@ -53,7 +61,20 @@ def process_image(
     dir_name: str,
     results: List[Dict],
 ) -> bool:
-    """Process a single image and save results."""
+    """
+    Process a single image, generate predictions, and save results.
+
+    Args:
+        img_path (str): Path to the input image.
+        model (nn.Module): The model used for inference.
+        transform (T.Compose): Transformations to be applied to the image.
+        device (torch.device): The device to perform the computation on.
+        dir_name (str): Directory to save the output labels.
+        results (List[Dict]): List to store the results of processing.
+
+    Returns:
+        bool: True if the image was processed successfully, False otherwise.
+    """
     img_name = os.path.splitext(os.path.basename(img_path))[0]
 
     try:
@@ -89,7 +110,6 @@ def process_image(
 
     return True
 
-
 def labelgenerator(
     imagefilepaths: List[str],
     model: nn.Module,
@@ -98,12 +118,22 @@ def labelgenerator(
     val: bool = True,
     order: str = "asc",
 ) -> Tuple[List[str], str]:
-    """Generate labels for a set of images."""
+    """
+    Generate weak labels for a set of images.
+
+    Args:
+        imagefilepaths (List[str]): List of image file paths.
+        model (nn.Module): The model used for inference.
+        ckpt (str): Path to the checkpoint file.
+        bucket_idx (int, optional): Index of the current bucket. Defaults to 0.
+        val (bool, optional): Whether the bucket is for validation. Defaults to True.
+        order (str, optional): Order of processing the buckets. Defaults to "asc".
+
+    Returns:
+        Tuple[List[str], str]: List of filtered image paths and the directory of saved labels.
+    """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}")
-
-    # dir_name = f"outputs/weaklabels/KITTI-360/{order}/{'val_' if val else ''}bucket_{bucket_idx}/"
-    # os.makedirs(dir_name, exist_ok=True)
 
     dir_name = os.path.join(
         WEAK_LABEL_DIR, order, f"{'val_' if val else ''}bucket_{bucket_idx}"

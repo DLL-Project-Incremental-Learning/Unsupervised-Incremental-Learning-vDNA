@@ -36,12 +36,30 @@ import torch.nn.functional as F
 
 # Define the KnowledgeDistillationLoss class
 class KnowledgeDistillationLoss(nn.Module):
+    """
+    Knowledge Distillation Loss for training a student model with the guidance of a teacher model.
+
+    Args:
+        reduction (str): Specifies the reduction to apply to the output. Options: 'none' | 'mean' | 'sum'.
+        alpha (float): Scaling factor for the teacher's logits.
+    """
     def __init__(self, reduction="mean", alpha=1.0):
         super().__init__()
         self.reduction = reduction
         self.alpha = alpha
 
     def forward(self, inputs, targets, mask=None):
+        """
+        Forward pass for computing the loss.
+
+        Args:
+            inputs (torch.Tensor): The student's logits.
+            targets (torch.Tensor): The teacher's logits.
+            mask (torch.Tensor, optional): Mask for the loss computation.
+
+        Returns:
+            torch.Tensor: Computed loss.
+        """
         inputs = inputs.narrow(1, 0, targets.shape[1])
         outputs = torch.log_softmax(inputs, dim=1)
         labels = torch.softmax(targets * self.alpha, dim=1)
@@ -61,6 +79,14 @@ class KnowledgeDistillationLoss(nn.Module):
 
 
 def gradual_unfreezing(model, current_itrs, total_itrs):
+    """
+    Gradually unfreeze the layers of the model's backbone during training.
+
+    Args:
+        model (nn.Module): The model with the backbone to unfreeze.
+        current_itrs (int): The current training iteration.
+        total_itrs (int): The total number of training iterations.
+    """
     # Define the unfreezing schedule
     if isinstance(model, torch.nn.DataParallel):
         # Access the original model to get the backbone
@@ -97,6 +123,21 @@ def finetuner(
     model_name,
     bucket_order="asc",
 ):
+    """
+    Fine-tune the model using the knowledge distillation method.
+
+    Args:
+        opts (dict): Configuration options.
+        model (nn.Module): The student model.
+        teacher_model (nn.Module): The teacher model.
+        teacher_ckpt (str): Path to the teacher model checkpoint.
+        checkpoint (str): Path to the student model checkpoint.
+        bucket_idx (int): The index of the current bucket.
+        train_image_paths (list): List of paths to training images.
+        train_label_dir (str): Directory containing training labels.
+        model_name (str): The name of the model.
+        bucket_order (str, optional): Order of the buckets. Defaults to "asc".
+    """
 
     # Setup wandb
     # wandb.init(project="segmentation_project", config=vars(opts))

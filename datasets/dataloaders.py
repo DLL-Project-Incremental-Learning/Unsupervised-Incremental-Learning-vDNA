@@ -2,8 +2,9 @@ import json
 import random
 import sys
 import os
+
 # Add the parent directory to the system path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import argparse
 import numpy as np
@@ -25,7 +26,27 @@ import wandb
 
 
 class DataProcessor:
+    """
+    A class to process data for training and validation.
+
+    Attributes:
+        data (list): The loaded data from a JSON file.
+        train_ratio (float): The ratio of training data.
+        num_buckets (int): The number of buckets to divide the data into.
+        train_data (list): The training data.
+        val_data (list): The validation data.
+    """
+
     def __init__(self, file_path, train_ratio=0.8, num_buckets=6, seed=42):
+        """
+        Initialize the DataProcessor class.
+
+        Args:
+            file_path (str): Path to the JSON file containing the data.
+            train_ratio (float): Ratio of training data. Default is 0.8.
+            num_buckets (int): Number of buckets to divide the data into. Default is 6.
+            seed (int): Random seed for shuffling. Default is 42.
+        """
         self.data = self.load_data(file_path)
         self.train_ratio = train_ratio
         self.num_buckets = num_buckets
@@ -34,17 +55,46 @@ class DataProcessor:
 
     @staticmethod
     def load_data(file_path):
+        """
+        Load data from a JSON file.
+
+        Args:
+            file_path (str): Path to the JSON file.
+
+        Returns:
+            list: Loaded data.
+        """
         with open(file_path) as f:
             return json.load(f)
 
     def split_data(self, data):
+        """
+        Split data into training and validation sets based on a 'val_set' key.
 
+        Args:
+            data (list): The data to split.
+
+        Returns:
+            tuple: Training data and validation data.
+        """
         train_data = [d for d in data if not d["val_set"]]
         val_data = [d for d in data if d["val_set"]]
 
         return train_data, val_data
 
     def create_buckets(self, data, sort_key=None, reverse=False):
+        """
+        Create buckets from the data.
+
+        Args:
+            data (list): The data to bucket.
+            sort_key (str): The key to sort the data by. Default is None.
+            reverse (bool): Whether to reverse the sort order. Default is False.
+
+        Returns:
+            list: Buckets of data.
+        """
+
         if sort_key:
             data = sorted(data, key=lambda x: x[sort_key], reverse=reverse)
 
@@ -69,6 +119,14 @@ class DataProcessor:
 
 # Custom dataset for KITTI360 with weak labels
 class KITTI360Dataset(Dataset):
+    """
+    Custom dataset for KITTI360 with weak labels.
+
+    Attributes:
+        image_paths (list): List of image file paths.
+        label_dir (str): Directory containing the label files.
+        transform (callable, optional): A function/transform to apply to the images and labels.
+    """
 
     CityscapesClass = namedtuple('CityscapesClass', ['name', 'id', 'train_id', 'category', 'category_id',
                                                      'has_instances', 'ignore_in_eval', 'color'])
@@ -130,6 +188,14 @@ class KITTI360Dataset(Dataset):
     id_to_train_id = np.array([c.train_id for c in classes])
 
     def __init__(self, image_paths, label_dir, transform=None):
+        """
+        Initialize the KITTI360Dataset class.
+
+        Args:
+            image_paths (list): List of paths to the images.
+            label_dir (str): Directory containing the label images.
+            transform (callable, optional): A function/transform to apply to the images and labels. Default is None.
+        """
         self.image_paths = image_paths
         self.label_dir = label_dir
         self.transform = transform
@@ -159,13 +225,20 @@ class KITTI360Dataset(Dataset):
 
 
 class DatasetLoader:
+    """
+    A class to load and preprocess datasets.
+
+    Attributes:
+        opts (dict): Dictionary of options for dataset processing.
+    """
+
     def __init__(self, opts):
         self.opts = opts
 
     def get_transforms(self):
         train_transform = et.ExtCompose(
             [
-                et.ExtRandomCrop(size=(self.opts['crop_size'], self.opts['crop_size'])),
+                et.ExtRandomCrop(size=(self.opts["crop_size"], self.opts["crop_size"])),
                 et.ExtColorJitter(brightness=0.5, contrast=0.5, saturation=0.5),
                 et.ExtRandomHorizontalFlip(),
                 et.ExtToTensor(),
@@ -176,6 +249,17 @@ class DatasetLoader:
         return train_transform
 
     def get_datasets(self, train_image_paths, train_label_dir):
+        """
+        Get the dataset for training.
+
+        Args:
+            train_image_paths (list): List of paths to training images.
+            train_label_dir (str): Directory containing the training labels.
+
+        Returns:
+            KITTI360Dataset: The training dataset.
+        """
+
         train_transform = self.get_transforms()
 
         train_dst = KITTI360Dataset(
