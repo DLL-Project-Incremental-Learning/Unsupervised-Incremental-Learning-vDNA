@@ -33,15 +33,6 @@ from datasets.dataloaders import DataProcessor, KITTI360Dataset, DatasetLoader
 
 import torch.nn.functional as F
 
-# Define transforms
-transform = transforms.Compose(
-    [
-        # transforms.Resize((512, 1024)),
-        transforms.ToTensor()
-    ]
-)
-
-
 # Define the KnowledgeDistillationLoss class
 class KnowledgeDistillationLoss(nn.Module):
     def __init__(self, reduction="mean", alpha=1.0):
@@ -109,15 +100,14 @@ def finetuner(
     # Setup wandb
     # wandb.init(project="segmentation_project", config=vars(opts))
     # wandb.config.update(opts)
-
-    os.environ["CUDA_VISIBLE_DEVICES"] = opts.gpu_id
+    os.environ["CUDA_VISIBLE_DEVICES"] = opts['gpu_id']
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Device: %s" % device)
 
     # Setup random seed
-    torch.manual_seed(opts.random_seed)
-    np.random.seed(opts.random_seed)
-    random.seed(opts.random_seed)
+    torch.manual_seed(opts['random_seed'])
+    np.random.seed(opts['random_seed'])
+    random.seed(opts['random_seed'])
 
     print("[INFO] Number of Train images: %d" % len(train_image_paths))
 
@@ -126,7 +116,7 @@ def finetuner(
 
     print("setting up metrics")
     # Set up metrics
-    metrics = StreamSegMetrics(opts.num_classes)
+    metrics = StreamSegMetrics(opts['num_classes'])
 
     def print_model_structure(model):
         for name, module in model.named_children():
@@ -173,25 +163,25 @@ def finetuner(
     # Set up optimizer
     optimizer = torch.optim.SGD(
         params=[
-            {"params": model.backbone.parameters(), "lr": 0.1 * opts.lr},
+            {"params": model.backbone.parameters(), "lr": 0.1 * opts['lr']},
             {"params": model.classifier.parameters()},
         ],
-        lr=opts.lr,
+        lr=opts['lr'],
         momentum=0.9,
-        weight_decay=opts.weight_decay,
+        weight_decay=opts['weight_decay'],
     )
 
-    if opts.lr_policy == "poly":
-        scheduler = utils.PolyLR(optimizer, opts.total_itrs, power=0.9)
-    elif opts.lr_policy == "step":
+    if opts['lr_policy'] == "poly":
+        scheduler = utils.PolyLR(optimizer, opts['total_itrs'], power=0.9)
+    elif opts['lr_policy'] == "step":
         scheduler = torch.optim.lr_scheduler.StepLR(
-            optimizer, step_size=opts.step_size, gamma=0.1
+            optimizer, step_size=opts['step_size'], gamma=0.1
         )
 
     # Set up criterion
-    if opts.loss_type == "cross_entropy":
+    if opts['loss_type'] == "cross_entropy":
         criterion = nn.CrossEntropyLoss(ignore_index=255, reduction="none")
-    elif opts.loss_type == "focal_loss":
+    elif opts['loss_type'] == "focal_loss":
         criterion = utils.FocalLoss(ignore_index=255, size_average=True)
 
     def save_ckpt(path):
@@ -227,7 +217,7 @@ def finetuner(
         # model.load_state_dict(checkpoint["model_state"])
         model = nn.DataParallel(model)
         model.to(device)
-        if opts.continue_training:
+        if opts['continue_training']:
             optimizer.load_state_dict(checkpoint["optimizer_state"])
             scheduler.load_state_dict(checkpoint["scheduler_state"])
             cur_itrs = checkpoint["cur_itrs"]
@@ -258,24 +248,24 @@ def finetuner(
     print("[INFO] Dataset Loaded......")
     train_loader = data.DataLoader(
         train_dst,
-        batch_size=opts.batch_size,
+        batch_size=opts['batch_size'],
         shuffle=True,
         num_workers=2,
         drop_last=True,
     )
 
-    print("Dataset: %s, Train set: %d" % (opts.dataset, len(train_dst)))
+    print("Dataset: %s, Train set: %d" % (opts['dataset'], len(train_dst)))
 
     kd_loss_fn = KnowledgeDistillationLoss(reduction="mean", alpha=1.0)
     interval_loss = 0
     # while True:  # cur_itrs < opts.total_itrs:
-    while cur_itrs < opts.total_itrs:
+    while cur_itrs < opts['total_itrs']:
 
         # Gradual unfreezing
         # gradual_unfreezing(model, cur_itrs, opts.total_itrs)
         # =====  Train  =====
         model.train()
-        print("Epoch %d, Itrs %d/%d" % (cur_epochs, cur_itrs, opts.total_itrs))
+        print("Epoch %d, Itrs %d/%d" % (cur_epochs, cur_itrs, opts['total_itrs']))
         cur_epochs += 1
         for images, labels in train_loader:
             cur_itrs += 1
@@ -308,21 +298,21 @@ def finetuner(
                 interval_loss = interval_loss / 10
                 print(
                     "Epoch %d, Itrs %d/%d, Loss=%f"
-                    % (cur_epochs, cur_itrs, opts.total_itrs, interval_loss)
+                    % (cur_epochs, cur_itrs, opts['total_itrs'], interval_loss)
                 )
                 interval_loss = 0.0
                 # wandb.log({"Epoch": cur_epochs, "Itrs": cur_itrs, "Loss": np_loss})
             scheduler.step()
 
-            if cur_itrs >= opts.total_itrs:
+            if cur_itrs >= opts['total_itrs']:
                 save_ckpt(
                     "./checkpoints/latest_bucket_%s_%s_%s_%s_os%d.pth"
                     % (
                         bucket_idx,
-                        opts.buckets_order,
+                        opts['buckets_order'],
                         model_name,
                         "kitti",
-                        opts.output_stride,
+                        opts['output_stride'],
                     )
                 )
                 break

@@ -165,7 +165,7 @@ class DatasetLoader:
     def get_transforms(self):
         train_transform = et.ExtCompose(
             [
-                et.ExtRandomCrop(size=(self.opts.crop_size, self.opts.crop_size)),
+                et.ExtRandomCrop(size=(self.opts['crop_size'], self.opts['crop_size'])),
                 et.ExtColorJitter(brightness=0.5, contrast=0.5, saturation=0.5),
                 et.ExtRandomHorizontalFlip(),
                 et.ExtToTensor(),
