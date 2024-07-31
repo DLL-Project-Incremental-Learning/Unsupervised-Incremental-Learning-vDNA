@@ -6,3 +6,7 @@ scikit-learn
 tqdm
 matplotlib
 visdom
+json
+wandb
+matplotlib
+torchsummary
