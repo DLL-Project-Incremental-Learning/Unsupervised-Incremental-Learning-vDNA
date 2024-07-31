@@ -80,7 +80,7 @@ The `finetune_bucket.py` script fine-tunes the model on each data bucket using k
 The configuration files for training, testing, and weak label generation are located in the `configs` directory. These JSON files specify various parameters and options for the pipeline.
 
 ### Visual DNA (vDNA)
-Refer to the repository for implementation and usage : `https://github.com/bramtoula/vdna`
+Refer to the repository for implementation and usage : [Github vDNA](https://github.com/bramtoula/vdna)
 
 Example configuration file for training pipeline (`configs/training_pipeline.json`):
 ```json
