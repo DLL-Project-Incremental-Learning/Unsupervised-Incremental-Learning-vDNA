@@ -28,6 +28,6 @@
     "ckpt": "./checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth",
     "teacher_ckpt": "./checkpoints/best_deeplabv3plus_resnet101_cityscapes_os16.pth",
     "labelgenerator": {
-      "num_samples": 20
+      "num_samples": 2000
     }
   }
