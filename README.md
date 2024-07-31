@@ -17,20 +17,20 @@ git clone [https://github.com/yourusername/unsupervised-incremental-learning-vdn
 Install the required dependencies:
 
 
-pip install -r requirements.txt
+```pip install -r requirements.txt```
 
 
-# Usage
+## Usage
 
-Training and Testing
+# Training and Testing
 The run_train_test.py script executes the training and testing pipeline, processes the results, and logs the mIoU metrics for both the Cityscapes and KITTI datasets.
 
-python run_train_test.py
+```python run_train_test.py```
 
 # Pipeline Execution
 The main training and fine-tuning pipeline is implemented in pipeline_ordered_buckets.py. This script processes data in ordered buckets, generates weak labels, and fine-tunes the model iteratively.
 
-python src/pipeline_ordered_buckets.py ./configs/training_pipeline.json
+```python src/pipeline_ordered_buckets.py ./configs/training_pipeline.json```
 
 # Weak Label Generation
 The weaklabelgenerator.py script generates weak labels for a set of images using a pre-trained model.
@@ -42,7 +42,7 @@ The finetune_bucket.py script fine-tunes the model on each data bucket using kno
 The configuration files for training, testing, and weak label generation are located in the configs directory. These JSON files specify various parameters and options for the pipeline.
 
 Example configuration file for training pipeline (configs/training_pipeline.json):
-
+```
 {
   "random_seed": 42,
   "data_processor": {
@@ -60,6 +60,7 @@ Example configuration file for training pipeline (configs/training_pipeline.json
     "num_samples": 100
   }
 }
+```
 
 Pretrained DeepLabv3, DeepLabv3+ for Pascal VOC & Cityscapes.
 
