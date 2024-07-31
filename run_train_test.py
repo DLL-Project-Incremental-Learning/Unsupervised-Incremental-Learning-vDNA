@@ -2,7 +2,10 @@ import subprocess
 import json
 import logging
 import os
+import warnings
 
+# ignore warnings
+warnings.filterwarnings("ignore")
 # Set up logging configuration
 logging.basicConfig(level=logging.INFO)
 
