@@ -18,9 +18,7 @@ This repository implements a framework for unsupervised incremental learning usi
 
 - **Dataset Conditioning**: Apply Visual DNA (vDNA) to identify source-target dataset relationships, using Earth Mover's Distance (EMD) to quantify distributional similarity
 - **Layer Selection**: Apply vDNA to determine optimal layers to fine-tune.
-- **Fine-tuning**: Leverage self-training methods for model adaptation.
-- **Knowledge Distillation**: Fine-tuning the model using knowledge distillation from a teacher model.
-- **Self-training**: Use pre trained DeepLabV3Plus model to generate pseudo labels.
+- **Self-training**: Use pre trained DeepLabV3Plus model to generate pseudo labels and then fine-tune the same model using generated labels.
 - **Knowledge Retention**: Employ Knowledge Distillation (KD) on the output logits.
 - **Pipeline Automation**: Automated training and testing pipeline for seamless execution.
 
