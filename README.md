@@ -47,6 +47,8 @@ Install the required dependencies:
 ```/checkpoints ```
 
 Pretrained checkpoint: ```https://drive.google.com/file/d/1t7TC8mxQaFECt4jutdq_NMnWxdm6B-Nb/view```
+
+
 Fine-tuned checkpoint: ```https://drive.google.com/file/d/1TmisTL5cdxxdYTmh5719kXkQsocTXlSN/view?usp=drive_link```
 
 ## Usage
@@ -109,6 +111,10 @@ class MyDataset(data.Dataset):
 
 
 ## Results
+![Baseline](sample_outputs/Table1.png)
+![Dataset Filtering](sample_outputs/Table2.png)
+![Fine-Tuning](sample_outputs/Table3.png)
+![Outputs](sample_outputs/Semantics.png)
 
 
 ## Reference
