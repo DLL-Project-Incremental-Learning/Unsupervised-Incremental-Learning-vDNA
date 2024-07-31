@@ -13,10 +13,16 @@ This repository implements a framework for unsupervised incremental learning usi
 7. [Reference](#reference)
 
 ## Features
-- **Incremental Learning**: Adaptation of a pre-trained model to a new dataset using incremental learning techniques.
-- **Weak Label Generation**: Generation of weak labels for new data using a pre-trained model.
-- **Knowledge Distillation**: Fine-tuning the model using knowledge distillation from a teacher model.
+**Source Dataset and Model**: Cityscapes trained on DeepLabV3Plus-ResNet101 Architecture.
+
+**Target Dataset**: KITTI-360
+
+- **Dataset Conditioning**: Apply Visual DNA (vDNA) to identify source-target dataset relationships, using Earth Mover's Distance (EMD) to quantify distributional similarity
+- **Layer Selection**: Apply vDNA to determine optimal layers to fine-tune.
+- **Self-training**: Use pre trained DeepLabV3Plus model to generate pseudo labels and then fine-tune the same model using generated labels.
+- **Knowledge Retention**: Employ Knowledge Distillation (KD) on the output logits.
 - **Pipeline Automation**: Automated training and testing pipeline for seamless execution.
+
 
 ## Installation
 
@@ -75,6 +81,9 @@ The `weaklabelgenerator.py` script generates weak labels for a set of images usi
 
 ### Fine-Tuning Buckets
 The `finetune_bucket.py` script fine-tunes the model on each data bucket using knowledge distillation.
+
+### Visual DNA (vDNA)
+Refer to the repository for implementation and usage : [Github vDNA](https://github.com/bramtoula/vdna)
 
 ### Configuration
 The configuration files for training, testing, and weak label generation are located in the `configs` directory. These JSON files specify various parameters and options for the pipeline.
