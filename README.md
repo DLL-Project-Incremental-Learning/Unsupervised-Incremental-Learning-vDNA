@@ -9,7 +9,7 @@ This repository implements a framework for unsupervised incremental learning usi
 3. [Datasets](#datasets)
 4. [Pretrained Checkpoints](#pretrained-checkpoints)
 5. [Usage](#usage)
-6. [Results](#results)
+6. [Architecture and Results](#architecture-and-results)
 7. [Reference](#reference)
 
 ## Features
@@ -111,12 +111,15 @@ class MyDataset(data.Dataset):
         return cls.cmap[mask]
 ```
 
-## Results
+## Architecture and Results
+### Block Digram
+![Architecture](sample_outputs/architecture.png)
+
 ### Quantitative Results:
-![Tables](sample_outputs/all_tables.png)
+![Tables](sample_outputs/Tables.png)
 
 ### Qualitative Results
-![Outputs](sample_outputs/Semantics.png)
+![Outputs](sample_outputs/qualitative.png)
 
 ## Reference
 1. X. Liu et al., "Deep Unsupervised Domain Adaptation: A Review of Recent Advances and Perspectives," arXiv:2208.07422 [cs.CV], Aug. 2022.
