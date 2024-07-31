@@ -8,5 +8,5 @@
   "checkpoint_dir": "./checkpoints",
   "json_file1": "./tests/cityscapes_val_set.json",
   "json_file2": "./tests/kitti-360_val_set_v3.json",
-  "num_test": 25
+  "num_test": 2200
 }
