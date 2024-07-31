@@ -13,7 +13,8 @@ This repository implements a framework for unsupervised incremental learning usi
 7. [Reference](#reference)
 
 ## Features
-**Source Dataset and Model**: Cityscapes trained on DeepLabV3Plus 
+**Source Dataset and Model**: Cityscapes trained on DeepLabV3Plus-ResNet101 Architecture.
+
 **Target Dataset**: KITTI-360
 
 - **Dataset Conditioning**: Apply Visual DNA (vDNA) to identify source-target dataset relationships, using Earth Mover's Distance (EMD) to quantify distributional similarity
