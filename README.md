@@ -22,7 +22,7 @@ This repository implements a framework for unsupervised incremental learning usi
 
 ### Clone the repository
 ```sh
-git clone https://github.com/yourusername/unsupervised-incremental-learning-vdna.git
+git clone https://github.com/DLL-Project-Incremental-Learning/Unsupervised-Incremental-Learning-vDNA.git
 ```
 
 ### Install the required dependencies
